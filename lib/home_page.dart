@@ -23,7 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //width: double.infinity,
         //height: double.infinity,
         color: Colors.white,
-        child: const MyCell(height: 500),
+        child: Center(child: const CellFileBorder()),
       ),
     );
   }
