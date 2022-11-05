@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:speech_assistance_app/cell_class.dart';
 
 class MyCell extends StatelessWidget {
-  const MyCell({super.key});
+  const MyCell({required this.height,super.key});
+
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: height,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: const Color(0xffFE750D), width: 6)),
+          border: Border.all(color: const Color(0xffFE750D), width: 4)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Column(
@@ -18,11 +21,11 @@ class MyCell extends StatelessWidget {
             Container(
               color: const Color(0xfffef2e3),
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               child: Text(
                 cells[0].name,
                 style:
-                    const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
             Expanded(
