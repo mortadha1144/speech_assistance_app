@@ -23,10 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //width: double.infinity,
         //height: double.infinity,
         color: Colors.white,
-        child: Image.asset(
-          'images/i3.png',
-          fit: BoxFit.cover,
-        ),
+        child: const MyCell(height: 500),
       ),
     );
   }
