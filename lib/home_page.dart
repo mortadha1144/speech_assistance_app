@@ -12,230 +12,235 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    double _height = MediaQuery.of(context).size.height / 6;
+    //double _height = MediaQuery.of(context).size.height / 6;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Speech Assistance App'),
-      // ),
+      appBar: AppBar(
+        title: const Text('Speech Assistance App'),
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: Colors.white,
-        child: Table(
-          border: TableBorder.all(),
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: <TableRow>[
-            TableRow(
-              children: <Widget>[
-                MyCell(height: _height),
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.top,
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.red,
+        child: LayoutBuilder(
+          builder: (ctx, constraints) {
+            double _height = constraints.maxHeight / 6;
+            return Table(
+              border: TableBorder.all(),
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              children: <TableRow>[
+                TableRow(
+                  children: <Widget>[
+                    MyCell(height: _height),
+                    TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.top,
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.red,
+                      ),
+                    ),
+                    Container(
+                      height: 64,
+                      color: Colors.blue,
+                    ),
+                    Container(
+                      height: 64,
+                      color: Colors.blue,
+                    ),
+                    Container(
+                      height: 64,
+                      color: Colors.blue,
+                    ),
+                  ],
+                ),
+                TableRow(
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
                   ),
+                  children: <Widget>[
+                    Container(
+                      height: _height,
+                      width: 128,
+                      color: Colors.purple,
+                    ),
+                    Container(
+                      height: 32,
+                      color: Colors.yellow,
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  height: 64,
-                  color: Colors.blue,
+                TableRow(
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                  ),
+                  children: <Widget>[
+                    Container(
+                      height: _height,
+                      width: 128,
+                      color: Colors.purple,
+                    ),
+                    Container(
+                      height: 32,
+                      color: Colors.yellow,
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  height: 64,
-                  color: Colors.blue,
+                TableRow(
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                  ),
+                  children: <Widget>[
+                    Container(
+                      height: _height,
+                      width: 128,
+                      color: Colors.purple,
+                    ),
+                    Container(
+                      height: 32,
+                      color: Colors.yellow,
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  height: 64,
-                  color: Colors.blue,
+                TableRow(
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                  ),
+                  children: <Widget>[
+                    Container(
+                      height: _height,
+                      width: 128,
+                      color: Colors.purple,
+                    ),
+                    Container(
+                      height: 32,
+                      color: Colors.yellow,
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ],
+                ),
+                TableRow(
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                  ),
+                  children: <Widget>[
+                    Container(
+                      height: _height,
+                      width: 128,
+                      color: Colors.purple,
+                    ),
+                    Container(
+                      height: 32,
+                      color: Colors.yellow,
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
-            TableRow(
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-              ),
-              children: <Widget>[
-                Container(
-                  height: _height,
-                  width: 128,
-                  color: Colors.purple,
-                ),
-                Container(
-                  height: 32,
-                  color: Colors.yellow,
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-              ],
-            ),
-            TableRow(
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-              ),
-              children: <Widget>[
-                Container(
-                  height: _height,
-                  width: 128,
-                  color: Colors.purple,
-                ),
-                Container(
-                  height: 32,
-                  color: Colors.yellow,
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-              ],
-            ),
-            TableRow(
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-              ),
-              children: <Widget>[
-                Container(
-                  height: _height,
-                  width: 128,
-                  color: Colors.purple,
-                ),
-                Container(
-                  height: 32,
-                  color: Colors.yellow,
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-              ],
-            ),
-            TableRow(
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-              ),
-              children: <Widget>[
-                Container(
-                  height: _height,
-                  width: 128,
-                  color: Colors.purple,
-                ),
-                Container(
-                  height: 32,
-                  color: Colors.yellow,
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-              ],
-            ),
-            TableRow(
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-              ),
-              children: <Widget>[
-                Container(
-                  height: _height,
-                  width: 128,
-                  color: Colors.purple,
-                ),
-                Container(
-                  height: 32,
-                  color: Colors.yellow,
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    color: Colors.orange,
-                  ),
-                ),
-              ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
