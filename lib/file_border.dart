@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speech_assistance_app/path_builder_border.dart';
 
 //import 'cell_class.dart';
 
@@ -7,6 +8,10 @@ class CellFileBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const Text('data');
+  }
+
+  ClipPath myClipPath() {
     return ClipPath(
       clipper: CustomClipPath(),
       child: Container(
@@ -18,7 +23,7 @@ class CellFileBorder extends StatelessWidget {
         height: 500,
         width: 350,
         child: const Center(
-          child: Text('Clip Path'),
+          child: Text('data'),
         ),
       ),
     );
