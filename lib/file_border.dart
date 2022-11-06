@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:speech_assistance_app/cell_class.dart';
-import 'package:speech_assistance_app/path_builder_border.dart';
 
 //import 'cell_class.dart';
 
@@ -138,7 +137,6 @@ class FileCustomBorder extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
     return true;
   }
 }
