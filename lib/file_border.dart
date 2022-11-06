@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speech_assistance_app/path_builder_border.dart';
 
 //import 'cell_class.dart';
 
@@ -7,19 +8,19 @@ class CellFileBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const ShapeDecoration(
-        color: Colors.white,
-        shape: CircleBorder(
-            side: BorderSide(
-          width: 5,
-          color: Colors.black,
-        )),
-      ),
-      height: 500,
-      width: 350,
-      child: const Center(
-        child: Text('Clip Path'),
+    return ClipPath(
+      clipper: CustomClipPath(),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 4),
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: 500,
+        width: 350,
+        child: const Center(
+          child: Text('Clip Path'),
+        ),
       ),
     );
   }
