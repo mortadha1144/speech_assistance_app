@@ -1,0 +1,170 @@
+import 'package:flutter/material.dart';
+
+class CustomClipPath extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    double w = size.width;
+    double h = size.height;
+
+    final path = Path();
+
+    path.moveTo(0, size.height * 0.0380000);
+    path.quadraticBezierTo(
+        0, size.height * 0.7292600, 0, size.height * 0.9596800);
+    path.cubicTo(
+        size.width * 0.0011143,
+        size.height * 0.9769400,
+        size.width * 0.0243714,
+        size.height * 0.9983200,
+        size.width * 0.0576286,
+        size.height);
+    path.cubicTo(size.width * 0.2852429, size.height, size.width * 0.7219571,
+        size.height, size.width * 0.9434000, size.height);
+    path.cubicTo(
+        size.width * 0.9778571,
+        size.height * 0.9987600,
+        size.width * 0.9998286,
+        size.height * 0.9811200,
+        size.width,
+        size.height * 0.9598800);
+    path.cubicTo(size.width, size.height * 0.7398950, size.width,
+        size.height * 0.3036000, size.width, size.height * 0.0799400);
+    path.cubicTo(
+        size.width * 0.9977143,
+        size.height * 0.0607400,
+        size.width * 0.9757429,
+        size.height * 0.0422000,
+        size.width * 0.9432857,
+        size.height * 0.0402800);
+    path.quadraticBezierTo(size.width * 0.8007643, size.height * 0.0402500,
+        size.width * 0.3732000, size.height * 0.0401600);
+    path.lineTo(size.width * 0.3289714, 0);
+    path.lineTo(size.width * 0.0461714, 0);
+    path.lineTo(0, size.height * 0.0380000);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+class FileCustomBorder extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 15.0;
+
+    Path path = Path();
+    path.moveTo(0, size.height * 0.0380000);
+    path.quadraticBezierTo(
+        0, size.height * 0.7292600, 0, size.height * 0.9596800);
+    path.cubicTo(
+        size.width * 0.0011143,
+        size.height * 0.9769400,
+        size.width * 0.0243714,
+        size.height * 0.9983200,
+        size.width * 0.0576286,
+        size.height);
+    path.cubicTo(size.width * 0.2852429, size.height, size.width * 0.7219571,
+        size.height, size.width * 0.9434000, size.height);
+    path.cubicTo(
+        size.width * 0.9778571,
+        size.height * 0.9987600,
+        size.width * 0.9998286,
+        size.height * 0.9811200,
+        size.width,
+        size.height * 0.9598800);
+    path.cubicTo(size.width, size.height * 0.7398950, size.width,
+        size.height * 0.3036000, size.width, size.height * 0.0799400);
+    path.cubicTo(
+        size.width * 0.9977143,
+        size.height * 0.0607400,
+        size.width * 0.9757429,
+        size.height * 0.0422000,
+        size.width * 0.9432857,
+        size.height * 0.0402800);
+    path.quadraticBezierTo(size.width * 0.8007643, size.height * 0.0402500,
+        size.width * 0.3732000, size.height * 0.0401600);
+    path.lineTo(size.width * 0.3289714, 0);
+    path.lineTo(size.width * 0.0461714, 0);
+    path.lineTo(0, size.height * 0.0380000);
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+Widget defaultFolderCell({
+  required String text,
+  required String imagePath,
+}) =>
+    ClipPath(
+      clipper: CustomClipPath(),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
+        height: 500,
+        width: 350,
+        child: CustomPaint(
+          painter: FileCustomBorder(),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              Text(text),
+              Image.asset(
+                imagePath,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+
+Widget defaultCell({
+  required String text,
+  required String imagePath,
+}) =>
+    Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: const Color(0xffFE750D), width: 4)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Column(
+          children: [
+            Container(
+              color: const Color(0xfffef2e3),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Text(
+                text,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.fill,
+                width: double.infinity,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
