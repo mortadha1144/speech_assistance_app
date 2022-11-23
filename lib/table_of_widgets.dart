@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'cell_widget.dart';
-
 class TableOfWidgets extends StatelessWidget {
   const TableOfWidgets({super.key});
 
@@ -16,7 +14,6 @@ class TableOfWidgets extends StatelessWidget {
           children: <TableRow>[
             TableRow(
               children: <Widget>[
-                MyCell(height: height),
                 TableCell(
                   verticalAlignment: TableCellVerticalAlignment.top,
                   child: Container(

@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             flex: 20,
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 //color: Colors.white,
@@ -36,195 +36,30 @@ class HomeScreen extends StatelessWidget {
                   builder: (p0, p1) {
                     double height = p1.maxHeight / 6;
                     return Table(
-                    children: [
-                      TableRow(children: [
-                        SizedBox(
-                          height: height,
-                          child: defaultCell(
-                            text: cells[0].name,
-                            imagePath: cells[0].image,
+                      children: [
+                        TableRow(
+                          children: List.generate(
+                            5,
+                            (index) => defaultCellTriangle(
+                              text: cells[0].name,
+                              imagePath: cells[0].image,
+                              height: height,
+                            ),
                           ),
                         ),
-
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //
-                        //     decoration: BoxDecoration(
-                        //       border: Border.all(color: Colors.black),
-                        //       color: Colors.red,
-                        //     ),
-                        //   ),
-                        // ),
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //     color: Colors.red,
-                        //   ),
-                        // ),
-                      ]),
-                      TableRow(children: [
-                        SizedBox(
-                          height: height,
-                          child: defaultCell(
-                            text: cells[0].name,
-                            imagePath: cells[0].image,
+                        TableRow(
+                          children: List.generate(
+                            5,
+                            (index) => defaultCell(
+                              text: cells[0].name,
+                              imagePath: cells[0].image,
+                              height: height,
+                            ),
                           ),
                         ),
-
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //
-                        //     decoration: BoxDecoration(
-                        //       border: Border.all(color: Colors.black),
-                        //       color: Colors.red,
-                        //     ),
-                        //   ),
-                        // ),
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //     color: Colors.red,
-                        //   ),
-                        // ),
-                      ]),
-                      TableRow(children: [
-                        SizedBox(
-                          height: height,
-                          child: defaultCell(
-                            text: cells[0].name,
-                            imagePath: cells[0].image,
-                          ),
-                        ),
-
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //
-                        //     decoration: BoxDecoration(
-                        //       border: Border.all(color: Colors.black),
-                        //       color: Colors.red,
-                        //     ),
-                        //   ),
-                        // ),
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //     color: Colors.red,
-                        //   ),
-                        // ),
-                      ]),
-                      TableRow(children: [
-                        SizedBox(
-                          height: height,
-                          child: defaultCell(
-                            text: cells[0].name,
-                            imagePath: cells[0].image,
-                          ),
-                        ),
-
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //
-                        //     decoration: BoxDecoration(
-                        //       border: Border.all(color: Colors.black),
-                        //       color: Colors.red,
-                        //     ),
-                        //   ),
-                        // ),
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //     color: Colors.red,
-                        //   ),
-                        // ),
-                      ]),
-                      TableRow(children: [
-                        SizedBox(
-                          height: height,
-                          child: defaultCell(
-                            text: cells[0].name,
-                            imagePath: cells[0].image,
-                          ),
-                        ),
-
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //
-                        //     decoration: BoxDecoration(
-                        //       border: Border.all(color: Colors.black),
-                        //       color: Colors.red,
-                        //     ),
-                        //   ),
-                        // ),
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //     color: Colors.red,
-                        //   ),
-                        // ),
-                      ]),
-                      TableRow(children: [
-                        SizedBox(
-                          height: height,
-                          child: defaultCell(
-                            text: cells[0].name,
-                            imagePath: cells[0].image,
-                          ),
-                        ),
-
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //
-                        //     decoration: BoxDecoration(
-                        //       border: Border.all(color: Colors.black),
-                        //       color: Colors.red,
-                        //     ),
-                        //   ),
-                        // ),
-                        // TableCell(
-                        //   child: Container(
-                        //     width: 50,
-                        //     height: 50,
-                        //     color: Colors.red,
-                        //   ),
-                        // ),
-                      ]),
-                      // TableRow(children: [
-                      //   TableCell(
-                      //     child: Container(
-                      //       width: 50,
-                      //       height: 50,
-                      //       color: Colors.red,
-                      //     ),
-                      //   ),
-                      //   TableCell(
-                      //     child: Container(
-                      //       width: 50,
-                      //       height: 50,
-                      //       color: Colors.red,
-                      //     ),
-                      //   ),
-                      // ]),
-                    ],
-                  );
+                      ],
+                    );
                   },
-
                 ),
               ),
             ),

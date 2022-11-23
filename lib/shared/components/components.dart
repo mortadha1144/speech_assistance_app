@@ -105,6 +105,30 @@ class FileCustomBorder extends CustomPainter {
   }
 }
 
+class TriangleBord extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 15.0;
+
+    Path path = Path();
+    path.moveTo(size.width * 0.7510000, 0);
+    path.lineTo(size.width, size.height * 0.1706667);
+    path.lineTo(size.width, size.height * 0.0360000);
+    path.lineTo(size.width * 0.9510000, 0);
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
 Widget defaultFolderCell({
   required String text,
   required String imagePath,
@@ -138,33 +162,73 @@ Widget defaultFolderCell({
 Widget defaultCell({
   required String text,
   required String imagePath,
+  required double height,
 }) =>
-    Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: const Color(0xffFE750D), width: 4)),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Column(
-          children: [
-            Container(
-              color: const Color(0xfffef2e3),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Text(
-                text,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    SizedBox(
+      height: height,
+      child: Container(
+        margin: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(
+            color: const Color(0xffFE750D),
+            width: 2,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(7),
+          child: Column(
+            children: [
+              Container(
+                color: const Color(0xfffef2e3),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text(
+                  text,
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Expanded(
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.fill,
-                width: double.infinity,
+              Expanded(
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.fill,
+                  width: double.infinity,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+      ),
+    );
+
+Widget defaultCellTriangle({
+  required String text,
+  required String imagePath,
+  required double height,
+}) =>
+    SizedBox(
+      height: height,
+      child: Container(
+        margin: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(
+            color: const Color(0xffFE750D),
+            width: 2,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Stack(
+            children: [
+              Container(color: Colors.red,),
+              CustomPaint(
+                painter: TriangleBord(),
+                child: Container(),
+              ),
+            ],
+          ),
         ),
       ),
     );
