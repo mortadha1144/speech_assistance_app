@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomClipPath extends CustomClipper<Path> {
+class FolderCustomClip extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     double w = size.width;
@@ -52,7 +52,32 @@ class CustomClipPath extends CustomClipper<Path> {
   }
 }
 
-class FileCustomBorder extends CustomPainter {
+class TriangleClip extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path0 = Path();
+
+    path0.moveTo(0,size.height*0.0505000);
+    path0.cubicTo(0,size.height*0.7246375,0,size.height*0.7246375,0,size.height*0.9493500);
+    path0.cubicTo(size.width*0.0006333,size.height*0.9770500,size.width*0.0279000,size.height*0.9982000,size.width*0.0676000,size.height);
+    path0.cubicTo(size.width*0.2838000,size.height,size.width*0.7162000,size.height,size.width*0.9324000,size.height);
+    path0.cubicTo(size.width*0.9786667,size.height*0.9989000,size.width*0.9980333,size.height*0.9781750,size.width,size.height*0.9508500);
+    path0.quadraticBezierTo(size.width,size.height*0.7379625,size.width,size.height*0.1751000);
+    path0.lineTo(size.width*0.8322667,0);
+    path0.quadraticBezierTo(size.width*0.2745417,0,size.width*0.0660000,0);
+    path0.cubicTo(size.width*0.0355000,size.height*0.0036250,size.width*0.0088333,size.height*0.0166250,0,size.height*0.0505000);
+    path0.close();
+
+    return path0;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+class FolderCustomBorder extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
@@ -105,36 +130,13 @@ class FileCustomBorder extends CustomPainter {
   }
 }
 
-class TriangleBord extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..color = Colors.black
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 15.0;
 
-    Path path = Path();
-    path.moveTo(size.width * 0.7510000, 0);
-    path.lineTo(size.width, size.height * 0.1706667);
-    path.lineTo(size.width, size.height * 0.0360000);
-    path.lineTo(size.width * 0.9510000, 0);
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-Widget defaultFolderCell({
+Widget defaultCellFolder({
   required String text,
   required String imagePath,
 }) =>
     ClipPath(
-      clipper: CustomClipPath(),
+      clipper: FolderCustomClip(),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -143,7 +145,7 @@ Widget defaultFolderCell({
         height: 500,
         width: 350,
         child: CustomPaint(
-          painter: FileCustomBorder(),
+          painter: FolderCustomBorder(),
           child: Column(
             children: [
               const SizedBox(
@@ -202,6 +204,7 @@ Widget defaultCell({
       ),
     );
 
+
 Widget defaultCellTriangle({
   required String text,
   required String imagePath,
@@ -214,21 +217,18 @@ Widget defaultCellTriangle({
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
-            color: const Color(0xffFE750D),
+            color: Colors.red,
             width: 2,
           ),
+          color: Colors.red
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: Stack(
-            children: [
-              Container(color: Colors.red,),
-              CustomPaint(
-                painter: TriangleBord(),
-                child: Container(),
-              ),
-            ],
+        child: ClipPath(
+          clipper: TriangleClip(),
+          child: Container(
+            color: Colors.white,
           ),
         ),
       ),
     );
+
+
