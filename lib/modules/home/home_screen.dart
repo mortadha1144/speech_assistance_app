@@ -34,28 +34,18 @@ class HomeScreen extends StatelessWidget {
                 //color: Colors.white,
                 child: LayoutBuilder(
                   builder: (p0, p1) {
-                    double height = p1.maxHeight / 6;
+                    double height = p1.maxHeight / 1;
                     return Table(
                       children: [
+
                         TableRow(
-                          children: List.generate(
-                            5,
-                            (index) => defaultCellTriangle(
+                          children: [
+                            defaultCell(
                               text: cells[0].name,
                               imagePath: cells[0].image,
                               height: height,
-                            ),
-                          ),
-                        ),
-                        TableRow(
-                          children: List.generate(
-                            5,
-                            (index) => defaultCell(
-                              text: cells[0].name,
-                              imagePath: cells[0].image,
-                              height: height,
-                            ),
-                          ),
+                            )
+                          ],
                         ),
                       ],
                     );

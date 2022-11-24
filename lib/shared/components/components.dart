@@ -171,6 +171,7 @@ Widget defaultCell({
       child: Container(
         margin: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
+          // color: Colors.red,
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
             color: const Color(0xffFE750D),
@@ -178,11 +179,11 @@ Widget defaultCell({
           ),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(7),
+          borderRadius: BorderRadius.circular(5),
           child: Column(
             children: [
               Container(
-                color: const Color(0xfffef2e3),
+                //color: const Color(0xfffef2e3),
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 2),
                 child: Text(
