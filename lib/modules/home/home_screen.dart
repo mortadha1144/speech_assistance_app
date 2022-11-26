@@ -40,11 +40,12 @@ class HomeScreen extends StatelessWidget {
 
                         TableRow(
                           children: [
-                            defaultCell(
+                            mainCell(
                               text: cells[0].name,
                               imagePath: cells[0].image,
                               height: height,
-                            )
+                              type: cells[0].type,
+                            )!
                           ],
                         ),
                       ],

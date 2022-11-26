@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-Color orangeBorder = const Color(0xffFE750D);
-Color orangeContent = const Color(0xffFEF2E3);
-Color pinkBorder = const Color(0xffF20DE9);
-Color pinkContent = const Color(0xffFCE9F1);
-Color blueBorder = const Color(0xff0F96F9);
-Color blueContent = const Color(0xffEAF7FD);
-Color greenBorder = const Color(0xff6EE96D);
-Color greenContent = const Color(0xffEBF5E8);
+Color orangeBorder = const Color(0xFFFE750D);
+Color orangeContent = const Color(0xFFFEF2E3);
+Color pinkBorder = const Color(0xFFF20DE9);
+Color pinkContent = const Color(0xFFFCE9F1);
+Color blueBorder = const Color(0xFF0F96F9);
+Color blueContent = const Color(0xFFEAF7FD);
+Color greenBorder = const Color(0xFF6EE96D);
+Color greenContent = const Color(0xFFEBF5E8);
