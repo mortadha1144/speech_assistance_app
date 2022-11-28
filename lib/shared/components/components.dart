@@ -58,37 +58,12 @@ class TriangleClip extends CustomClipper<Path> {
   Path getClip(Size size) {
     final path0 = Path();
 
-    path0.moveTo(0, size.height * 0.0505000);
-    path0.cubicTo(0, size.height * 0.7246375, 0, size.height * 0.7246375, 0,
-        size.height * 0.9493500);
-    path0.cubicTo(
-        size.width * 0.0006333,
-        size.height * 0.9770500,
-        size.width * 0.0279000,
-        size.height * 0.9982000,
-        size.width * 0.0676000,
-        size.height);
-    path0.cubicTo(size.width * 0.2838000, size.height, size.width * 0.7162000,
-        size.height, size.width * 0.9324000, size.height);
-    path0.cubicTo(
-        size.width * 0.9786667,
-        size.height * 0.9989000,
-        size.width * 0.9980333,
-        size.height * 0.9781750,
-        size.width,
-        size.height * 0.9508500);
-    path0.quadraticBezierTo(size.width, size.height * 0.7379625, size.width,
-        size.height * 0.1751000);
-    path0.lineTo(size.width * 0.8322667, 0);
-    path0.quadraticBezierTo(
-        size.width * 0.2745417, 0, size.width * 0.0660000, 0);
-    path0.cubicTo(
-        size.width * 0.0355000,
-        size.height * 0.0036250,
-        size.width * 0.0088333,
-        size.height * 0.0166250,
-        0,
-        size.height * 0.0505000);
+    path0.moveTo(0, 0);
+    path0.lineTo(0, size.height);
+    path0.lineTo(size.width, size.height);
+    path0.lineTo(size.width, size.height * 0.1514750);
+    path0.lineTo(size.width * 0.8320000, 0);
+    path0.lineTo(0, 0);
     path0.close();
 
     return path0;
@@ -154,8 +129,8 @@ class FolderCustomBorder extends CustomPainter {
 }
 
 Widget defaultCellFolder({
-  required String text,
-  required String imagePath,
+  String? text,
+  String? imagePath,
   required double height,
 }) =>
     SizedBox(
@@ -174,9 +149,15 @@ Widget defaultCellFolder({
                 const SizedBox(
                   height: 30,
                 ),
-                Text(text),
+                Text(
+                  text ?? '',
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                ),
                 Image.asset(
-                  imagePath,
+                  imagePath ?? 'images/no_image.png',
+                  fit: BoxFit.fill,
+                  width: double.infinity,
                 )
               ],
             ),
@@ -186,9 +167,10 @@ Widget defaultCellFolder({
     );
 
 Widget defaultCell({
-  required String text,
-  required String imagePath,
+  String? text,
+  String? imagePath,
   required double height,
+  required double width,
   required int type,
 }) {
   Color borderColor = const Color(0xFF000000);
@@ -203,6 +185,7 @@ Widget defaultCell({
   }
   return SizedBox(
     height: height,
+    width: width,
     child: Container(
       margin: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
@@ -222,17 +205,23 @@ Widget defaultCell({
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(vertical: 2),
               child: Text(
-                text,
+                type == 9 ? 'More' : text ?? '',
                 style:
                     const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ),
             Expanded(
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.fill,
-                width: double.infinity,
-              ),
+              child: type == 9
+                  ? const SizedBox.expand(
+                      child: FittedBox(
+                        child: Icon(Icons.arrow_forward_sharp),
+                      ),
+                    )
+                  : Image.asset(
+                      imagePath ?? 'images/no_image.png',
+                      fit: BoxFit.fill,
+                      width: double.infinity,
+                    ),
             ),
           ],
         ),
@@ -242,8 +231,8 @@ Widget defaultCell({
 }
 
 Widget defaultCellTriangle({
-  required String text,
-  required String imagePath,
+  String? text,
+  String? imagePath,
   required double height,
   required int type,
 }) {
@@ -269,30 +258,33 @@ Widget defaultCellTriangle({
         ),
         color: borderColor,
       ),
-      child: ClipPath(
-        clipper: TriangleClip(),
-        child: Container(
-          color: contentColor,
-          child: Column(
-            children: [
-              Container(
-                //color: const Color(0xfffef2e3),
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.bold),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: ClipPath(
+          clipper: TriangleClip(),
+          child: Container(
+            color: contentColor,
+            child: Column(
+              children: [
+                Container(
+                  //color: const Color(0xfffef2e3),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Text(
+                    text ?? '',
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.fill,
-                  width: double.infinity,
+                Expanded(
+                  child: Image.asset(
+                    imagePath ?? 'images/no_image.png',
+                    fit: BoxFit.fill,
+                    width: double.infinity,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -301,9 +293,10 @@ Widget defaultCellTriangle({
 }
 
 Widget? mainCell({
-  required String text,
-  required String imagePath,
+  String? text,
+  String? imagePath,
   required double height,
+  required double width,
   required int type,
 }) {
   if (type == 1 || type == 2 || type == 6) {
@@ -318,6 +311,7 @@ Widget? mainCell({
       text: text,
       imagePath: imagePath,
       height: height,
+      width: width,
       type: type,
     );
   } else if (type == 7 || type == 8) {

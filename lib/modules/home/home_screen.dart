@@ -28,26 +28,26 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             flex: 20,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 //color: Colors.white,
                 child: LayoutBuilder(
                   builder: (p0, p1) {
-                    double height = p1.maxHeight / 1;
-                    return Table(
-                      children: [
+                    double height = p1.maxHeight / 6;
+                    double width = p1.maxWidth / 5;
 
-                        TableRow(
-                          children: [
-                            mainCell(
-                              text: cells[0].name,
-                              imagePath: cells[0].image,
-                              height: height,
-                              type: cells[0].type,
-                            )!
-                          ],
-                        ),
+                    return Stack(
+                      children: [
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: mainCell(
+                            width: width,
+                            height: height,
+                            type: 9,
+                          )!,
+                        )
                       ],
                     );
                   },
