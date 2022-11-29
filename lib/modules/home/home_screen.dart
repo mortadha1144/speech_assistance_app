@@ -32,26 +32,7 @@ class HomeScreen extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 //color: Colors.white,
-                child: LayoutBuilder(
-                  builder: (p0, p1) {
-                    double height = p1.maxHeight / 6;
-                    double width = p1.maxWidth / 5;
-
-                    return Stack(
-                      children: [
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: mainCell(
-                            width: width,
-                            height: height,
-                            type: 9,
-                          )!,
-                        )
-                      ],
-                    );
-                  },
-                ),
+                child: verticalTable(cells),
               ),
             ),
           ),

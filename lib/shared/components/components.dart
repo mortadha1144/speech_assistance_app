@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:speech_assistance_app/models/cell/cell.dart';
+import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/styles/colors.dart';
 
 class FolderCustomClip extends CustomClipper<Path> {
@@ -7,44 +9,20 @@ class FolderCustomClip extends CustomClipper<Path> {
     double w = size.width;
     double h = size.height;
 
-    final path = Path();
+    final path0 = Path();
 
-    path.moveTo(0, size.height * 0.0380000);
-    path.quadraticBezierTo(
-        0, size.height * 0.7292600, 0, size.height * 0.9596800);
-    path.cubicTo(
-        size.width * 0.0011143,
-        size.height * 0.9769400,
-        size.width * 0.0243714,
-        size.height * 0.9983200,
-        size.width * 0.0576286,
-        size.height);
-    path.cubicTo(size.width * 0.2852429, size.height, size.width * 0.7219571,
-        size.height, size.width * 0.9434000, size.height);
-    path.cubicTo(
-        size.width * 0.9778571,
-        size.height * 0.9987600,
-        size.width * 0.9998286,
-        size.height * 0.9811200,
-        size.width,
-        size.height * 0.9598800);
-    path.cubicTo(size.width, size.height * 0.7398950, size.width,
-        size.height * 0.3036000, size.width, size.height * 0.0799400);
-    path.cubicTo(
-        size.width * 0.9977143,
-        size.height * 0.0607400,
-        size.width * 0.9757429,
-        size.height * 0.0422000,
-        size.width * 0.9432857,
-        size.height * 0.0402800);
-    path.quadraticBezierTo(size.width * 0.8007643, size.height * 0.0402500,
-        size.width * 0.3732000, size.height * 0.0401600);
-    path.lineTo(size.width * 0.3289714, 0);
-    path.lineTo(size.width * 0.0461714, 0);
-    path.lineTo(0, size.height * 0.0380000);
-    path.close();
+    path0.moveTo(0,size.height*0.0495000);
+    path0.lineTo(0,size.height);
+    path0.lineTo(size.width,size.height);
+    path0.lineTo(size.width,size.height*0.0853250);
+    path0.quadraticBezierTo(size.width*0.9952000,size.height*0.0578500,size.width*0.9564333,size.height*0.0506000);
+    path0.quadraticBezierTo(size.width*0.8023417,size.height*0.0507312,size.width*0.3400667,size.height*0.0511250);
+    path0.lineTo(size.width*0.2996000,0);
+    path0.lineTo(size.width*0.0481333,0);
+    path0.lineTo(0,size.height*0.0495000);
+    path0.close();
 
-    return path;
+    return path0;
   }
 
   @override
@@ -81,45 +59,21 @@ class FolderCustomBorder extends CustomPainter {
     Paint paint = Paint()
       ..color = Colors.black
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 15.0;
+      ..strokeWidth = 5;
 
-    Path path = Path();
-    path.moveTo(0, size.height * 0.0380000);
-    path.quadraticBezierTo(
-        0, size.height * 0.7292600, 0, size.height * 0.9596800);
-    path.cubicTo(
-        size.width * 0.0011143,
-        size.height * 0.9769400,
-        size.width * 0.0243714,
-        size.height * 0.9983200,
-        size.width * 0.0576286,
-        size.height);
-    path.cubicTo(size.width * 0.2852429, size.height, size.width * 0.7219571,
-        size.height, size.width * 0.9434000, size.height);
-    path.cubicTo(
-        size.width * 0.9778571,
-        size.height * 0.9987600,
-        size.width * 0.9998286,
-        size.height * 0.9811200,
-        size.width,
-        size.height * 0.9598800);
-    path.cubicTo(size.width, size.height * 0.7398950, size.width,
-        size.height * 0.3036000, size.width, size.height * 0.0799400);
-    path.cubicTo(
-        size.width * 0.9977143,
-        size.height * 0.0607400,
-        size.width * 0.9757429,
-        size.height * 0.0422000,
-        size.width * 0.9432857,
-        size.height * 0.0402800);
-    path.quadraticBezierTo(size.width * 0.8007643, size.height * 0.0402500,
-        size.width * 0.3732000, size.height * 0.0401600);
-    path.lineTo(size.width * 0.3289714, 0);
-    path.lineTo(size.width * 0.0461714, 0);
-    path.lineTo(0, size.height * 0.0380000);
-    path.close();
+    Path path0 = Path();
+    path0.moveTo(0,size.height*0.0495000);
+    path0.lineTo(0,size.height);
+    path0.lineTo(size.width,size.height);
+    path0.lineTo(size.width,size.height*0.0853250);
+    path0.quadraticBezierTo(size.width*0.9952000,size.height*0.0578500,size.width*0.9564333,size.height*0.0506000);
+    path0.quadraticBezierTo(size.width*0.8023417,size.height*0.0507312,size.width*0.3400667,size.height*0.0511250);
+    path0.lineTo(size.width*0.2996000,0);
+    path0.lineTo(size.width*0.0481333,0);
+    path0.lineTo(0,size.height*0.0495000);
+    path0.close();
 
-    canvas.drawPath(path, paint);
+    canvas.drawPath(path0, paint);
   }
 
   @override
@@ -132,45 +86,72 @@ Widget defaultCellFolder({
   String? text,
   String? imagePath,
   required double height,
-}) =>
-    SizedBox(
-      height: height,
-      child: ClipPath(
-        clipper: FolderCustomClip(),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-          ),
+  required int type,
+}) {
+  Color borderColor = const Color(0xFF000000);
+  if (type == 8) {
+    borderColor = Colors.red;
+  }
+  return SizedBox(
+    height: height,
+    child: Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(7),bottomRight:Radius.circular(7), ),
+        child: ClipPath(
+          clipper: FolderCustomClip(),
           child: CustomPaint(
             painter: FolderCustomBorder(),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 30,
+            child: Container(
+              margin: const EdgeInsets.all(1.2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
                 ),
-                Text(
-                  text ?? '',
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(7),
+                child: Column(
+                  children: [
+                    const Expanded(child: SizedBox()),
+                    Expanded(
+                      flex: 6,
+                      child: Center(
+                        child: Text(
+                          text ?? '',
+                          style: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 20,
+                      child: imagePath == null
+                          ? Container()
+                          : Image.asset(
+                            imagePath,
+                            fit: BoxFit.fill,
+                            width: double.infinity,
+                          ),
+                    ),
+                  ],
                 ),
-                Image.asset(
-                  imagePath ?? 'images/no_image.png',
-                  fit: BoxFit.fill,
-                  width: double.infinity,
-                )
-              ],
+              ),
+            ),
             ),
           ),
         ),
-      ),
-    );
+    ),
+  );
+}
+
 
 Widget defaultCell({
   String? text,
   String? imagePath,
   required double height,
-  required double width,
   required int type,
 }) {
   Color borderColor = const Color(0xFF000000);
@@ -178,14 +159,12 @@ Widget defaultCell({
   if (type == 4) {
     borderColor = blueBorder;
     contentColor = blueContent;
-  }
-  if (type == 5) {
+  } else if (type == 5) {
     borderColor = greenBorder;
     contentColor = greenContent;
   }
   return SizedBox(
     height: height,
-    width: width,
     child: Container(
       margin: const EdgeInsets.all(4.0),
       decoration: BoxDecoration(
@@ -217,11 +196,13 @@ Widget defaultCell({
                         child: Icon(Icons.arrow_forward_sharp),
                       ),
                     )
-                  : Image.asset(
-                      imagePath ?? 'images/no_image.png',
-                      fit: BoxFit.fill,
-                      width: double.infinity,
-                    ),
+                  : imagePath == null
+                      ? Container()
+                      : Image.asset(
+                          imagePath,
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                        ),
             ),
           ],
         ),
@@ -277,11 +258,13 @@ Widget defaultCellTriangle({
                   ),
                 ),
                 Expanded(
-                  child: Image.asset(
-                    imagePath ?? 'images/no_image.png',
-                    fit: BoxFit.fill,
-                    width: double.infinity,
-                  ),
+                  child: imagePath == null
+                      ? Container()
+                      : Image.asset(
+                          imagePath,
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                        ),
                 ),
               ],
             ),
@@ -296,7 +279,6 @@ Widget? mainCell({
   String? text,
   String? imagePath,
   required double height,
-  required double width,
   required int type,
 }) {
   if (type == 1 || type == 2 || type == 6) {
@@ -311,7 +293,6 @@ Widget? mainCell({
       text: text,
       imagePath: imagePath,
       height: height,
-      width: width,
       type: type,
     );
   } else if (type == 7 || type == 8) {
@@ -319,7 +300,44 @@ Widget? mainCell({
       text: text,
       imagePath: imagePath,
       height: height,
+      type: type,
     );
   }
   return null;
 }
+
+Widget verticalTable(List<Cell> list) => LayoutBuilder(
+      builder: (p0, p1) {
+        double height = p1.maxHeight / 6;
+        return GridView.count(
+
+          crossAxisCount: 5,
+          children: List.generate(
+            list.length,
+            (index) {
+              int conditionalIndex =
+                  list.indexWhere((element) => element.serial == index + 1);
+              return mainCell(
+                text: list[conditionalIndex].name,
+                imagePath: list[conditionalIndex].image,
+                height: height,
+                type: list[conditionalIndex].type,
+              )!;
+            },
+            growable: false,
+          ),
+        );
+      },
+    );
+
+Widget testCell() => LayoutBuilder(
+      builder: (p0, p1) {
+        double height = p1.maxHeight / 6;
+        return mainCell(
+          text: cells[20].name,
+          imagePath: cells[20].image,
+          height: height,
+          type: cells[20].type,
+        )!;
+      },
+    );
