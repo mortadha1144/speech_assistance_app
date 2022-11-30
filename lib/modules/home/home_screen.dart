@@ -14,14 +14,20 @@ class HomeScreen extends StatelessWidget {
             flex: 3,
             child: Container(
               height: 130,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               color: Colors.white,
             ),
           ),
           Expanded(
             child: Container(
               height: 35,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               color: Colors.black,
             ),
           ),
@@ -30,9 +36,35 @@ class HomeScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               child: SizedBox(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 //color: Colors.white,
-                child: testCell(),
+                child: LayoutBuilder(
+                  builder: (p0, p1) {
+                    double height = p1.maxHeight / 6;
+                    double width = p1.maxWidth / 5;
+                    return GridView.count(
+                      childAspectRatio: width/height,
+                      crossAxisCount: 5,
+                      children: List.generate(
+                        cells.length,
+                            (index) {
+                          int conditionalIndex =
+                          cells.indexWhere((element) =>
+                          element.serial == index + 1);
+                          return mainCell(
+                            text: cells[conditionalIndex].name,
+                            imagePath: cells[conditionalIndex].image,
+                            type: cells[conditionalIndex].type,
+                          )!;
+                        },
+                        growable: false,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
