@@ -54,10 +54,14 @@ class TriangleClip extends CustomClipper<Path> {
 }
 
 class FolderCustomBorder extends CustomPainter {
+
+  final Color borderColor;
+
+  FolderCustomBorder({required this.borderColor});
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.black
+      ..color = borderColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
 
@@ -106,13 +110,13 @@ Widget defaultCellFolder({
         child: ClipPath(
           clipper: FolderCustomClip(),
           child: CustomPaint(
-            foregroundPainter: FolderCustomBorder(),
+            foregroundPainter: FolderCustomBorder(borderColor: borderColor),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(
                   width: 2,
-                  color: Colors.black,
+                  color: borderColor,
                 ),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(7),
@@ -127,14 +131,13 @@ Widget defaultCellFolder({
                 child: Column(
                   children: [
                     const Expanded(child: SizedBox()),
-                    Expanded(
-                      flex: 6,
-                      child: Center(
-                        child: Text(
-                          text ?? '',
-                          style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(
+                        text ?? '',
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Expanded(
@@ -197,9 +200,9 @@ Widget defaultCell({
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(vertical: 2),
               child: Text(
-                type == 9 ? 'More' : text ?? '',
+                type == 9 ? 'المزيد' : text ?? '',
                 style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ),
             Expanded(
@@ -269,7 +272,7 @@ Widget defaultCellTriangle({
                   child: Text(
                     text ?? '',
                     style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.bold),
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Expanded(
@@ -322,5 +325,5 @@ Widget? mainCell({
       type: type,
     );
   }
-  return null;
+  return defaultCell();
 }
