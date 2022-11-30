@@ -11,15 +11,17 @@ class FolderCustomClip extends CustomClipper<Path> {
 
     final path0 = Path();
 
-    path0.moveTo(0,size.height*0.0495000);
-    path0.lineTo(0,size.height);
-    path0.lineTo(size.width,size.height);
-    path0.lineTo(size.width,size.height*0.0853250);
-    path0.quadraticBezierTo(size.width*0.9952000,size.height*0.0578500,size.width*0.9564333,size.height*0.0506000);
-    path0.quadraticBezierTo(size.width*0.8023417,size.height*0.0507312,size.width*0.3400667,size.height*0.0511250);
-    path0.lineTo(size.width*0.2996000,0);
-    path0.lineTo(size.width*0.0481333,0);
-    path0.lineTo(0,size.height*0.0495000);
+    path0.moveTo(0, size.height * 0.0495000);
+    path0.lineTo(0, size.height);
+    path0.lineTo(size.width, size.height);
+    path0.lineTo(size.width, size.height * 0.0853250);
+    path0.quadraticBezierTo(size.width * 0.9952000, size.height * 0.0578500,
+        size.width * 0.9564333, size.height * 0.0506000);
+    path0.quadraticBezierTo(size.width * 0.8023417, size.height * 0.0507312,
+        size.width * 0.3400667, size.height * 0.0511250);
+    path0.lineTo(size.width * 0.2996000, 0);
+    path0.lineTo(size.width * 0.0481333, 0);
+    path0.lineTo(0, size.height * 0.0495000);
     path0.close();
 
     return path0;
@@ -59,18 +61,20 @@ class FolderCustomBorder extends CustomPainter {
     Paint paint = Paint()
       ..color = Colors.black
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 5;
+      ..strokeWidth = 4;
 
     Path path0 = Path();
-    path0.moveTo(0,size.height*0.0495000);
-    path0.lineTo(0,size.height);
-    path0.lineTo(size.width,size.height);
-    path0.lineTo(size.width,size.height*0.0853250);
-    path0.quadraticBezierTo(size.width*0.9952000,size.height*0.0578500,size.width*0.9564333,size.height*0.0506000);
-    path0.quadraticBezierTo(size.width*0.8023417,size.height*0.0507312,size.width*0.3400667,size.height*0.0511250);
-    path0.lineTo(size.width*0.2996000,0);
-    path0.lineTo(size.width*0.0481333,0);
-    path0.lineTo(0,size.height*0.0495000);
+    path0.moveTo(0, size.height * 0.0495000);
+    path0.lineTo(0, size.height);
+    path0.lineTo(size.width, size.height);
+    path0.lineTo(size.width, size.height * 0.0853250);
+    path0.quadraticBezierTo(size.width * 0.9952000, size.height * 0.0578500,
+        size.width * 0.9564333, size.height * 0.0506000);
+    path0.quadraticBezierTo(size.width * 0.8023417, size.height * 0.0507312,
+        size.width * 0.3400667, size.height * 0.0511250);
+    path0.lineTo(size.width * 0.2996000, 0);
+    path0.lineTo(size.width * 0.0481333, 0);
+    path0.lineTo(0, size.height * 0.0495000);
     path0.close();
 
     canvas.drawPath(path0, paint);
@@ -97,56 +101,82 @@ Widget defaultCellFolder({
     child: Padding(
       padding: const EdgeInsets.all(4.0),
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(7),bottomRight:Radius.circular(7), ),
-        child: ClipPath(
-          clipper: FolderCustomClip(),
-          child: CustomPaint(
-            painter: FolderCustomBorder(),
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(7),
+          bottomRight: Radius.circular(7),),
+        child: CustomPaint(
+          painter: FolderCustomBorder(),
+          child: ClipPath(
+            clipper: FolderCustomClip(),
             child: Container(
-              margin: const EdgeInsets.all(1.2),
+
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                borderRadius: BorderRadius.circular(7),
                 border: Border.all(
                   color: Colors.black,
-                  width: 2,
-                ),
+                  width: 2
+                )
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(7),
-                child: Column(
-                  children: [
-                    const Expanded(child: SizedBox()),
-                    Expanded(
-                      flex: 6,
-                      child: Center(
-                        child: Text(
-                          text ?? '',
-                          style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 20,
-                      child: imagePath == null
-                          ? Container()
-                          : Image.asset(
-                            imagePath,
-                            fit: BoxFit.fill,
-                            width: double.infinity,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             ),
           ),
         ),
+      ),
     ),
   );
 }
 
+ClipRRect clipRRectSpare(String? text, String? imagePath) {
+  return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(7),
+        bottomRight: Radius.circular(7),
+      ),
+      child: ClipPath(
+        clipper: FolderCustomClip(),
+        child: CustomPaint(
+          painter: FolderCustomBorder(),
+          child: Container(
+            margin: const EdgeInsets.all(1.2),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(7),
+              child: Column(
+                children: [
+                  const Expanded(child: SizedBox()),
+                  Expanded(
+                    flex: 6,
+                    child: Center(
+                      child: Text(
+                        text ?? '',
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 20,
+                    child: imagePath == null
+                        ? Container()
+                        : Image.asset(
+                            imagePath,
+                            fit: BoxFit.fill,
+                            width: double.infinity,
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+}
 
 Widget defaultCell({
   String? text,
@@ -310,7 +340,6 @@ Widget verticalTable(List<Cell> list) => LayoutBuilder(
       builder: (p0, p1) {
         double height = p1.maxHeight / 6;
         return GridView.count(
-
           crossAxisCount: 5,
           children: List.generate(
             list.length,
@@ -334,8 +363,6 @@ Widget testCell() => LayoutBuilder(
       builder: (p0, p1) {
         double height = p1.maxHeight / 6;
         return mainCell(
-          text: cells[20].name,
-          imagePath: cells[20].image,
           height: height,
           type: cells[20].type,
         )!;
