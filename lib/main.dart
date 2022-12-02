@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/layout/speech_assistance_app/speech_assistance_layout.dart';
+import 'package:speech_assistance_app/shared/providers/pressed_provider.dart';
 //import 'package:speech_assistance_app/cell_widget.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Pressed(),),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

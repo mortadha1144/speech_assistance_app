@@ -12,6 +12,7 @@ import 'package:speech_assistance_app/models/cell/cell.dart';
 //9:اكثر/اسود/اطار عادي
 
 
+
 List<Cell> cells = [
   const Cell(id:1,serial:1,name: 'أنا', image: 'images/i.png',type: 1),
   const Cell(id:2,serial:2,name: 'أريد', image: 'images/want.png',type: 2),
