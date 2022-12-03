@@ -5,14 +5,7 @@ import 'package:speech_assistance_app/shared/providers/pressed_provider.dart';
 //import 'package:speech_assistance_app/cell_widget.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => Pressed(),),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
