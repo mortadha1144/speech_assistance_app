@@ -103,51 +103,180 @@ class FolderCustomBorder extends CustomPainter {
   }
 }
 
-Widget defaultCellFolder({
-  String? text,
-  String? imagePath,
-  required int type,
-  required Function()? onPressed,
-}) {
-  Color borderColor = const Color(0xFF000000);
-  if (type == 8) {
-    borderColor = Colors.red;
+
+class CellContent extends StatelessWidget {
+  const CellContent({
+    Key? key,
+    this.text,
+    this.imagePath,
+    this.type,
+  }) : super(key: key);
+
+  final String? text;
+  final String? imagePath;
+  final int? type;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          flex: type == 7 || type == 8 ? 1 : 0,
+          child: const SizedBox(),
+        ),
+        Expanded(
+          flex: 6,
+          child: Center(
+            child: Text(
+              type == 0 ? 'المزيد' : text ?? '',
+              style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 18,
+          child: type == 0
+              ? const FittedBox(
+                  child: Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Colors.black,
+                  ),
+                )
+              : imagePath == null
+                  ? const SizedBox()
+                  : Image.asset(
+                      imagePath!,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+        ),
+      ],
+    );
   }
-  return TextButton(
-    onPressed: onPressed,
-    style: TextButton.styleFrom(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 4,
-        vertical: 4,
+}
+
+class FolderCell extends StatelessWidget {
+  const FolderCell({
+    Key? key,
+    this.text,
+    this.imagePath,
+    required this.type,
+    this.onPressed,
+  }) : super(key: key);
+
+  final String? text;
+  final String? imagePath;
+  final int type;
+  final Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    Color borderColor = const Color(0xFF000000);
+    if (type == 8) {
+      borderColor = Colors.red;
+    }
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4,
+          vertical: 4,
+        ),
       ),
-    ),
-    child: ClipRRect(
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(7),
-        bottomRight: Radius.circular(7),
-      ),
-      child: ClipPath(
-        clipper: FolderCustomClip(),
-        child: CustomPaint(
-          foregroundPainter: FolderCustomBorder(borderColor: borderColor),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                width: 2,
-                color: borderColor,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(7),
+          bottomRight: Radius.circular(7),
+        ),
+        child: ClipPath(
+          clipper: FolderCustomClip(),
+          child: CustomPaint(
+            foregroundPainter: FolderCustomBorder(borderColor: borderColor),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  width: 2,
+                  color: borderColor,
+                ),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(7),
+                  bottomRight: Radius.circular(7),
+                ),
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(7),
-                bottomRight: Radius.circular(7),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(7),
+                  bottomRight: Radius.circular(7),
+                ),
+                child: CellContent(
+                  text: text,
+                  imagePath: imagePath,
+                  type: type,
+                ),
               ),
             ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(7),
-                bottomRight: Radius.circular(7),
-              ),
-              child: contentColumn(
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TriangleCell extends StatelessWidget {
+  const TriangleCell({
+    Key? key,
+    this.text,
+    this.imagePath,
+    required this.type,
+    this.onPressed,
+  }) : super(key: key);
+
+  final String? text;
+  final String? imagePath;
+  final int type;
+  final Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    Color borderColor = orangeBorder;
+    Color contentColor = orangeContent;
+    if (type == 2) {
+      borderColor = pinkBorder;
+      contentColor = pinkContent;
+    }
+    if (type == 6) {
+      borderColor = blueBorder;
+      contentColor = blueContent;
+    }
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4,
+          vertical: 4,
+        ),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(
+            color: borderColor,
+            width: 2,
+          ),
+          color: borderColor,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: ClipPath(
+            clipper: TriangleClip(),
+            child: Container(
+              color: contentColor,
+              child: CellContent(
                 text: text,
                 imagePath: imagePath,
                 type: type,
@@ -156,186 +285,78 @@ Widget defaultCellFolder({
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
-Column contentColumn({
-  String? text,
-  String? imagePath,
-  int? type,
-}) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Expanded(
-        flex: type == 7 || type == 8 ? 1 : 0,
-        child: const SizedBox(),
+class NormalCell extends StatelessWidget {
+  const NormalCell({
+    Key? key,
+    this.text,
+    this.imagePath,
+    required this.type,
+    this.onPressed,
+  }) : super(key: key);
+
+  final String? text;
+  final String? imagePath;
+  final int type;
+  final Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    Color borderColor = const Color(0xFF000000);
+    Color contentColor = Colors.white;
+    if (type == 4) {
+      borderColor = blueBorder;
+      contentColor = blueContent;
+    } else if (type == 5) {
+      borderColor = greenBorder;
+      contentColor = greenContent;
+    }
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4,
+          vertical: 4,
+        ),
       ),
-      Expanded(
-        flex: 6,
-        child: Center(
-          child: Text(
-            type == 0 ? 'المزيد' : text ?? '',
-            style: const TextStyle(
-                fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black),
+      child: Container(
+        decoration: BoxDecoration(
+          color: contentColor,
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(
+            color: borderColor,
+            width: 2,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: CellContent(
+            text: text,
+            imagePath: imagePath,
+            type: type,
           ),
         ),
       ),
-      Expanded(
-        flex: 18,
-        child: type == 0
-            ? const FittedBox(
-                child: Icon(
-                  Icons.arrow_forward_rounded,
-                  color: Colors.black,
-                ),
-              )
-            : imagePath == null
-                ? const SizedBox()
-                : Image.asset(
-                    imagePath,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-      ),
-    ],
-  );
-}
-
-Widget defaultCell({
-  String? text,
-  String? imagePath,
-  int? type,
-  required Function()? onPressed,
-}) {
-  Color borderColor = const Color(0xFF000000);
-  Color? contentColor;
-  if (type == 4) {
-    borderColor = blueBorder;
-    contentColor = blueContent;
-  } else if (type == 5) {
-    borderColor = greenBorder;
-    contentColor = greenContent;
-  }
-  return TextButton(
-    onPressed: onPressed,
-    style: TextButton.styleFrom(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 4,
-        vertical: 4,
-      ),
-    ),
-    child: Container(
-      decoration: BoxDecoration(
-        color: contentColor,
-        borderRadius: BorderRadius.circular(7),
-        border: Border.all(
-          color: borderColor,
-          width: 2,
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: contentColumn(
-          text: text,
-          imagePath: imagePath,
-          type: type,
-        ),
-      ),
-    ),
-  );
-}
-
-Widget defaultCellTriangle({
-  String? text,
-  String? imagePath,
-  required int type,
-  required Function()? onPressed,
-}) {
-  Color borderColor = orangeBorder;
-  Color contentColor = orangeContent;
-  if (type == 2) {
-    borderColor = pinkBorder;
-    contentColor = pinkContent;
-  }
-  if (type == 6) {
-    borderColor = blueBorder;
-    contentColor = blueContent;
-  }
-  return TextButton(
-    onPressed: () {},
-    style: TextButton.styleFrom(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 4,
-        vertical: 4,
-      ),
-    ),
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(7),
-        border: Border.all(
-          color: borderColor,
-          width: 2,
-        ),
-        color: borderColor,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: ClipPath(
-          clipper: TriangleClip(),
-          child: Container(
-            color: contentColor,
-            child: contentColumn(
-              text: text,
-              imagePath: imagePath,
-              type: type,
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget? mainCell({
-  String? text,
-  String? imagePath,
-  double? height,
-  double? width,
-  int? type,
-  required Function()? onPressed,
-}) {
-  if (type == 3 || type == 4 || type == 5 || type == 9 || type == null) {
-    return defaultCell(
-      text: text,
-      imagePath: imagePath,
-      type: type,
-      onPressed: onPressed,
-    );
-  } else if (type == 1 || type == 2 || type == 6) {
-    return defaultCellTriangle(
-      text: text,
-      imagePath: imagePath,
-      type: type,
-      onPressed: onPressed,
-    );
-  } else if (type == 7 || type == 8) {
-    return defaultCellFolder(
-      text: text,
-      imagePath: imagePath,
-      type: type,
-      onPressed: onPressed,
     );
   }
-  return defaultCell(onPressed: () {});
 }
 
-Widget pressedCell({
-  required String text,
-  required String imagePath,
-}) =>
-    Column(
+class PressedCell extends StatelessWidget {
+  const PressedCell({
+    Key? key,
+    required this.text,
+    required this.imagePath,
+  }) : super(key: key);
+
+  final String text;
+  final String imagePath;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
       children: [
         Expanded(
           child: Image.asset(imagePath),
@@ -350,3 +371,7 @@ Widget pressedCell({
         ),
       ],
     );
+  }
+}
+
+
