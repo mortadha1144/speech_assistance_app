@@ -15,42 +15,34 @@ class HomeScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 3,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Consumer<Pressed>(
-                        builder: (context, value, child) {
-                          if (value.tapedCells.isNotEmpty){
-                            return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: value.tapedCells.length,
-                              itemBuilder: (context, index) => PressedCell(
-                                  text: value.tapedCells[index].name,
-                                  imagePath:
-                                  value.tapedCells[index].image),
-                            );
-                          }else{
-                            return const SizedBox();
-                          }
-
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      iconSize: 40,
-                      icon: const Icon(
-                        Icons.backspace_rounded,
-                      ),
-                    ),
-                  ],
+            child: Row(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemExtent: MediaQuery.of(context).size.width/7,
+                    controller: context.watch<Pressed>().controller,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: context.watch<Pressed>().tapedCells.length,
+                    itemBuilder: (context, index) => PressedCell(
+                        text: context
+                            .watch<Pressed>()
+                            .tapedCells[index]
+                            .name,
+                        imagePath: context
+                            .watch<Pressed>()
+                            .tapedCells[index]
+                            .image),
+                  ),
                 ),
-              ),
+                // IconButton(
+                //   onPressed: () {},
+                //   iconSize: 40,
+                //   icon: const Icon(
+                //     Icons.backspace_rounded,
+                //   ),
+                // ),
+              ],
             ),
           ),
           Expanded(
@@ -266,8 +258,7 @@ class MainCell extends StatelessWidget {
           text: findCell.name,
           imagePath: findCell.image,
           type: findCell.type,
-          onPressed: () =>
-              context.read<Pressed>().onPressedDefault(findCell),
+          onPressed: () => context.read<Pressed>().onPressedDefault(findCell),
         );
       } else if (findCell.type == 1 ||
           findCell.type == 2 ||
