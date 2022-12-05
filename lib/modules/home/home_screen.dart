@@ -5,8 +5,20 @@ import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/providers/pressed_provider.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final List<Cell> _tapedCells = [];
+
+  onPressedDefault(Cell cell) {
+    _tapedCells.add(cell);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,42 +27,30 @@ class HomeScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 3,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Consumer<Pressed>(
-                        builder: (context, value, child) {
-                          if (value.tapedCells.isNotEmpty){
-                            return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: value.tapedCells.length,
-                              itemBuilder: (context, index) => PressedCell(
-                                  text: value.tapedCells[index].name,
-                                  imagePath:
-                                  value.tapedCells[index].image),
-                            );
-                          }else{
-                            return const SizedBox();
-                          }
-
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      iconSize: 40,
-                      icon: const Icon(
-                        Icons.backspace_rounded,
-                      ),
-                    ),
-                  ],
+            child: Row(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemExtent: MediaQuery.of(context).size.width/7,
+                    //controller: context.watch<Pressed>().controller,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _tapedCells.length,
+                    itemBuilder: (context, index) => PressedCell(
+                        text: _tapedCells[index]
+                            .name,
+                        imagePath: _tapedCells[index]
+                            .image),
+                  ),
                 ),
-              ),
+                // IconButton(
+                //   onPressed: () {},
+                //   iconSize: 40,
+                //   icon: const Icon(
+                //     Icons.backspace_rounded,
+                //   ),
+                // ),
+              ],
             ),
           ),
           Expanded(
@@ -77,50 +77,23 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 1),
+                              child: getCell(id: 1),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 2),
+                              child: getCell(id: 2),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 3),
+                              child: getCell(id: 3),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 4),
+                              child: getCell(id: 4),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 5),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: height,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 6),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 7),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 8),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 9),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 10),
+                              child: getCell(id: 5),
                             ),
                           ],
                         ),
@@ -131,50 +104,23 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 11),
+                              child: getCell(id: 6),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 12),
+                              child: getCell(id: 7),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 13),
+                              child: getCell(id: 8),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 14),
+                              child: getCell(id: 9),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 15),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: height,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 16),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 17),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 18),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 19),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 20),
+                              child: getCell(id: 10),
                             ),
                           ],
                         ),
@@ -185,23 +131,23 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 21),
+                              child: getCell(id: 11),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 22),
+                              child: getCell(id: 12),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 23),
+                              child: getCell(id: 13),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 24),
+                              child: getCell(id: 14),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 25),
+                              child: getCell(id: 15),
                             ),
                           ],
                         ),
@@ -212,23 +158,77 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 26),
+                              child: getCell(id: 16),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 27),
+                              child: getCell(id: 17),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 28),
+                              child: getCell(id: 18),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 29),
+                              child: getCell(id: 19),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 0),
+                              child: getCell(id: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 21),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 22),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 23),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 24),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 25),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 26),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 27),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 28),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 29),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: getCell(id: 0),
                             ),
                           ],
                         ),
@@ -243,18 +243,7 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class MainCell extends StatelessWidget {
-  const MainCell({
-    Key? key,
-    required this.id,
-  }) : super(key: key);
-
-  final int id;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget getCell({required int id,}){
     int index = cells.indexWhere((element) => element.id == id);
     if (index >= 0) {
       Cell findCell = cells[index];
@@ -266,8 +255,11 @@ class MainCell extends StatelessWidget {
           text: findCell.name,
           imagePath: findCell.image,
           type: findCell.type,
-          onPressed: () =>
-              context.read<Pressed>().onPressedDefault(findCell),
+          onPressed: () {
+            setState(() {
+              onPressedDefault(findCell);
+            });
+          },
         );
       } else if (findCell.type == 1 ||
           findCell.type == 2 ||
@@ -296,3 +288,54 @@ class MainCell extends StatelessWidget {
     return const SizedBox();
   }
 }
+
+// class MainCell extends StatelessWidget {
+//   const MainCell({
+//     Key? key,
+//     required this.id,
+//   }) : super(key: key);
+//
+//   final int id;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     int index = cells.indexWhere((element) => element.id == id);
+//     if (index >= 0) {
+//       Cell findCell = cells[index];
+//       if (findCell.type == 3 ||
+//           findCell.type == 4 ||
+//           findCell.type == 5 ||
+//           findCell.type == 9) {
+//         return NormalCell(
+//           text: findCell.name,
+//           imagePath: findCell.image,
+//           type: findCell.type,
+//           onPressed: () => context.read<Pressed>().onPressedDefault(findCell),
+//         );
+//       } else if (findCell.type == 1 ||
+//           findCell.type == 2 ||
+//           findCell.type == 6) {
+//         return TriangleCell(
+//           text: findCell.name,
+//           imagePath: findCell.image,
+//           type: findCell.type,
+//           onPressed: () {},
+//         );
+//       } else if (findCell.type == 7 || findCell.type == 8) {
+//         return FolderCell(
+//           text: findCell.name,
+//           imagePath: findCell.image,
+//           type: findCell.type,
+//           onPressed: () {},
+//         );
+//       }
+//     } else if (id == 0) {
+//       return NormalCell(
+//         onPressed: () {},
+//         type: id,
+//       );
+//     }
+//
+//     return const SizedBox();
+//   }
+// }
