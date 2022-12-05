@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
+import 'package:speech_assistance_app/shared/providers/pressed_provider.dart';
 import 'package:speech_assistance_app/shared/styles/colors.dart';
 
 class FolderCustomClip extends CustomClipper<Path> {
@@ -103,7 +105,6 @@ class FolderCustomBorder extends CustomPainter {
   }
 }
 
-
 class CellContent extends StatelessWidget {
   const CellContent({
     Key? key,
@@ -179,14 +180,15 @@ class FolderCell extends StatelessWidget {
     if (type == 8) {
       borderColor = Colors.red;
     }
-    return TextButton(
+    return CupertinoButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: 4,
-        ),
-      ),
+      padding: const EdgeInsets.all(4),
+      // style: TextButton.styleFrom(
+      //   padding: const EdgeInsets.symmetric(
+      //     horizontal: 4,
+      //     vertical: 4,
+      //   ),
+      // ),
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(7),
@@ -253,14 +255,15 @@ class TriangleCell extends StatelessWidget {
       borderColor = blueBorder;
       contentColor = blueContent;
     }
-    return TextButton(
+    return CupertinoButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: 4,
-        ),
-      ),
+      padding: const EdgeInsets.all(4),
+      // style: TextButton.styleFrom(
+      //   padding: const EdgeInsets.symmetric(
+      //     horizontal: 4,
+      //     vertical: 4,
+      //   ),
+      // ),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
@@ -314,14 +317,15 @@ class NormalCell extends StatelessWidget {
       borderColor = greenBorder;
       contentColor = greenContent;
     }
-    return TextButton(
+    return CupertinoButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: 4,
-        ),
-      ),
+      padding: const EdgeInsets.all(4),
+      // style: TextButton.styleFrom(
+      //   padding: const EdgeInsets.symmetric(
+      //     horizontal: 4,
+      //     vertical: 4,
+      //   ),
+      // ),
       child: Container(
         decoration: BoxDecoration(
           color: contentColor,
@@ -374,4 +378,53 @@ class PressedCell extends StatelessWidget {
   }
 }
 
+class MainCell extends StatelessWidget {
+  const MainCell({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
 
+  final int id;
+
+  @override
+  Widget build(BuildContext context) {
+    int index = cells.indexWhere((element) => element.id == id);
+    if (index >= 0) {
+      Cell findCell = cells[index];
+      if (findCell.type == 3 ||
+          findCell.type == 4 ||
+          findCell.type == 5 ||
+          findCell.type == 9) {
+        return NormalCell(
+          text: findCell.name,
+          imagePath: findCell.image,
+          type: findCell.type,
+          onPressed: () => context.read<Pressed>().onPressedDefault(findCell),
+        );
+      } else if (findCell.type == 1 ||
+          findCell.type == 2 ||
+          findCell.type == 6) {
+        return TriangleCell(
+          text: findCell.name,
+          imagePath: findCell.image,
+          type: findCell.type,
+          onPressed: () {},
+        );
+      } else if (findCell.type == 7 || findCell.type == 8) {
+        return FolderCell(
+          text: findCell.name,
+          imagePath: findCell.image,
+          type: findCell.type,
+          onPressed: () {},
+        );
+      }
+    } else if (id == 0) {
+      return NormalCell(
+        onPressed: () {},
+        type: id,
+      );
+    }
+
+    return const SizedBox();
+  }
+}

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
@@ -23,29 +24,23 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Consumer<Pressed>(
-                        builder: (context, value, child) {
-                          if (value.tapedCells.isNotEmpty){
-                            return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: value.tapedCells.length,
-                              itemBuilder: (context, index) => PressedCell(
-                                  text: value.tapedCells[index].name,
-                                  imagePath:
-                                  value.tapedCells[index].image),
-                            );
-                          }else{
-                            return const SizedBox();
-                          }
-
-                        },
+                      child: ListView.builder(
+                        controller: context.watch<Pressed>().scrollController,
+                        itemExtent: MediaQuery.of(context).size.width/7,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: context.watch<Pressed>().tapedCells.length,
+                        itemBuilder: (context, index) => PressedCell(
+                            text: context.watch<Pressed>().tapedCells[index].name,
+                            imagePath:
+                            context.watch<Pressed>().tapedCells[index].image),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      iconSize: 40,
-                      icon: const Icon(
+                    CupertinoButton(
+                      onPressed:()=> context.read<Pressed>().onPressedBackspace(),
+                      child: const Icon(
                         Icons.backspace_rounded,
+                        color: Colors.black,
+                        size: 40,
                       ),
                     ),
                   ],
@@ -245,54 +240,4 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class MainCell extends StatelessWidget {
-  const MainCell({
-    Key? key,
-    required this.id,
-  }) : super(key: key);
 
-  final int id;
-
-  @override
-  Widget build(BuildContext context) {
-    int index = cells.indexWhere((element) => element.id == id);
-    if (index >= 0) {
-      Cell findCell = cells[index];
-      if (findCell.type == 3 ||
-          findCell.type == 4 ||
-          findCell.type == 5 ||
-          findCell.type == 9) {
-        return NormalCell(
-          text: findCell.name,
-          imagePath: findCell.image,
-          type: findCell.type,
-          onPressed: () =>
-              context.read<Pressed>().onPressedDefault(findCell),
-        );
-      } else if (findCell.type == 1 ||
-          findCell.type == 2 ||
-          findCell.type == 6) {
-        return TriangleCell(
-          text: findCell.name,
-          imagePath: findCell.image,
-          type: findCell.type,
-          onPressed: () {},
-        );
-      } else if (findCell.type == 7 || findCell.type == 8) {
-        return FolderCell(
-          text: findCell.name,
-          imagePath: findCell.image,
-          type: findCell.type,
-          onPressed: () {},
-        );
-      }
-    } else if (id == 0) {
-      return NormalCell(
-        onPressed: () {},
-        type: id,
-      );
-    }
-
-    return const SizedBox();
-  }
-}
