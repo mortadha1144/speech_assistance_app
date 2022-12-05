@@ -24,19 +24,31 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: ListView.builder(
+                      child: AnimatedList(
                         controller: context.watch<Pressed>().scrollController,
-                        itemExtent: MediaQuery.of(context).size.width/7,
+                        key: context.read<Pressed>().key,
                         scrollDirection: Axis.horizontal,
-                        itemCount: context.watch<Pressed>().tapedCells.length,
-                        itemBuilder: (context, index) => PressedCell(
-                            text: context.watch<Pressed>().tapedCells[index].name,
-                            imagePath:
-                            context.watch<Pressed>().tapedCells[index].image),
+                        initialItemCount: context.watch<Pressed>().length,
+                        itemBuilder: (context, index, animation) {
+                          return ScaleTransition(
+                            scale: animation,
+                            child: PressedCell(
+                              text: context
+                                  .watch<Pressed>()
+                                  .tapedCells[index]
+                                  .name,
+                              imagePath: context
+                                  .watch<Pressed>()
+                                  .tapedCells[index]
+                                  .image,
+                            ),
+                          );
+                        },
                       ),
                     ),
                     CupertinoButton(
-                      onPressed:()=> context.read<Pressed>().onPressedBackspace(),
+                      onPressed: () =>
+                          context.read<Pressed>().onPressedBackspace(),
                       child: const Icon(
                         Icons.backspace_rounded,
                         color: Colors.black,
@@ -238,6 +250,16 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  ListView buildListView(BuildContext context) {
+    return ListView.builder(
+      controller: context.watch<Pressed>().scrollController,
+      itemExtent: MediaQuery.of(context).size.width / 7,
+      scrollDirection: Axis.horizontal,
+      itemCount: context.watch<Pressed>().tapedCells.length,
+      itemBuilder: (context, index) => PressedCell(
+          text: context.watch<Pressed>().tapedCells[index].name,
+          imagePath: context.watch<Pressed>().tapedCells[index].image),
+    );
+  }
 }
-
-

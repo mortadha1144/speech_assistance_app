@@ -360,20 +360,22 @@ class PressedCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Image.asset(imagePath),
-        ),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+    return SizedBox(
+      child: Column(
+        children: [
+          Expanded(
+            child: Image.asset(imagePath),
           ),
-        ),
-      ],
+          Text(
+            text,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -426,5 +428,30 @@ class MainCell extends StatelessWidget {
     }
 
     return const SizedBox();
+  }
+}
+
+class CustomAnimatedList extends StatefulWidget {
+  const CustomAnimatedList({Key? key}) : super(key: key);
+
+  @override
+  State<CustomAnimatedList> createState() => _CustomAnimatedListState();
+}
+
+class _CustomAnimatedListState extends State<CustomAnimatedList> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedList(
+      key: context.read<Pressed>().key,
+      initialItemCount: context.watch<Pressed>().tapedCells.length,
+      itemBuilder: (context, index, animation) {
+        return PressedCell(
+          text: context.watch<Pressed>().tapedCells[index].name,
+          imagePath: context.watch<Pressed>().tapedCells[index].image,
+        );
+      },
+    );
   }
 }
