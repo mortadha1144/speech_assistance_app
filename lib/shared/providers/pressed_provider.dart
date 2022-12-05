@@ -10,7 +10,6 @@ class Pressed with ChangeNotifier{
 
   onPressedDefault(Cell cell){
     _tapedCells.add(cell);
-
     print(_tapedCells);
     notifyListeners();
 
