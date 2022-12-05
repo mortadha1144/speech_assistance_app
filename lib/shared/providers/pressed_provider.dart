@@ -1,14 +1,20 @@
 
 import 'package:flutter/material.dart';
+import 'package:speech_assistance_app/models/cell/cell.dart';
 
 class Pressed with ChangeNotifier{
-  List _tapedCells=[];
+  List<Cell> _tapedCells=[];
 
-  List get tapedCells=> _tapedCells;
+  List<Cell> get tapedCells=> _tapedCells;
 
-  onPressedDefault(int id){
-    _tapedCells.add(id);
+
+  onPressedDefault(Cell cell){
+    _tapedCells.add(cell);
+
     print(_tapedCells);
     notifyListeners();
+
   }
+
+
 }
