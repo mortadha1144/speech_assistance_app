@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: Row(
                         children: [
-                          pressedCell(text: 'أنا', imagePath: 'images/i.png',),
+                          PressedCell(text: 'أنا', imagePath: 'images/i.png',),
                         ],
                       ),
                     ),
