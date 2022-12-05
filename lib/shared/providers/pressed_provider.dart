@@ -18,8 +18,10 @@ class Pressed with ChangeNotifier {
 
   void _scrollDown() {
     if (_tapedCells.length > 7) {
-      _controller.jumpTo(_controller.position.maxScrollExtent + 56);
-      notifyListeners();
+      Future.delayed(const Duration(milliseconds: 300),(){
+        _controller.animateTo(_controller.position.maxScrollExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+        notifyListeners();
+      });
     }
   }
 }
