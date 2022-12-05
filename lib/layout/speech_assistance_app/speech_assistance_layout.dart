@@ -9,10 +9,8 @@ class SpeechAssistanceLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //double _height = MediaQuery.of(context).size.height / 6;
-    return  Scaffold(
-      body:ChangeNotifierProvider(
-        create: (context) => Pressed(),
-          child: const HomeScreen(),),
+    return  const Scaffold(
+      body:HomeScreen(),
     );
   }
 }
