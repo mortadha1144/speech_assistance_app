@@ -21,7 +21,7 @@ class Pressed with ChangeNotifier {
     _tapedCells.add(cell);
     print(_tapedCells.length);
     key.currentState!
-        .insertItem(index, duration: const Duration(milliseconds: 250));
+        .insertItem(index, duration: const Duration(milliseconds: 200));
     notifyListeners();
     _scrollToBottom();
   }
