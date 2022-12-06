@@ -24,35 +24,45 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: AnimatedList(
-                        controller: context.watch<Pressed>().scrollController,
-                        key: context.read<Pressed>().key,
-                        scrollDirection: Axis.horizontal,
-                        initialItemCount: context.watch<Pressed>().length,
-                        itemBuilder: (context, index, animation) {
-                          return ScaleTransition(
-                            scale: animation,
-                            child: PressedCell(
-                              text: context
-                                  .watch<Pressed>()
-                                  .tapedCells[index]
-                                  .name,
-                              imagePath: context
-                                  .watch<Pressed>()
-                                  .tapedCells[index]
-                                  .image,
-                            ),
-                          );
-                        },
+                      flex: 5,
+                      child: InkWell(
+                        onTap:()=> context.read<Pressed>().speakList(),
+                        child: AnimatedList(
+                          controller: context.watch<Pressed>().scrollController,
+                          key: context.read<Pressed>().key,
+                          scrollDirection: Axis.horizontal,
+                          initialItemCount: context.watch<Pressed>().lengthOfCellsList,
+                          itemBuilder: (context, index, animation) {
+                            return ScaleTransition(
+                              scale: animation,
+                              child: PressedCell(
+                                text: context
+                                    .watch<Pressed>()
+                                    .tapedCells[index]
+                                    .name,
+                                imagePath: context
+                                    .watch<Pressed>()
+                                    .tapedCells[index]
+                                    .image,
+                                width: MediaQuery.of(context).size.width/6,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
-                    CupertinoButton(
-                      onPressed: () =>
-                          context.read<Pressed>().onPressedBackspace(),
-                      child: const Icon(
-                        Icons.backspace_rounded,
-                        color: Colors.black,
-                        size: 40,
+                    Expanded(
+                      child: Center(
+                        child: CupertinoButton(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          onPressed: () =>
+                              context.read<Pressed>().onPressedBackspace(),
+                          child: const Icon(
+                            Icons.backspace_rounded,
+                            color: Colors.black,
+                            size: 40,
+                          ),
+                        ),
                       ),
                     ),
                   ],
