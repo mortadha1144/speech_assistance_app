@@ -1,15 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
+import 'package:speech_assistance_app/modules/home/home_screen.dart';
+import 'package:speech_assistance_app/modules/home/settings_screen.dart';
+import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 
-class Pressed with ChangeNotifier {
+class HomeProvider with ChangeNotifier {
+
+   int _currentIndex = 0;
+
+  int get currentIndex => _currentIndex;
+
+  List<BottomNavigationBarItem> bottomItems = [
+    const BottomNavigationBarItem(
+      icon: Icon(
+        Icons.keyboard_alt_outlined,
+      ),
+        label: 'Type'
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(
+        Icons.home_outlined,
+      ),
+        label: 'Home'
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(
+        Icons.settings_outlined,
+      ),
+      label: 'Setting'
+    ),
+  ];
+
+  List<StatelessWidget> screens = [
+    const TextToSpeechScreen(),
+    const HomeScreen(),
+    const SettingScreen(),
+  ];
+
+  void changeBottomNav(int value) {
+    _currentIndex = value;
+    notifyListeners();
+  }
+
   final List<Cell> _tapedCells = [];
 
   List<Cell> get tapedCells => _tapedCells;
 
   int get lengthOfCellsList => _tapedCells.length;
-  String get strOfNames => List.generate(lengthOfCellsList, (index) => _tapedCells[index].name).join(' ');
+
+  String get strOfNames =>
+      List.generate(lengthOfCellsList, (index) => _tapedCells[index].name)
+          .join(' ');
 
   final ScrollController _scrollController = ScrollController();
 
@@ -55,15 +98,20 @@ class Pressed with ChangeNotifier {
     }
   }
 
-  void _scrollToBottom() {
+  void _scrollToBottom({String from = 'insert'}) {
     if (_tapedCells.length > 5) {
       Future.delayed(
-        const Duration(milliseconds:  50 ),
+        from == 'insert'
+            ? const Duration(milliseconds: 50)
+            : const Duration(seconds: 2),
         () {
+          int duration = (lengthOfCellsList * 0.3).round();
           scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
             curve: Curves.easeOut,
-            duration: const Duration(milliseconds:  50 ),
+            duration: from == 'insert'
+                ? const Duration(milliseconds: 50)
+                : Duration(seconds: duration),
           );
         },
       );
@@ -85,7 +133,8 @@ class Pressed with ChangeNotifier {
   Future<void> speakList() async {
     _scrollToTop();
     await _flutterTts.setLanguage("ar");
-    await _flutterTts.setSpeechRate(0.4);
+    await _flutterTts.setSpeechRate(0.3);
     await _flutterTts.speak(strOfNames);
+    _scrollToBottom(from: 'speak');
   }
 }

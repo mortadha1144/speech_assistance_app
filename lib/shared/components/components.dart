@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
-import 'package:speech_assistance_app/shared/providers/pressed_provider.dart';
+import 'package:speech_assistance_app/shared/providers/home_provider.dart';
 import 'package:speech_assistance_app/shared/styles/colors.dart';
 
 class FolderCustomClip extends CustomClipper<Path> {
@@ -349,8 +349,6 @@ class NormalCell extends StatelessWidget {
 }
 
 class PressedCell extends StatelessWidget {
-
-
   const PressedCell({
     Key? key,
     required this.text,
@@ -409,7 +407,8 @@ class MainCell extends StatelessWidget {
           text: findCell.name,
           imagePath: findCell.image,
           type: findCell.type,
-          onPressed: () => context.read<Pressed>().onPressedDefault(findCell),
+          onPressed: () =>
+              context.read<HomeProvider>().onPressedDefault(findCell),
         );
       } else if (findCell.type == 1 ||
           findCell.type == 2 ||
@@ -418,7 +417,8 @@ class MainCell extends StatelessWidget {
           text: findCell.name,
           imagePath: findCell.image,
           type: findCell.type,
-          onPressed: () => context.read<Pressed>().onPressedDefault(findCell),
+          onPressed: () =>
+              context.read<HomeProvider>().onPressedDefault(findCell),
         );
       } else if (findCell.type == 7 || findCell.type == 8) {
         return FolderCell(
@@ -447,17 +447,16 @@ class CustomAnimatedList extends StatefulWidget {
 }
 
 class _CustomAnimatedListState extends State<CustomAnimatedList> {
-
-
   @override
   Widget build(BuildContext context) {
     return AnimatedList(
-      key: context.read<Pressed>().key,
-      initialItemCount: context.watch<Pressed>().tapedCells.length,
+      key: context.read<HomeProvider>().key,
+      initialItemCount: context.watch<HomeProvider>().tapedCells.length,
       itemBuilder: (context, index, animation) {
         return PressedCell(
-          text: context.watch<Pressed>().tapedCells[index].name,
-          imagePath: context.watch<Pressed>().tapedCells[index].image,
+          text: context.watch<HomeProvider>().tapedCells[index].name,
+          imagePath:
+              context.watch<HomeProvider>().tapedCells[index].image,
         );
       },
     );
