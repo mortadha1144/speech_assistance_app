@@ -6,8 +6,27 @@ import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/providers/home_provider.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 1),
+      vsync: this);
+  late final Animation<double> _animation = Tween<double>(begin: 1.0,end: 0.8).animate(
+    CurvedAnimation(parent: _controller, curve: Curves.easeIn)
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,28 +45,37 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       flex: 5,
                       child: InkWell(
-                        onTap:()=> context.read<HomeProvider>().speakList(),
-                        child: AnimatedList(
-                          controller: context.watch<HomeProvider>().scrollController,
-                          key: context.read<HomeProvider>().key,
-                          scrollDirection: Axis.horizontal,
-                          initialItemCount: context.watch<HomeProvider>().lengthOfCellsList,
-                          itemBuilder: (context, index, animation) {
-                            return ScaleTransition(
-                              scale: animation,
-                              child: PressedCell(
-                                text: context
-                                    .watch<HomeProvider>()
-                                    .tapedCells[index]
-                                    .name,
-                                imagePath: context
-                                    .watch<HomeProvider>()
-                                    .tapedCells[index]
-                                    .image,
-                                width: MediaQuery.of(context).size.width/6,
-                              ),
-                            );
-                          },
+                        onTap:() {
+                          _controller.forward();
+                          Future.delayed(const Duration(seconds: 1),() {
+                            _controller.fling();
+                          },);
+                          context.read<HomeProvider>().speakList();
+                        },
+                        child: ScaleTransition(
+                      scale: _animation,
+                          child: AnimatedList(
+                            controller: context.watch<HomeProvider>().scrollController,
+                            key: context.read<HomeProvider>().key,
+                            scrollDirection: Axis.horizontal,
+                            initialItemCount: context.watch<HomeProvider>().lengthOfCellsList,
+                            itemBuilder: (context, index, animation) {
+                              return ScaleTransition(
+                                scale: animation,
+                                child: PressedCell(
+                                  text: context
+                                      .watch<HomeProvider>()
+                                      .tapedCells[index]
+                                      .name,
+                                  imagePath: context
+                                      .watch<HomeProvider>()
+                                      .tapedCells[index]
+                                      .image,
+                                  width: MediaQuery.of(context).size.width/6,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),

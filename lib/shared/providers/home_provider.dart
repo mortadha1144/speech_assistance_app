@@ -6,7 +6,7 @@ import 'package:speech_assistance_app/modules/home/settings_screen.dart';
 import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 
-class HomeProvider with ChangeNotifier {
+class HomeProvider with ChangeNotifier  {
 
    int _currentIndex = 0;
 
@@ -33,10 +33,10 @@ class HomeProvider with ChangeNotifier {
     ),
   ];
 
-  List<StatelessWidget> screens = [
-    const TextToSpeechScreen(),
-    const HomeScreen(),
-    const SettingScreen(),
+  List<Widget> screens = [
+     const TextToSpeechScreen(),
+     const HomeScreen(),
+     const SettingScreen(),
   ];
 
   void changeBottomNav(int value) {
@@ -137,4 +137,6 @@ class HomeProvider with ChangeNotifier {
     await _flutterTts.speak(strOfNames);
     _scrollToBottom(from: 'speak');
   }
-}
+
+
+  }
