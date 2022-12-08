@@ -14,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+
+  final GlobalKey<AnimatedListState> _key = GlobalKey();
   late final AnimationController _controller = AnimationController(
       duration: const Duration(milliseconds: 200), vsync: this);
 
@@ -68,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             controller: context
                                 .watch<HomeProvider>()
                                 .scrollController,
-                            key: context.read<HomeProvider>().key,
+                            key: _key,
                             scrollDirection: Axis.horizontal,
                             initialItemCount: context
                                 .watch<HomeProvider>()
