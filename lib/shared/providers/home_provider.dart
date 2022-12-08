@@ -8,7 +8,7 @@ import 'package:speech_assistance_app/shared/components/components.dart';
 
 class HomeProvider with ChangeNotifier  {
 
-   int _currentIndex = 0;
+   int _currentIndex = 1;
 
   int get currentIndex => _currentIndex;
 

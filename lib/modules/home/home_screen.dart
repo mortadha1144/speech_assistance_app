@@ -14,17 +14,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 1),
-      vsync: this);
-  late final Animation<double> _animation = Tween<double>(begin: 1.0,end: 0.8).animate(
-    CurvedAnimation(parent: _controller, curve: Curves.easeIn)
+      duration: const Duration(milliseconds: 200), vsync: this);
+
+  late final Animation<double> _scaleAnimation = Tween<double>(
+          begin: 1.0, end: 0.8)
+      .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+
+  late final AnimationController _fadeController = AnimationController(
+    duration: const Duration(milliseconds: 200),
+    vsync: this,
   );
+
+  late final Animation<double> _fadeAnimation =
+      Tween<double>(begin: 1.0, end: 0.3).animate(CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeIn,
+  ));
 
   @override
   void dispose() {
     _controller.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
@@ -45,33 +56,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     Expanded(
                       flex: 5,
                       child: InkWell(
-                        onTap:() {
-                          _controller.forward();
-                          Future.delayed(const Duration(seconds: 1),() {
-                            _controller.fling();
-                          },);
-                          context.read<HomeProvider>().speakList();
+                        onTap: () {
+                          _controller
+                              .forward()
+                              .then((value) => _controller.reverse());
+                           context.read<HomeProvider>().speakList();
                         },
-                        child: ScaleTransition(
-                      scale: _animation,
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
                           child: AnimatedList(
-                            controller: context.watch<HomeProvider>().scrollController,
+                            controller: context
+                                .watch<HomeProvider>()
+                                .scrollController,
                             key: context.read<HomeProvider>().key,
                             scrollDirection: Axis.horizontal,
-                            initialItemCount: context.watch<HomeProvider>().lengthOfCellsList,
+                            initialItemCount: context
+                                .watch<HomeProvider>()
+                                .lengthOfCellsList,
                             itemBuilder: (context, index, animation) {
                               return ScaleTransition(
                                 scale: animation,
-                                child: PressedCell(
-                                  text: context
-                                      .watch<HomeProvider>()
-                                      .tapedCells[index]
-                                      .name,
-                                  imagePath: context
-                                      .watch<HomeProvider>()
-                                      .tapedCells[index]
-                                      .image,
-                                  width: MediaQuery.of(context).size.width/6,
+                                child: ScaleTransition(
+                                  alignment: Alignment.centerRight,
+                                  scale: _scaleAnimation,
+                                  child: PressedCell(
+                                    text: context
+                                        .watch<HomeProvider>()
+                                        .tapedCells[index]
+                                        .name,
+                                    imagePath: context
+                                        .watch<HomeProvider>()
+                                        .tapedCells[index]
+                                        .image,
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
+                                  ),
                                 ),
                               );
                             },

@@ -129,12 +129,15 @@ class CellContent extends StatelessWidget {
         Expanded(
           flex: 6,
           child: Center(
-            child: Text(
-              type == 0 ? 'المزيد' : text ?? '',
-              style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Text(
+                type == 0 ? 'المزيد' : text ?? '',
+                style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black),
+              ),
             ),
           ),
         ),
@@ -152,7 +155,7 @@ class CellContent extends StatelessWidget {
                   : Image.asset(
                       imagePath!,
                       width: double.infinity,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
         ),
       ],
