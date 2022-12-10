@@ -6,40 +6,45 @@ import 'package:speech_assistance_app/modules/home/settings_screen.dart';
 import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 
-class HomeProvider with ChangeNotifier  {
-
-   int _currentIndex = 1;
+class HomeProvider with ChangeNotifier {
+  int _currentIndex = 1;
 
   int get currentIndex => _currentIndex;
 
+  final PageController _homePagesController = PageController(
+    initialPage: 1,
+  );
+
+  PageController get homePagesController => _homePagesController;
+
   List<BottomNavigationBarItem> bottomItems = [
     const BottomNavigationBarItem(
-      icon: Icon(
-        Icons.keyboard_alt_outlined,
-      ),
-        label: 'Type'
-    ),
+        icon: Icon(
+          Icons.keyboard_alt_outlined,
+        ),
+        label: 'Type'),
     const BottomNavigationBarItem(
-      icon: Icon(
-        Icons.home_outlined,
-      ),
-        label: 'Home'
-    ),
+        icon: Icon(
+          Icons.home_outlined,
+        ),
+        label: 'Home'),
     const BottomNavigationBarItem(
-      icon: Icon(
-        Icons.settings_outlined,
-      ),
-      label: 'Setting'
-    ),
+        icon: Icon(
+          Icons.settings_outlined,
+        ),
+        label: 'Setting'),
   ];
 
-  List<Widget> screens = [
-     const TextToSpeechScreen(),
-     const HomeScreen(),
-     const SettingScreen(),
+  List<Widget> homePages = [
+    const TextToSpeechScreen(),
+    const CellsPage(),
   ];
 
   void changeBottomNav(int value) {
+    if (value == 0 || value == 1) {
+      _homePagesController.animateToPage(value,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+    }
     _currentIndex = value;
     notifyListeners();
   }
@@ -85,6 +90,7 @@ class HomeProvider with ChangeNotifier  {
         index,
         (context, animation) {
           return ScaleTransition(
+            alignment: Alignment.centerRight,
             scale: animation,
             child: PressedCell(
               text: removedAt.name,
@@ -137,6 +143,4 @@ class HomeProvider with ChangeNotifier  {
     await _flutterTts.speak(strOfNames);
     _scrollToBottom(from: 'speak');
   }
-
-
-  }
+}
