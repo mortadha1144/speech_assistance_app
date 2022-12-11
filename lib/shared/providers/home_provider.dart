@@ -49,24 +49,17 @@ class HomeProvider with ChangeNotifier {
       if (value < 2) {
         _homePagesController.animateToPage(value,
             duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
-      }else{
-        _currentScreen=1;
+      } else {
+        _currentScreen = 1;
       }
-    }else{
-      if(value<2){
-        _homePagesController=PageController(initialPage: value);
-        _currentScreen=0;
+    } else {
+      if (value < 2) {
+        _homePagesController = PageController(initialPage: value);
+        _currentScreen = 0;
       }
     }
     _currentIndex = value;
     notifyListeners();
-
-    // if (value == 0 || value == 1) {
-    //   _homePagesController.animateToPage(value,
-    //       duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
-    // }
-    // _currentIndex = value;
-    // notifyListeners();
   }
 
   final List<Cell> _tapedCells = [];
