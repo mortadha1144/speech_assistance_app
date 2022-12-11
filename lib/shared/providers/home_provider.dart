@@ -8,12 +8,12 @@ import 'package:speech_assistance_app/shared/components/components.dart';
 
 class HomeProvider with ChangeNotifier {
   int _currentIndex = 1;
+  int _currentScreen = 0;
+  PageController _homePagesController = PageController(initialPage: 1);
 
   int get currentIndex => _currentIndex;
 
-  final PageController _homePagesController = PageController(
-    initialPage: 1,
-  );
+  int get currentScreen => _currentScreen;
 
   PageController get homePagesController => _homePagesController;
 
@@ -39,14 +39,34 @@ class HomeProvider with ChangeNotifier {
     const TextToSpeechScreen(),
     const CellsPage(),
   ];
+  List<Widget> screens = [
+    const HomeScreen(),
+    const SettingScreen(),
+  ];
 
   void changeBottomNav(int value) {
-    if (value == 0 || value == 1) {
-      _homePagesController.animateToPage(value,
-          duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+    if (_currentIndex < 2) {
+      if (value < 2) {
+        _homePagesController.animateToPage(value,
+            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+      }else{
+        _currentScreen=1;
+      }
+    }else{
+      if(value<2){
+        _homePagesController=PageController(initialPage: value);
+        _currentScreen=0;
+      }
     }
     _currentIndex = value;
     notifyListeners();
+
+    // if (value == 0 || value == 1) {
+    //   _homePagesController.animateToPage(value,
+    //       duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+    // }
+    // _currentIndex = value;
+    // notifyListeners();
   }
 
   final List<Cell> _tapedCells = [];
