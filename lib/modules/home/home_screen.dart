@@ -14,14 +14,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-
-
   late final AnimationController _controller = AnimationController(
       duration: const Duration(milliseconds: 200), vsync: this);
 
-  late final Animation<double> _scaleAnimation = Tween<double>(
-          begin: 1.0, end: 0.8)
-      .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+  late final Animation<double> _scaleAnimation =
+      Tween<double>(begin: 1.0, end: 0.8)
+          .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
   late final AnimationController _fadeController = AnimationController(
     duration: const Duration(milliseconds: 200),
@@ -33,8 +31,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     parent: _controller,
     curve: Curves.easeIn,
   ));
-
-
 
   @override
   void dispose() {
@@ -50,89 +46,77 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return SafeArea(
       child: Column(
         children: [
-          Expanded(
-            flex: 3,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: InkWell(
-                        onTap: () {
-                          _controller
-                              .forward()
-                              .then((value) => _controller.reverse());
-                           context.read<HomeProvider>().speakList();
-                        },
-                        child: FadeTransition(
-                          opacity: _fadeAnimation,
-                          child: AnimatedList(
-                            controller: context
-                                .watch<HomeProvider>()
-                                .scrollController,
-                            key: context.read<HomeProvider>().key,
-                            scrollDirection: Axis.horizontal,
-                            initialItemCount: context
-                                .watch<HomeProvider>()
-                                .lengthOfCellsList,
-                            itemBuilder: (context, index, animation) {
-                              return ScaleTransition(
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height/8.5,
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: InkWell(
+                      onTap: () {
+                        _controller
+                            .forward()
+                            .then((value) => _controller.reverse());
+                        context.read<HomeProvider>().speakList();
+                      },
+                      child: FadeTransition(
+                        opacity: _fadeAnimation,
+                        child: AnimatedList(
+                          controller:
+                              context.watch<HomeProvider>().scrollController,
+                          key: context.read<HomeProvider>().key,
+                          scrollDirection: Axis.horizontal,
+                          initialItemCount:
+                              context.watch<HomeProvider>().lengthOfCellsList,
+                          itemBuilder: (context, index, animation) {
+                            return ScaleTransition(
+                              alignment: Alignment.centerRight,
+                              scale: animation,
+                              child: ScaleTransition(
                                 alignment: Alignment.centerRight,
-                                scale: animation,
-                                child: ScaleTransition(
-                                  alignment: Alignment.centerRight,
-                                  scale: _scaleAnimation,
-                                  child: PressedCell(
-                                    text: context
-                                        .watch<HomeProvider>()
-                                        .tapedCells[index]
-                                        .name,
-                                    imagePath: context
-                                        .watch<HomeProvider>()
-                                        .tapedCells[index]
-                                        .image,
-                                    width:
-                                        MediaQuery.of(context).size.width / 6,
-                                  ),
+                                scale: _scaleAnimation,
+                                child: PressedCell(
+                                  text: context
+                                      .watch<HomeProvider>()
+                                      .tapedCells[index]
+                                      .name,
+                                  imagePath: context
+                                      .watch<HomeProvider>()
+                                      .tapedCells[index]
+                                      .image,
+                                  width:
+                                      MediaQuery.of(context).size.width / 6,
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Center(
-                        child: CupertinoButton(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          onPressed: () =>
-                              context.read<HomeProvider>().onPressedBackspace(),
-                          child: const Icon(
-                            Icons.backspace_rounded,
-                            color: Colors.black,
-                            size: 40,
-                          ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: CupertinoButton(
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        onPressed: () =>
+                            context.read<HomeProvider>().onPressedBackspace(),
+                        child: const Icon(
+                          Icons.backspace_rounded,
+                          color: Colors.black,
+                          size: 40,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
           Expanded(
-            child: Container(
-              height: 35,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.black,
-            ),
-          ),
-           Expanded(
-            flex: 20,
             child: PageView(
               controller: context.watch<HomeProvider>().homePagesController,
               children: watchProvider.homePages,

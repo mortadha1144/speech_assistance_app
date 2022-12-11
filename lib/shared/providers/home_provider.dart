@@ -3,13 +3,12 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
 import 'package:speech_assistance_app/modules/home/home_screen.dart';
 import 'package:speech_assistance_app/modules/home/settings_screen.dart';
-import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 
 class HomeProvider with ChangeNotifier {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   int _currentScreen = 0;
-  PageController _homePagesController = PageController(initialPage: 1);
+  PageController _homePagesController = PageController(initialPage: 0);
 
   int get currentIndex => _currentIndex;
 

@@ -458,8 +458,7 @@ class _CustomAnimatedListState extends State<CustomAnimatedList> {
       itemBuilder: (context, index, animation) {
         return PressedCell(
           text: context.watch<HomeProvider>().tapedCells[index].name,
-          imagePath:
-              context.watch<HomeProvider>().tapedCells[index].image,
+          imagePath: context.watch<HomeProvider>().tapedCells[index].image,
         );
       },
     );
@@ -471,185 +470,297 @@ class CellsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[200],
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: LayoutBuilder(
-          builder: (p0, p1) {
-            var height = p1.maxHeight / 6;
-            var width = p1.maxWidth / 5;
-
-            return Column(
-              children: [
-                SizedBox(
-                  height: height,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 1),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 2),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 3),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 4),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 5),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: height,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 6),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 7),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 8),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 9),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 10),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: height,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 11),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 12),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 13),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 14),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 15),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: height,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 16),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 17),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 18),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 19),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 20),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: height,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 21),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 22),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 23),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 24),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 25),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: height,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 26),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 27),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 28),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 29),
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: const MainCell(id: 0),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
+    return Column(
+      children: [
+        Container(
+          height: 35,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.black,
         ),
-      ),
+        Expanded(
+          child: Container(
+            color: Colors.grey[200],
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: LayoutBuilder(
+                builder: (p0, p1) {
+                  var height = p1.maxHeight / 6;
+                  var width = p1.maxWidth / 5;
+
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 1),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 2),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 3),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 4),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 5),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 6),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 7),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 8),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 9),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 10),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 11),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 12),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 13),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 14),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 16),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 17),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 18),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 19),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 21),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 22),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 23),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 24),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 25),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 26),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 27),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 28),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 29),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: const MainCell(id: 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
+class TextToSpeechScreen extends StatelessWidget {
+  const TextToSpeechScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: 35,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.black,
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButtonForTapBar(
+                      onPressed: () {},
+                      text: 'تحدث',
+                    ),
+                    const SizedBox(width: 20,),
+                    TextButtonForTapBar(
+                      onPressed: () {},
+                      text: 'إضافة',
+                    ),
+                    const SizedBox(width: 20,),
+                    TextButtonForTapBar(
+                      onPressed: () {},
+                      text: 'حذف',
+                    ),
+                  ],
+                ),
+              ),
+              const Expanded(child: SizedBox()),
+              TextButtonForTapBar(
+                onPressed: () {},
+                text: 'الرئيسية',
+                icon: Icons.chevron_right,
+              )
+            ],
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15.0),
+          child: TextField(
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            style: TextStyle(fontSize: 25),
+            decoration: InputDecoration(
+              hintText: 'اكتب النص هنا',
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TextButtonForTapBar extends StatelessWidget {
+  const TextButtonForTapBar({
+    Key? key,
+    required this.onPressed,
+    required this.text,
+    this.icon,
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+  final String text;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: onPressed,
+      child: Row(
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          icon == null
+              ? const SizedBox()
+              : Icon(
+                  icon,
+                  size: 30,
+                  color: Colors.white,
+                ),
+        ],
+      ),
+    );
+  }
+}
