@@ -668,6 +668,8 @@ class TextToSpeechScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeProvider watchProvider = context.watch<HomeProvider>();
+    HomeProvider raedProvider = context.read<HomeProvider>();
     return Column(
       children: [
         Container(
@@ -682,17 +684,21 @@ class TextToSpeechScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButtonForTapBar(
-                      onPressed: () {},
+                      onPressed: ()=>watchProvider.speechTextInTexField(),
                       text: 'تحدث',
                     ),
-                    const SizedBox(width: 20,),
+                    const SizedBox(
+                      width: 20,
+                    ),
                     TextButtonForTapBar(
-                      onPressed: () {},
+                      onPressed: ()=>watchProvider.addTextToSpeech(),
                       text: 'إضافة',
                     ),
-                    const SizedBox(width: 20,),
+                    const SizedBox(
+                      width: 20,
+                    ),
                     TextButtonForTapBar(
-                      onPressed: () {},
+                      onPressed: () => watchProvider.deleteTextToSpeech(),
                       text: 'حذف',
                     ),
                   ],
@@ -707,13 +713,14 @@ class TextToSpeechScreen extends StatelessWidget {
             ],
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.0),
+         Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: TextField(
+            controller: context.watch<HomeProvider>().textToSpeechController,
             keyboardType: TextInputType.multiline,
             maxLines: null,
-            style: TextStyle(fontSize: 25),
-            decoration: InputDecoration(
+            style: const TextStyle(fontSize: 25),
+            decoration: const InputDecoration(
               hintText: 'اكتب النص هنا',
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -760,6 +767,28 @@ class TextButtonForTapBar extends StatelessWidget {
                   color: Colors.white,
                 ),
         ],
+      ),
+    );
+  }
+}
+
+class PressedText extends StatelessWidget {
+  const PressedText({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

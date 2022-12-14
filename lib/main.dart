@@ -24,7 +24,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SpeechAssistanceLayout(),
+      home: const Directionality(
+        textDirection: TextDirection.rtl,
+        child: SpeechAssistanceLayout(),
+      ),
     );
   }
 }

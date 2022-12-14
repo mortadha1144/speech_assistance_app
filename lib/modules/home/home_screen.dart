@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height/8.5,
+            height: MediaQuery.of(context).size.height / 8.5,
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.only(top: 2),
@@ -71,7 +71,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           key: context.read<HomeProvider>().key,
                           scrollDirection: Axis.horizontal,
                           initialItemCount:
-                              context.watch<HomeProvider>().lengthOfCellsList,
+                              watchProvider.homePagesController.initialPage == 0
+                                  ? watchProvider.addedText.length
+                                  : watchProvider.lengthOfCellsList,
                           itemBuilder: (context, index, animation) {
                             return ScaleTransition(
                               alignment: Alignment.centerRight,
@@ -79,18 +81,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               child: ScaleTransition(
                                 alignment: Alignment.centerRight,
                                 scale: _scaleAnimation,
-                                child: PressedCell(
-                                  text: context
-                                      .watch<HomeProvider>()
-                                      .tapedCells[index]
-                                      .name,
-                                  imagePath: context
-                                      .watch<HomeProvider>()
-                                      .tapedCells[index]
-                                      .image,
-                                  width:
-                                      MediaQuery.of(context).size.width / 6,
-                                ),
+                                child: watchProvider
+                                            .homePagesController.initialPage ==
+                                        0
+                                    ? PressedText(
+                                        text: watchProvider
+                                            .addedText[index])
+                                    : PressedCell(
+                                        text: context
+                                            .watch<HomeProvider>()
+                                            .tapedCells[index]
+                                            .name,
+                                        imagePath: context
+                                            .watch<HomeProvider>()
+                                            .tapedCells[index]
+                                            .image,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                6,
+                                      ),
                               ),
                             );
                           },

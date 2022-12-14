@@ -34,6 +34,16 @@ class HomeProvider with ChangeNotifier {
         label: 'Setting'),
   ];
 
+  final TextEditingController _textToSpeechController = TextEditingController();
+
+  TextEditingController get textToSpeechController => _textToSpeechController;
+
+  List<String> _addedText = [];
+
+  List<String> get addedText => _addedText;
+
+  int get lengthOfAddedTextList => _addedText.length;
+
   List<Widget> homePages = [
     const TextToSpeechScreen(),
     const CellsPage(),
@@ -154,5 +164,50 @@ class HomeProvider with ChangeNotifier {
     await _flutterTts.setSpeechRate(0.3);
     await _flutterTts.speak(strOfNames);
     _scrollToBottom(from: 'speak');
+  }
+
+  void addTextToSpeech() {
+
+    deleteTextToSpeech();
+    Future.delayed(const Duration(milliseconds: 100),() {
+      if (textToSpeechController.text.isNotEmpty) {
+        String text = textToSpeechController.text;
+        _addedText = text.split(' ');
+        notifyListeners();
+        for (int i = 0; i < addedText.length; i++) {
+          _key.currentState!.insertItem(i,duration: const Duration(milliseconds: 100));
+        }
+      }
+    },);
+
+    print(addedText);
+  }
+
+  void deleteTextToSpeech() {
+    if(_addedText.isNotEmpty) {
+      for (int i = _addedText.length - 1; i >= 0; i --) {
+        String removedAt = _addedText.removeAt(i);
+        _key.currentState!.removeItem(
+          i,
+              (context, animation) {
+            return ScaleTransition(
+              alignment: Alignment.centerRight,
+              scale: animation,
+              child: PressedText(text: removedAt),
+            );
+          },
+          duration: const Duration(milliseconds: 100),
+        );
+        notifyListeners();
+      }
+    }
+  }
+
+  void speechTextInTexField()async{
+    if(_textToSpeechController.text.isNotEmpty){
+      await _flutterTts.setLanguage("ar");
+      await _flutterTts.setSpeechRate(0.4);
+      await _flutterTts.speak(textToSpeechController.text);
+    }
   }
 }
