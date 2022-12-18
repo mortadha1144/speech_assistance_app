@@ -8,6 +8,7 @@ import 'package:speech_assistance_app/shared/components/components.dart';
 class HomeProvider with ChangeNotifier {
   int _currentIndex = 0;
   int _currentScreen = 0;
+
   PageController _homePagesController = PageController(initialPage: 0);
 
   int get currentIndex => _currentIndex;
@@ -57,7 +58,7 @@ class HomeProvider with ChangeNotifier {
     if (_currentIndex < 2) {
       if (value < 2) {
         _homePagesController.animateToPage(value,
-            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+            duration: const Duration(milliseconds: 500), curve: Curves.easeIn).then((value) => print(_homePagesController.page));
       } else {
         _currentScreen = 1;
       }
@@ -69,6 +70,10 @@ class HomeProvider with ChangeNotifier {
     }
     _currentIndex = value;
     notifyListeners();
+    // Future.delayed(const Duration(seconds: 1),() {
+    //   print(_homePagesController.page);
+    // },);
+
   }
 
   final List<Cell> _tapedCells = [];

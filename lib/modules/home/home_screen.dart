@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 alignment: Alignment.centerRight,
                                 scale: _scaleAnimation,
                                 child: watchProvider
-                                            .homePagesController.initialPage ==
+                                            .homePagesController.page ==
                                         0
                                     ? PressedText(
                                         text: watchProvider
