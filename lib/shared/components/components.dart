@@ -713,7 +713,7 @@ class TextToSpeechScreen extends StatelessWidget {
             ],
           ),
         ),
-         Padding(
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: TextField(
             controller: context.watch<HomeProvider>().textToSpeechController,

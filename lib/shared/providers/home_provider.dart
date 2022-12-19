@@ -8,12 +8,15 @@ import 'package:speech_assistance_app/shared/components/components.dart';
 class HomeProvider with ChangeNotifier {
   int _currentIndex = 0;
   int _currentScreen = 0;
+  int _currentPage = 0;
 
   PageController _homePagesController = PageController(initialPage: 0);
 
   int get currentIndex => _currentIndex;
 
   int get currentScreen => _currentScreen;
+
+  int get currentPage =>_currentPage;
 
   PageController get homePagesController => _homePagesController;
 
@@ -54,26 +57,111 @@ class HomeProvider with ChangeNotifier {
     const SettingScreen(),
   ];
 
-  void changeBottomNav(int value) {
+  void changeBottomNav(int index) {
+    //check last index to navigate between pages or go to another screen
     if (_currentIndex < 2) {
-      if (value < 2) {
-        _homePagesController.animateToPage(value,
-            duration: const Duration(milliseconds: 500), curve: Curves.easeIn).then((value) => print(_homePagesController.page));
+      if (index < 2) {
+        _homePagesController
+            .animateToPage(index,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeIn)
+            .then((value) {
+          retrieveLastCellsAndTextsOnChangePage(index);
+          return;
+        });
+
       } else {
         _currentScreen = 1;
       }
     } else {
-      if (value < 2) {
-        _homePagesController = PageController(initialPage: value);
+      if (index < 2) {
+        _homePagesController = PageController(initialPage: index);
         _currentScreen = 0;
       }
     }
-    _currentIndex = value;
+    _currentIndex = index;
     notifyListeners();
     // Future.delayed(const Duration(seconds: 1),() {
     //   print(_homePagesController.page);
     // },);
+  }
 
+  void retrieveLastCellsAndTextsOnChangePage(int index){
+    if (index == 0) {
+      //check if tapped_cells have items then remove it just from play bar
+      //and keep it in the tapped cells list
+      if (_tapedCells.isNotEmpty) {
+        for (int i = _tapedCells.length - 1; i >= 0; i--) {
+          _key.currentState!.removeItem(
+            i,
+                (context, animation) => ScaleTransition(
+              scale: animation,
+              child: PressedCell(
+                  text: _tapedCells[i].name,
+                  imagePath: _tapedCells[i].image),
+            ),
+            duration: const Duration(milliseconds: 100),
+          );
+        }
+      }
+      //check if added_text list have items then show them in
+      // the play bar
+      Future.delayed(
+        Duration(milliseconds: _tapedCells.isNotEmpty ? 100 : 0),
+            () {
+          if (_addedText.isNotEmpty) {
+            for (int i = 0; i < _addedText.length; i++) {
+              _key.currentState!.insertItem(
+                i,
+                duration: const Duration(milliseconds: 100),
+              );
+            }
+          }
+        },
+      );
+    } else {
+      //check if added_text list have items then remove it just from play bar
+      //and keep it in the added_text list
+      if (_addedText.isNotEmpty) {
+        for (int i = _addedText.length - 1; i >= 0; i--) {
+          _key.currentState!.removeItem(
+            i,
+                (context, animation) => ScaleTransition(
+              scale: animation,
+              alignment: Alignment.centerRight,
+              child: PressedText(text: _addedText[i]),
+            ),
+            duration: const Duration(milliseconds: 100),
+          );
+        }
+      }
+      //check if tapped cells list have cells then show the cells
+      // in the play bar
+      Future.delayed(
+        Duration(milliseconds: _addedText.isNotEmpty ? 100 : 0),
+            () {
+          if (_tapedCells.isNotEmpty) {
+            for (int i = 0; i < _tapedCells.length; i++) {
+              _key.currentState!.insertItem(i,
+                  duration: const Duration(milliseconds: 100));
+            }
+          }
+        },
+      );
+    }
+  }
+
+  void retrieveLastCellsAndTextsOnChangeScreen(int index){
+    if (index==0){
+      if (_addedText.isNotEmpty) {
+        for (int i = 0; i < _addedText.length; i++) {
+          _key.currentState!.insertItem(
+            i,
+            duration: const Duration(milliseconds: 100),
+          );
+        }
+      }
+    }
   }
 
   final List<Cell> _tapedCells = [];
@@ -172,29 +260,32 @@ class HomeProvider with ChangeNotifier {
   }
 
   void addTextToSpeech() {
-
     deleteTextToSpeech();
-    Future.delayed(const Duration(milliseconds: 100),() {
-      if (textToSpeechController.text.isNotEmpty) {
-        String text = textToSpeechController.text;
-        _addedText = text.split(' ');
-        notifyListeners();
-        for (int i = 0; i < addedText.length; i++) {
-          _key.currentState!.insertItem(i,duration: const Duration(milliseconds: 100));
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        if (textToSpeechController.text.isNotEmpty) {
+          String text = textToSpeechController.text;
+          _addedText = text.split(' ');
+          notifyListeners();
+          for (int i = 0; i < addedText.length; i++) {
+            _key.currentState!
+                .insertItem(i, duration: const Duration(milliseconds: 100));
+          }
         }
-      }
-    },);
+      },
+    );
 
     print(addedText);
   }
 
   void deleteTextToSpeech() {
-    if(_addedText.isNotEmpty) {
-      for (int i = _addedText.length - 1; i >= 0; i --) {
+    if (_addedText.isNotEmpty) {
+      for (int i = _addedText.length - 1; i >= 0; i--) {
         String removedAt = _addedText.removeAt(i);
         _key.currentState!.removeItem(
           i,
-              (context, animation) {
+          (context, animation) {
             return ScaleTransition(
               alignment: Alignment.centerRight,
               scale: animation,
@@ -208,8 +299,8 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  void speechTextInTexField()async{
-    if(_textToSpeechController.text.isNotEmpty){
+  void speechTextInTexField() async {
+    if (_textToSpeechController.text.isNotEmpty) {
       await _flutterTts.setLanguage("ar");
       await _flutterTts.setSpeechRate(0.4);
       await _flutterTts.speak(textToSpeechController.text);
