@@ -23,7 +23,7 @@ class SpeechAssistanceLayout extends StatelessWidget {
         items: watchProvider.bottomItems,
         onTap: (value) => raedProvider.changeBottomNav(value),
       ),
-      body: watchProvider.screens[watchProvider.currentScreen],
+      body: watchProvider.screens[watchProvider.currentIndex],
     );
   }
 }

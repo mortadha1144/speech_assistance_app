@@ -70,10 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               context.watch<HomeProvider>().scrollController,
                           key: context.read<HomeProvider>().key,
                           scrollDirection: Axis.horizontal,
-                          initialItemCount:
-                              watchProvider.homePagesController.initialPage == 0
-                                  ? watchProvider.addedText.length
-                                  : watchProvider.lengthOfCellsList,
+                          initialItemCount: watchProvider.lengthOfCellsList,
                           itemBuilder: (context, index, animation) {
                             return ScaleTransition(
                               alignment: Alignment.centerRight,
@@ -81,13 +78,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               child: ScaleTransition(
                                 alignment: Alignment.centerRight,
                                 scale: _scaleAnimation,
-                                child: watchProvider
-                                            .homePagesController.page ==
-                                        0
-                                    ? PressedText(
-                                        text: watchProvider
-                                            .addedText[index])
-                                    : PressedCell(
+                                child: PressedCell(
                                         text: context
                                             .watch<HomeProvider>()
                                             .tapedCells[index]

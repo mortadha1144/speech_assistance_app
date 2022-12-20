@@ -3,6 +3,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
 import 'package:speech_assistance_app/modules/home/home_screen.dart';
 import 'package:speech_assistance_app/modules/home/settings_screen.dart';
+import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 
 class HomeProvider with ChangeNotifier {
@@ -49,38 +50,45 @@ class HomeProvider with ChangeNotifier {
   int get lengthOfAddedTextList => _addedText.length;
 
   List<Widget> homePages = [
-    const TextToSpeechScreen(),
     const CellsPage(),
   ];
   List<Widget> screens = [
+    const TextToSpeechScreen(),
     const HomeScreen(),
     const SettingScreen(),
   ];
 
   void changeBottomNav(int index) {
     //check last index to navigate between pages or go to another screen
-    if (_currentIndex < 2) {
-      if (index < 2) {
-        _homePagesController
-            .animateToPage(index,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeIn)
-            .then((value) {
-          retrieveLastCellsAndTextsOnChangePage(index);
-          return;
-        });
-
-      } else {
-        _currentScreen = 1;
-      }
-    } else {
-      if (index < 2) {
-        _homePagesController = PageController(initialPage: index);
-        _currentScreen = 0;
-      }
-    }
+    // if (_currentIndex < 2) {
+    //   if (index < 2) {
+    //     _homePagesController
+    //         .animateToPage(index,
+    //             duration: const Duration(milliseconds: 500),
+    //             curve: Curves.easeIn)
+    //         .then((value) {
+    //       retrieveLastCellsAndTextsOnChangePage(index);
+    //       return;
+    //     });
+    //
+    //   } else {
+    //     _currentScreen = 1;
+    //   }
+    // } else {
+    //   if (index < 2) {
+    //     _homePagesController = PageController(initialPage: index);
+    //     Future.delayed(const Duration(milliseconds: 100),() {
+    //       retrieveLastCellsAndTextsOnChangeScreen(index);
+    //       print(homePagesController.page);
+    //       return null;
+    //     },);
+    //     _currentScreen = 0;
+    //   }
+    // }
     _currentIndex = index;
     notifyListeners();
+
+
     // Future.delayed(const Duration(seconds: 1),() {
     //   print(_homePagesController.page);
     // },);
@@ -154,6 +162,17 @@ class HomeProvider with ChangeNotifier {
   void retrieveLastCellsAndTextsOnChangeScreen(int index){
     if (index==0){
       if (_addedText.isNotEmpty) {
+        for (int i = _addedText.length - 1; i >= 0; i--) {
+          _key.currentState!.removeItem(
+            i,
+                (context, animation) => ScaleTransition(
+              scale: animation,
+              alignment: Alignment.centerRight,
+              child: PressedText(text: _addedText[i]),
+            ),
+            duration: const Duration(milliseconds: 100),
+          );
+        }
         for (int i = 0; i < _addedText.length; i++) {
           _key.currentState!.insertItem(
             i,
@@ -261,41 +280,16 @@ class HomeProvider with ChangeNotifier {
 
   void addTextToSpeech() {
     deleteTextToSpeech();
-    Future.delayed(
-      const Duration(milliseconds: 100),
-      () {
-        if (textToSpeechController.text.isNotEmpty) {
-          String text = textToSpeechController.text;
-          _addedText = text.split(' ');
-          notifyListeners();
-          for (int i = 0; i < addedText.length; i++) {
-            _key.currentState!
-                .insertItem(i, duration: const Duration(milliseconds: 100));
-          }
-        }
-      },
-    );
-
-    print(addedText);
+    if (textToSpeechController.text.isNotEmpty) {
+      String text = textToSpeechController.text;
+      _addedText = text.split(' ');
+      notifyListeners();}
   }
 
   void deleteTextToSpeech() {
     if (_addedText.isNotEmpty) {
-      for (int i = _addedText.length - 1; i >= 0; i--) {
-        String removedAt = _addedText.removeAt(i);
-        _key.currentState!.removeItem(
-          i,
-          (context, animation) {
-            return ScaleTransition(
-              alignment: Alignment.centerRight,
-              scale: animation,
-              child: PressedText(text: removedAt),
-            );
-          },
-          duration: const Duration(milliseconds: 100),
-        );
-        notifyListeners();
-      }
+      _addedText.clear();
+      notifyListeners();
     }
   }
 
