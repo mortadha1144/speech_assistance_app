@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:intl/intl.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
 import 'package:speech_assistance_app/modules/home/home_screen.dart';
 import 'package:speech_assistance_app/modules/home/settings_screen.dart';
 import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
+import 'package:sqflite/sqflite.dart';
 
 class HomeProvider with ChangeNotifier {
   int _currentIndex = 0;
@@ -17,7 +21,7 @@ class HomeProvider with ChangeNotifier {
 
   int get currentScreen => _currentScreen;
 
-  int get currentPage =>_currentPage;
+  int get currentPage => _currentPage;
 
   PageController get homePagesController => _homePagesController;
 
@@ -59,128 +63,8 @@ class HomeProvider with ChangeNotifier {
   ];
 
   void changeBottomNav(int index) {
-    //check last index to navigate between pages or go to another screen
-    // if (_currentIndex < 2) {
-    //   if (index < 2) {
-    //     _homePagesController
-    //         .animateToPage(index,
-    //             duration: const Duration(milliseconds: 500),
-    //             curve: Curves.easeIn)
-    //         .then((value) {
-    //       retrieveLastCellsAndTextsOnChangePage(index);
-    //       return;
-    //     });
-    //
-    //   } else {
-    //     _currentScreen = 1;
-    //   }
-    // } else {
-    //   if (index < 2) {
-    //     _homePagesController = PageController(initialPage: index);
-    //     Future.delayed(const Duration(milliseconds: 100),() {
-    //       retrieveLastCellsAndTextsOnChangeScreen(index);
-    //       print(homePagesController.page);
-    //       return null;
-    //     },);
-    //     _currentScreen = 0;
-    //   }
-    // }
     _currentIndex = index;
     notifyListeners();
-
-
-    // Future.delayed(const Duration(seconds: 1),() {
-    //   print(_homePagesController.page);
-    // },);
-  }
-
-  void retrieveLastCellsAndTextsOnChangePage(int index){
-    if (index == 0) {
-      //check if tapped_cells have items then remove it just from play bar
-      //and keep it in the tapped cells list
-      if (_tapedCells.isNotEmpty) {
-        for (int i = _tapedCells.length - 1; i >= 0; i--) {
-          _key.currentState!.removeItem(
-            i,
-                (context, animation) => ScaleTransition(
-              scale: animation,
-              child: PressedCell(
-                  text: _tapedCells[i].name,
-                  imagePath: _tapedCells[i].image),
-            ),
-            duration: const Duration(milliseconds: 100),
-          );
-        }
-      }
-      //check if added_text list have items then show them in
-      // the play bar
-      Future.delayed(
-        Duration(milliseconds: _tapedCells.isNotEmpty ? 100 : 0),
-            () {
-          if (_addedText.isNotEmpty) {
-            for (int i = 0; i < _addedText.length; i++) {
-              _key.currentState!.insertItem(
-                i,
-                duration: const Duration(milliseconds: 100),
-              );
-            }
-          }
-        },
-      );
-    } else {
-      //check if added_text list have items then remove it just from play bar
-      //and keep it in the added_text list
-      if (_addedText.isNotEmpty) {
-        for (int i = _addedText.length - 1; i >= 0; i--) {
-          _key.currentState!.removeItem(
-            i,
-                (context, animation) => ScaleTransition(
-              scale: animation,
-              alignment: Alignment.centerRight,
-              child: PressedText(text: _addedText[i]),
-            ),
-            duration: const Duration(milliseconds: 100),
-          );
-        }
-      }
-      //check if tapped cells list have cells then show the cells
-      // in the play bar
-      Future.delayed(
-        Duration(milliseconds: _addedText.isNotEmpty ? 100 : 0),
-            () {
-          if (_tapedCells.isNotEmpty) {
-            for (int i = 0; i < _tapedCells.length; i++) {
-              _key.currentState!.insertItem(i,
-                  duration: const Duration(milliseconds: 100));
-            }
-          }
-        },
-      );
-    }
-  }
-
-  void retrieveLastCellsAndTextsOnChangeScreen(int index){
-    if (index==0){
-      if (_addedText.isNotEmpty) {
-        for (int i = _addedText.length - 1; i >= 0; i--) {
-          _key.currentState!.removeItem(
-            i,
-                (context, animation) => ScaleTransition(
-              scale: animation,
-              alignment: Alignment.centerRight,
-              child: PressedText(text: _addedText[i]),
-            ),
-            duration: const Duration(milliseconds: 100),
-          );
-        }
-        for (int i = 0; i < _addedText.length; i++) {
-          _key.currentState!.insertItem(
-            i,
-            duration: const Duration(milliseconds: 100),
-          );
-        }
-      }
-    }
   }
 
   final List<Cell> _tapedCells = [];
@@ -283,7 +167,8 @@ class HomeProvider with ChangeNotifier {
     if (textToSpeechController.text.isNotEmpty) {
       String text = textToSpeechController.text;
       _addedText = text.split(' ');
-      notifyListeners();}
+      notifyListeners();
+    }
   }
 
   void deleteTextToSpeech() {
@@ -299,5 +184,63 @@ class HomeProvider with ChangeNotifier {
       await _flutterTts.setSpeechRate(0.4);
       await _flutterTts.speak(textToSpeechController.text);
     }
+  }
+
+  Database? database;
+  List<Map> lastCells = [];
+
+  void createDatabase() {
+    openDatabase(
+      'my_cells.db',
+      version: 1,
+      onCreate: (db, version) async {
+        print('database created');
+        await db
+            .execute(
+              'CREATE TABLE last_cells(id INTEGER PRIMARY KEY,date TEXT,cells TEXT)',
+            )
+            .then((value) => print('table created'))
+            .catchError((error) =>
+                print('Error When Creating Table ${error.toString()}'));
+      },
+      onOpen: (db) {
+        getDataFromDatabase(db);
+
+        print('database opened');
+      },
+    ).then((value) {
+      database = value;
+    });
+  }
+
+  void getDataFromDatabase(database) {
+    database.rawQuery('SELECT * FROM last_cells').then((value) {
+      lastCells = value;
+      print(lastCells);
+      value.forEach((element) => print(element['cells']));
+    });
+  }
+
+  insertIntoDatabase() async {
+    String addTextString = _addedText.join(' ');
+    DateTime dateNow = DateTime.now();
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    String formatted = formatter.format(dateNow);
+
+    await database!.transaction((txn) {
+      txn
+          .rawInsert(
+            'INSERT INTO last_cells (date,cells) VALUES ("$formatted","$addTextString")',
+          )
+          .then((value) {
+        print('$value inserted success');
+            getDataFromDatabase(database);
+            return null;
+          }).catchError((error) {
+        print('Error When Inserting New Record  ${error.toString()}');
+      });
+      return Future(() => null);
+    });
+    //print(formatted);
   }
 }

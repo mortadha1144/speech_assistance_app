@@ -7,7 +7,7 @@ import 'package:speech_assistance_app/shared/providers/home_provider.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => HomeProvider()),
+      ChangeNotifierProvider(create: (context) => HomeProvider()..createDatabase()),
     ],
     child: const MyApp(),
   ));

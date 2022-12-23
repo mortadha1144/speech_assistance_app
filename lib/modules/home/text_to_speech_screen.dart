@@ -53,7 +53,7 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                         _controller
                             .forward()
                             .then((value) => _controller.reverse());
-                        context.read<HomeProvider>().speakList();
+                        context.read<HomeProvider>().insertIntoDatabase();
                       },
                       child: FadeTransition(
                         opacity: _fadeAnimation,
