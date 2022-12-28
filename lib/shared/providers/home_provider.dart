@@ -192,9 +192,10 @@ class HomeProvider with ChangeNotifier {
   void createDatabase() {
     openDatabase(
       'my_cells.db',
-      version: 1,
+      version: 5,
       onCreate: (db, version) async {
         print('database created');
+
         await db
             .execute(
               'CREATE TABLE last_cells(id INTEGER PRIMARY KEY,date TEXT,cells TEXT)',
@@ -203,7 +204,21 @@ class HomeProvider with ChangeNotifier {
             .catchError((error) =>
                 print('Error When Creating Table ${error.toString()}'));
       },
-      onOpen: (db) {
+      onUpgrade: (db, oldVersion, newVersion) async {
+        print('database upgrade open');
+        //await db.transaction((txn) async{
+        //await txn.execute('ALTER TABLE last_cells RENAME TO old_last_cells');
+        //await txn.execute('CREATE TABLE last_cells(id INTEGER PRIMARY KEY,date TEXT NOT NULL,cells TEXT NOT NULL UNIQUE)');
+        //   await txn.execute('INSERT INTO last_cells SELECT * FROM old_last_cells;');
+        // }).then((value) => print('database upgraded')).catchError((error) =>
+        //     print('Error When upgrade Table ${error.toString()}'));
+      },
+      onOpen: (db) async {
+        // await db.execute('DROP TABLE old_last_cells;').then((value) {
+        //   getDataFromDatabase(db);
+        //   print('database opened');
+        //   return null;
+        // });
         getDataFromDatabase(db);
 
         print('database opened');
@@ -228,18 +243,18 @@ class HomeProvider with ChangeNotifier {
     String formatted = formatter.format(dateNow);
 
     await database!.transaction((txn) {
-      txn
+      return txn
           .rawInsert(
-            'INSERT INTO last_cells (date,cells) VALUES ("$formatted","$addTextString")',
-          )
+        'INSERT INTO last_cells (date,cells) VALUES ("$formatted","$addTextString")',
+      )
           .then((value) {
         print('$value inserted success');
-            getDataFromDatabase(database);
-            return null;
-          }).catchError((error) {
+        getDataFromDatabase(database);
+        return null;
+      }).catchError((error) {
         print('Error When Inserting New Record  ${error.toString()}');
       });
-      return Future(() => null);
+      //return Future(() => null);
     });
     //print(formatted);
   }
