@@ -724,3 +724,29 @@ class PressedText extends StatelessWidget {
     );
   }
 }
+
+class CellsRecord extends StatelessWidget {
+  const CellsRecord({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    HomeProvider watchProvider = context.watch<HomeProvider>();
+    HomeProvider raedProvider = context.read<HomeProvider>();
+    return ListView.separated(
+      itemCount: watchProvider.lastCells.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: Text(
+            '${watchProvider.lastCells[index]['cells']}',
+            textDirection: TextDirection.rtl,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          leading: Text('${watchProvider.lastCells[index]['date']}'),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const Divider();
+      },
+    );
+  }
+}

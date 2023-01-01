@@ -116,12 +116,19 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                         onPressed: () => watchProvider.deleteTextToSpeech(),
                         text: 'حذف',
                       ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      TextButtonForTapBar(
+                        onPressed: () => watchProvider.testOnDatabase(),
+                        text: 'test',
+                      ),
                     ],
                   ),
                 ),
                 const Expanded(child: SizedBox()),
                 TextButtonForTapBar(
-                  onPressed: () {},
+                  onPressed: () => watchProvider.showCellsRecord(context),
                   text: 'الرئيسية',
                   icon: Icons.chevron_right,
                 )

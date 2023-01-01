@@ -38,6 +38,11 @@ class HomeProvider with ChangeNotifier {
         label: 'Home'),
     const BottomNavigationBarItem(
         icon: Icon(
+          Icons.history_outlined,
+        ),
+        label: 'Record'),
+    const BottomNavigationBarItem(
+        icon: Icon(
           Icons.settings_outlined,
         ),
         label: 'Setting'),
@@ -167,6 +172,7 @@ class HomeProvider with ChangeNotifier {
     if (textToSpeechController.text.isNotEmpty) {
       String text = textToSpeechController.text;
       _addedText = text.split(' ');
+      insertIntoDatabase();
       notifyListeners();
     }
   }
@@ -192,20 +198,62 @@ class HomeProvider with ChangeNotifier {
   void createDatabase() {
     openDatabase(
       'my_cells.db',
-      version: 5,
+      version: 7,
       onCreate: (db, version) async {
         print('database created');
+        Batch batch = db.batch();
+        batch.execute('''CREATE TABLE cell_types(
+                                  type_id INTEGER PRIMARY KEY,
+                                  type_name TEXT NOT NULL UNIQUE
+                                );
+                      ''');
+        batch.insert('cell_types', {'type_name': 'text'});
+        batch.insert('cell_types', {'type_name': 'cells'});
 
-        await db
-            .execute(
-              'CREATE TABLE last_cells(id INTEGER PRIMARY KEY,date TEXT,cells TEXT)',
-            )
-            .then((value) => print('table created'))
-            .catchError((error) =>
-                print('Error When Creating Table ${error.toString()}'));
+        batch.execute('''CREATE TABLE last_cells(
+                                   id INTEGER PRIMARY KEY,
+                                   date TEXT NOT NULL,
+                                   cells TEXT NOT NULL UNIQUE,
+                                   cells_type INTEGER ,
+                                   FOREIGN KEY (cells_type)
+                                        REFERENCES cell_types (type_id)
+                                        ON UPDATE CASCADE
+                                        ON DELETE SET NULL
+                                );
+                            ''');
+        await batch.commit().then((value) => print('table created')).catchError(
+            (error) => print('Error When batch database ${error.toString()}'));
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         print('database upgrade open');
+        // await db
+        //     .transaction((txn) async {
+        //       await txn.execute(
+        //           'CREATE TABLE cell_types(type_id INTEGER PRIMARY KEY,type_name TEXT NOT NULL UNIQUE)');
+        //       await txn.insert('cell_types', {'type_name': 'text'});
+        //       await txn.insert('cell_types', {'type_name': 'cells'});
+        //       await txn
+        //           .execute('ALTER TABLE last_cells RENAME TO old_last_cells');
+        //       await txn.execute('''CREATE TABLE last_cells(
+        //                            id INTEGER PRIMARY KEY,
+        //                            date TEXT NOT NULL,
+        //                            cells TEXT NOT NULL UNIQUE,
+        //                            cells_type INTEGER ,
+        //                            FOREIGN KEY (cells_type)
+        //                                 REFERENCES cell_types (type_id)
+        //                                 ON UPDATE CASCADE
+        //                                 ON DELETE SET NULL
+        //                         );
+        //                     ''');
+        //       await txn.execute(
+        //           'INSERT INTO last_cells SELECT id,date,cells,1 FROM old_last_cells;');
+
+        //       return null;
+        //     })
+        //     .then((value) => print('database upgraded'))
+        //     .catchError((error) =>
+        //         print('Error When upgrade Table ${error.toString()}'));
+
         //await db.transaction((txn) async{
         //await txn.execute('ALTER TABLE last_cells RENAME TO old_last_cells');
         //await txn.execute('CREATE TABLE last_cells(id INTEGER PRIMARY KEY,date TEXT NOT NULL,cells TEXT NOT NULL UNIQUE)');
@@ -215,8 +263,8 @@ class HomeProvider with ChangeNotifier {
       },
       onOpen: (db) async {
         // await db.execute('DROP TABLE old_last_cells;').then((value) {
-        //   getDataFromDatabase(db);
-        //   print('database opened');
+        //   //getDataFromDatabase(db);
+        //   print('table delleted');
         //   return null;
         // });
         getDataFromDatabase(db);
@@ -228,11 +276,11 @@ class HomeProvider with ChangeNotifier {
     });
   }
 
-  void getDataFromDatabase(database) {
-    database.rawQuery('SELECT * FROM last_cells').then((value) {
+  void getDataFromDatabase(Database? database) async {
+    await database!.rawQuery('SELECT * FROM last_cells').then((value) {
       lastCells = value;
       print(lastCells);
-      value.forEach((element) => print(element['cells']));
+      //value.forEach((element) => print(element['cells']));
     });
   }
 
@@ -241,21 +289,46 @@ class HomeProvider with ChangeNotifier {
     DateTime dateNow = DateTime.now();
     DateFormat formatter = DateFormat('dd/MM/yyyy');
     String formatted = formatter.format(dateNow);
-
-    await database!.transaction((txn) {
-      return txn
-          .rawInsert(
-        'INSERT INTO last_cells (date,cells) VALUES ("$formatted","$addTextString")',
-      )
-          .then((value) {
-        print('$value inserted success');
-        getDataFromDatabase(database);
-        return null;
-      }).catchError((error) {
-        print('Error When Inserting New Record  ${error.toString()}');
-      });
-      //return Future(() => null);
+    await database?.rawInsert(
+        'INSERT OR IGNORE INTO last_cells (date,cells) VALUES (?,?)',
+        [formatted, addTextString]).then((value) {
+      print('inserted success');
+      getDataFromDatabase(database);
+      notifyListeners();
+      return null;
+    }).catchError((error) {
+      print('Error When Inserting New Record  ${error.toString()}');
     });
+
+    //
+
+    //---------------
+    //await database!.transaction((txn) {
+    //   return txn
+    //       .rawInsert(
+    //     'INSERT INTO last_cells (date,cells) VALUES ("$formatted","$addTextString")',
+    //   )
+    //       .then((value) {
+    //     print('$value inserted success');
+    //     getDataFromDatabase(database);
+    //     return null;
+    //   }).catchError((error) {
+    //     print('Error When Inserting New Record  ${error.toString()}');
+    //   });
+    //   //return Future(() => null);
+    // });
     //print(formatted);
+  }
+
+  void showCellsRecord(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const CellsRecord(),
+    );
+  }
+
+  testOnDatabase() async {
+    var list = await database!.rawQuery('SELECT * FROM old_last_cells');
+    print(list);
   }
 }
