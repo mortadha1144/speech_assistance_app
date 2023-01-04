@@ -734,19 +734,58 @@ class CellsRecord extends StatelessWidget {
     HomeProvider raedProvider = context.read<HomeProvider>();
     return ListView.separated(
       itemCount: watchProvider.lastCells.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text(
-            '${watchProvider.lastCells[index]['cells']}',
-            textDirection: TextDirection.rtl,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          leading: Text('${watchProvider.lastCells[index]['date']}'),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return const Divider();
-      },
+      itemBuilder: (BuildContext context, int index) => CellTile(index: index),
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    );
+  }
+}
+
+class CellTile extends StatelessWidget {
+  const CellTile({Key? key, required this.index}) : super(key: key);
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    HomeProvider watchProvider = context.watch<HomeProvider>();
+    int cellsType = watchProvider.lastCells[index]['cells_type'];
+    return ListTile(
+      title: cellsType == 1
+          ? Text(
+              '${watchProvider.lastCells[index]['cells']}',
+              textDirection: TextDirection.rtl,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            )
+          : CellsType(str: watchProvider.lastCells[index]['cells']),
+      leading: Text('${watchProvider.lastCells[index]['date']}'),
+    );
+  }
+}
+
+class CellsType extends StatelessWidget {
+  const CellsType({Key? key, required this.str}) : super(key: key);
+
+  final String str;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> list = str.split(' ');
+    return SizedBox(
+      height: 75,
+      child: ListView.builder(
+        reverse: true,
+        itemCount: list.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) => Column(
+          children: [
+            Expanded(
+                child: Image.asset(cells[cells
+                        .indexWhere((element) => element.name == list[index])]
+                    .image)),
+            Text(list[index]),
+          ],
+        ),
+      ),
     );
   }
 }

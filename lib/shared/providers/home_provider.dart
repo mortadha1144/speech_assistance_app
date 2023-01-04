@@ -165,6 +165,7 @@ class HomeProvider with ChangeNotifier {
     await _flutterTts.setSpeechRate(0.3);
     await _flutterTts.speak(strOfNames);
     _scrollToBottom(from: 'speak');
+    insertIntoDatabase(cellsType: 2);
   }
 
   void addTextToSpeech() {
@@ -172,7 +173,7 @@ class HomeProvider with ChangeNotifier {
     if (textToSpeechController.text.isNotEmpty) {
       String text = textToSpeechController.text;
       _addedText = text.split(' ');
-      insertIntoDatabase();
+      insertIntoDatabase(cellsType: 1);
       notifyListeners();
     }
   }
@@ -264,11 +265,10 @@ class HomeProvider with ChangeNotifier {
       onOpen: (db) async {
         // await db.execute('DROP TABLE old_last_cells;').then((value) {
         //   //getDataFromDatabase(db);
-        //   print('table delleted');
+        //   print('table deleted');
         //   return null;
         // });
         getDataFromDatabase(db);
-
         print('database opened');
       },
     ).then((value) {
@@ -284,21 +284,69 @@ class HomeProvider with ChangeNotifier {
     });
   }
 
-  insertIntoDatabase() async {
-    String addTextString = _addedText.join(' ');
-    DateTime dateNow = DateTime.now();
-    DateFormat formatter = DateFormat('dd/MM/yyyy');
-    String formatted = formatter.format(dateNow);
-    await database?.rawInsert(
-        'INSERT OR IGNORE INTO last_cells (date,cells) VALUES (?,?)',
-        [formatted, addTextString]).then((value) {
-      print('inserted success');
-      getDataFromDatabase(database);
-      notifyListeners();
-      return null;
-    }).catchError((error) {
-      print('Error When Inserting New Record  ${error.toString()}');
-    });
+  insertIntoDatabase({required int cellsType}) async {
+    String date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    String cells = cellsType == 1 ? _addedText.join(' ') : strOfNames;
+    List<Map<String, Object?>>? checkBeforeInsert = await database?.query(
+      'last_cells',
+      columns: ['cells'],
+      where: 'cells =?',
+      whereArgs: [cells],
+    );
+    if (checkBeforeInsert!.isEmpty) {
+      await database
+          ?.insert(
+        'last_cells',
+        {'date': date, 'cells': cells, 'cells_type': cellsType},
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      )
+          .then((value) {
+        print('inserted success');
+        getDataFromDatabase(database);
+        notifyListeners();
+        return null;
+      }).catchError((error) {
+        print('Error When Inserting New Record  ${error.toString()}');
+      });
+    } else {
+      List<Map<String, Object?>>? checkBeforeUpdate = await database?.query(
+        'last_cells',
+        columns: ['date', 'cells'],
+        where: 'date =? AND cells =?',
+        whereArgs: [date, cells],
+      );
+
+      if (checkBeforeUpdate!.isEmpty) {
+        await database
+            ?.update(
+          'last_cells',
+          {'date': date},
+          where: 'cells = ?',
+          whereArgs: [cells],
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        )
+            .then((value) {
+          print('updating success');
+          getDataFromDatabase(database);
+          notifyListeners();
+          return null;
+        }).catchError((error) {
+          print('Error When Inserting New Record  ${error.toString()}');
+        });
+      }
+      //await database?.update('last_cells', values)
+    }
+
+    // await database?.rawInsert(
+    //     'INSERT OR IGNORE INTO last_cells (date,cells,cells_type) VALUES (?,?,?)',
+    //     [date, cells, cellsType]).then((value) {
+    //   print('inserted success');
+    //   getDataFromDatabase(database);
+    //   notifyListeners();
+    //   return null;
+    // }).catchError((error) {
+    //   print('Error When Inserting New Record  ${error.toString()}');
+    // });
 
     //
 
@@ -328,7 +376,15 @@ class HomeProvider with ChangeNotifier {
   }
 
   testOnDatabase() async {
-    var list = await database!.rawQuery('SELECT * FROM old_last_cells');
-    print(list);
+    //var list = await database!.rawQuery('SELECT * FROM old_last_cells');
+
+    int updateRecord = await database!.delete(
+      'last_cells',
+      where: 'id > 10',
+    );
+
+    print(updateRecord);
+
+    getDataFromDatabase(database);
   }
 }

@@ -16,7 +16,7 @@ import 'package:speech_assistance_app/models/cell/cell.dart';
 List<Cell> cells = [
   const Cell(id:1,serial:1,name: 'أنا', image: 'images/i.png',type: 1),
   const Cell(id:2,serial:2,name: 'أريد', image: 'images/want.png',type: 2),
-  const Cell(id:3,serial:3,name: 'ماذا ؟', image: 'images/what.png',type: 3),
+  const Cell(id:3,serial:3,name: 'ماذا', image: 'images/what.png',type: 3),
   const Cell(id:4,serial:4,name: 'لا', image: 'images/no.png',type: 4),
   const Cell(id:5,serial:5,name: 'أكثر', image: 'images/more.png',type: 4),
   const Cell(id:6,serial:6,name: 'أنت', image: 'images/you.png',type: 1),
