@@ -277,7 +277,7 @@ class HomeProvider with ChangeNotifier {
   }
 
   void getDataFromDatabase(Database? database) async {
-    await database!.rawQuery('SELECT * FROM last_cells').then((value) {
+    await database!.rawQuery('select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC').then((value) {
       lastCells = value;
       print(lastCells);
       //value.forEach((element) => print(element['cells']));
@@ -285,7 +285,7 @@ class HomeProvider with ChangeNotifier {
   }
 
   insertIntoDatabase({required int cellsType}) async {
-    String date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    String date = DateFormat('yyyy-MM-dd').format(DateTime.now());
     String cells = cellsType == 1 ? _addedText.join(' ') : strOfNames;
     List<Map<String, Object?>>? checkBeforeInsert = await database?.query(
       'last_cells',
@@ -378,13 +378,24 @@ class HomeProvider with ChangeNotifier {
   testOnDatabase() async {
     //var list = await database!.rawQuery('SELECT * FROM old_last_cells');
 
-    int updateRecord = await database!.delete(
-      'last_cells',
-      where: 'id > 10',
+
+    // Batch? batch =database?.batch();
+    //
+    //  batch?.update('last_cells',{'date':'2022-12-23'},where: 'id = 1');
+    //  batch?.update('last_cells',{'date':'2022-12-24'},where: 'id = 2');
+    //  batch?.update('last_cells',{'date':'2022-12-28'},where: 'id = 3');
+    //  batch?.update('last_cells',{'date':'2022-12-29'},where: 'id = 4');
+    //
+    // Future<List<Object?>>? commit= batch?.commit();
+    //
+    //
+    // print(commit.toString());
+
+    var queryd = await database!.rawQuery(
+      'select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC',
     );
+    print(queryd);
 
-    print(updateRecord);
-
-    getDataFromDatabase(database);
+    //getDataFromDatabase(database);
   }
 }
