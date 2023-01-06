@@ -111,7 +111,7 @@ class HomeProvider with ChangeNotifier {
       Cell removedAt = _tapedCells.removeAt(index);
       _key.currentState!.removeItem(
         index,
-        (context, animation) {
+            (context, animation) {
           return ScaleTransition(
             alignment: Alignment.centerRight,
             scale: animation,
@@ -133,7 +133,7 @@ class HomeProvider with ChangeNotifier {
         from == 'insert'
             ? const Duration(milliseconds: 50)
             : const Duration(seconds: 2),
-        () {
+            () {
           int duration = (lengthOfCellsList * 0.3).round();
           scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
@@ -223,7 +223,8 @@ class HomeProvider with ChangeNotifier {
                                 );
                             ''');
         await batch.commit().then((value) => print('table created')).catchError(
-            (error) => print('Error When batch database ${error.toString()}'));
+                (error) =>
+                print('Error When batch database ${error.toString()}'));
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         print('database upgrade open');
@@ -277,7 +278,10 @@ class HomeProvider with ChangeNotifier {
   }
 
   void getDataFromDatabase(Database? database) async {
-    await database!.rawQuery('select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC').then((value) {
+    await database!
+        .rawQuery(
+        'select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC')
+        .then((value) {
       lastCells = value;
       print(lastCells);
       //value.forEach((element) => print(element['cells']));
@@ -370,14 +374,25 @@ class HomeProvider with ChangeNotifier {
 
   void showCellsRecord(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.grey[200],
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
       context: context,
-      builder: (context) => const CellsRecord(),
+      builder: (context) =>
+          DraggableScrollableSheet(
+            expand: false,
+            maxChildSize: 0.9,
+            builder: (context, scrollController) =>
+                CellsRecord(scrollController: scrollController,),),
     );
   }
 
   testOnDatabase() async {
     //var list = await database!.rawQuery('SELECT * FROM old_last_cells');
-
 
     // Batch? batch =database?.batch();
     //

@@ -726,16 +726,38 @@ class PressedText extends StatelessWidget {
 }
 
 class CellsRecord extends StatelessWidget {
-  const CellsRecord({Key? key}) : super(key: key);
+  const CellsRecord({Key? key, this.scrollController}) : super(key: key);
+
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
     HomeProvider raedProvider = context.read<HomeProvider>();
-    return ListView.separated(
-      itemCount: watchProvider.lastCells.length,
-      itemBuilder: (BuildContext context, int index) => CellTile(index: index),
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          width: 50,
+          height: 5,
+          decoration: BoxDecoration(color: Colors.grey[400],borderRadius: BorderRadius.circular(10)),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Container(
+            margin:  const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
+            child: ListView.separated(
+              controller: scrollController,
+              shrinkWrap: true,
+              itemCount: watchProvider.lastCells.length,
+              itemBuilder: (BuildContext context, int index) => CellTile(index: index),
+              separatorBuilder: (BuildContext context, int index) => const Divider(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
