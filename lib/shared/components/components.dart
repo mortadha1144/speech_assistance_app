@@ -776,10 +776,10 @@ class CellTile extends StatelessWidget {
           ? Text(
               '${watchProvider.lastCells[index]['cells']}',
               textDirection: TextDirection.rtl,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
           : CellsType(str: watchProvider.lastCells[index]['cells']),
-      leading: Text('${watchProvider.lastCells[index]['date']}'),
+      trailing: Text('${watchProvider.lastCells[index]['date']}'),
     );
   }
 }

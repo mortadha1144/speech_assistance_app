@@ -5,6 +5,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
 import 'package:speech_assistance_app/modules/home/home_screen.dart';
+import 'package:speech_assistance_app/modules/home/last_records_screen.dart';
 import 'package:speech_assistance_app/modules/home/settings_screen.dart';
 import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
@@ -64,6 +65,7 @@ class HomeProvider with ChangeNotifier {
   List<Widget> screens = [
     const TextToSpeechScreen(),
     const HomeScreen(),
+    const LastRecordsScreen(),
     const SettingScreen(),
   ];
 
