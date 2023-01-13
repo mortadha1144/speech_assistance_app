@@ -17,9 +17,9 @@ class LastRecordsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppBar(
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: Colors.blueGrey, // Status bar
-      ),
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Colors.blueGrey, // Status bar
+            ),
             title: const Text(
               'سجل العبارات المستخدمة',
               style: TextStyle(
@@ -29,9 +29,7 @@ class LastRecordsScreen extends StatelessWidget {
             ),
             backgroundColor: Colors.blueGrey,
             actions: [
-              IconButton(onPressed: () {
-
-              }, icon:const Icon(Icons.more_vert))
+              IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
             ],
           ),
           Expanded(

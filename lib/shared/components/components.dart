@@ -741,19 +741,23 @@ class CellsRecord extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 8),
           width: 50,
           height: 5,
-          decoration: BoxDecoration(color: Colors.grey[400],borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: Colors.grey[400], borderRadius: BorderRadius.circular(10)),
         ),
         Flexible(
           fit: FlexFit.loose,
           child: Container(
-            margin:  const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: ListView.separated(
               controller: scrollController,
               shrinkWrap: true,
               itemCount: watchProvider.lastCells.length,
-              itemBuilder: (BuildContext context, int index) => CellTile(index: index),
-              separatorBuilder: (BuildContext context, int index) => const Divider(),
+              itemBuilder: (BuildContext context, int index) =>
+                  CellTile(index: index),
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
             ),
           ),
         ),
@@ -779,7 +783,17 @@ class CellTile extends StatelessWidget {
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
           : CellsType(str: watchProvider.lastCells[index]['cells']),
-      trailing: Text('${watchProvider.lastCells[index]['date']}'),
+      trailing: Container(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.grey.withOpacity(0.5),
+        ),
+        child: Text(
+          '${watchProvider.lastCells[index]['date']}',
+          style: TextStyle(fontWeight: FontWeight.w400),
+        ),
+      ),
     );
   }
 }
