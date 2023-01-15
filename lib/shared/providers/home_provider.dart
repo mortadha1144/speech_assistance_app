@@ -113,7 +113,7 @@ class HomeProvider with ChangeNotifier {
       Cell removedAt = _tapedCells.removeAt(index);
       _key.currentState!.removeItem(
         index,
-            (context, animation) {
+        (context, animation) {
           return ScaleTransition(
             alignment: Alignment.centerRight,
             scale: animation,
@@ -135,7 +135,7 @@ class HomeProvider with ChangeNotifier {
         from == 'insert'
             ? const Duration(milliseconds: 50)
             : const Duration(seconds: 2),
-            () {
+        () {
           int duration = (lengthOfCellsList * 0.3).round();
           scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
@@ -225,8 +225,7 @@ class HomeProvider with ChangeNotifier {
                                 );
                             ''');
         await batch.commit().then((value) => print('table created')).catchError(
-                (error) =>
-                print('Error When batch database ${error.toString()}'));
+            (error) => print('Error When batch database ${error.toString()}'));
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         print('database upgrade open');
@@ -282,7 +281,7 @@ class HomeProvider with ChangeNotifier {
   void getDataFromDatabase(Database? database) async {
     await database!
         .rawQuery(
-        'select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC')
+            'select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC')
         .then((value) {
       lastCells = value;
       print(lastCells);
@@ -384,12 +383,13 @@ class HomeProvider with ChangeNotifier {
         ),
       ),
       context: context,
-      builder: (context) =>
-          DraggableScrollableSheet(
-            expand: false,
-            maxChildSize: 0.9,
-            builder: (context, scrollController) =>
-                CellsRecord(scrollController: scrollController,),),
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        maxChildSize: 0.9,
+        builder: (context, scrollController) => CellsRecord(
+          scrollController: scrollController,
+        ),
+      ),
     );
   }
 
@@ -414,5 +414,15 @@ class HomeProvider with ChangeNotifier {
     print(queryd);
 
     //getDataFromDatabase(database);
+  }
+
+  getdates(String date) {
+    DateTime dateConverted = DateTime.parse(date);
+    String nowDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    DateTime dateYesterday = DateTime.now().subtract(const Duration(days: 1));
+    if (date == nowDate) {
+      print('today');
+    }
+    print(dateYesterday);
   }
 }
