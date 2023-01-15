@@ -421,11 +421,11 @@ class HomeProvider with ChangeNotifier {
 
   getdates(String date) {
     DateTime dateConverted = DateTime.parse(date);
-    String nowDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
     String yesterday = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().subtract(const Duration(days: 1)));
     //DateTime dateYesterday = DateTime.now().subtract(const Duration(days: 1));
-    if (date == nowDate) {
+    if (date == today) {
       print('اليوم');
     } else if (date == yesterday) {
       print('أمس');
