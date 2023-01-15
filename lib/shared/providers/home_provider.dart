@@ -281,7 +281,7 @@ class HomeProvider with ChangeNotifier {
   void getDataFromDatabase(Database? database) async {
     await database!
         .rawQuery(
-            'select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC')
+            'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type from last_cells order by date(date) DESC')
         .then((value) {
       lastCells = value;
       print(lastCells);
@@ -290,7 +290,8 @@ class HomeProvider with ChangeNotifier {
   }
 
   insertIntoDatabase({required int cellsType}) async {
-    String date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String date = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    ;
     String cells = cellsType == 1 ? _addedText.join(' ') : strOfNames;
     List<Map<String, Object?>>? checkBeforeInsert = await database?.query(
       'last_cells',
@@ -396,33 +397,46 @@ class HomeProvider with ChangeNotifier {
   testOnDatabase() async {
     //var list = await database!.rawQuery('SELECT * FROM old_last_cells');
 
-    // Batch? batch =database?.batch();
-    //
-    //  batch?.update('last_cells',{'date':'2022-12-23'},where: 'id = 1');
-    //  batch?.update('last_cells',{'date':'2022-12-24'},where: 'id = 2');
-    //  batch?.update('last_cells',{'date':'2022-12-28'},where: 'id = 3');
-    //  batch?.update('last_cells',{'date':'2022-12-29'},where: 'id = 4');
-    //
-    // Future<List<Object?>>? commit= batch?.commit();
-    //
-    //
+    // Batch? batch = database?.batch();
+
+    // batch?.update('last_cells', {'date': '2023-01-11 22:18:48'},
+    //     where: 'id = 1');
+    // batch?.update('last_cells', {'date': '2023-01-12 18:18:48'},
+    //     where: 'id = 2');
+    // batch?.update('last_cells', {'date': '2023-01-13 21:18:48'},
+    //     where: 'id = 3');
+    //batch?.update('last_cells',{'date':'2023-01-13 11:18:48'},where: 'id = 4');
+
+    // Future<List<Object?>>? commit = batch?.commit();
+
     // print(commit.toString());
 
-    var queryd = await database!.rawQuery(
-      'select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC',
-    );
-    print(queryd);
+    // var queryd = await database!.rawQuery(
+    //   'select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC',
+    // );
+    // print(queryd);
 
-    //getDataFromDatabase(database);
+    // getDataFromDatabase(database);
   }
 
   getdates(String date) {
     DateTime dateConverted = DateTime.parse(date);
-    String nowDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    DateTime dateYesterday = DateTime.now().subtract(const Duration(days: 1));
+    String nowDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String yesterday = DateFormat('yyyy-MM-dd')
+        .format(DateTime.now().subtract(const Duration(days: 1)));
+    //DateTime dateYesterday = DateTime.now().subtract(const Duration(days: 1));
     if (date == nowDate) {
       print('اليوم');
+    } else if (date == yesterday) {
+      print('أمس');
     }
-    print(dateYesterday);
+
+    var week = DateTime.now().weekday;
+
+    // String str = DateTime.now().toString();
+    // String str2 = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+    // print(str);
+    // print(str2);
   }
 }
