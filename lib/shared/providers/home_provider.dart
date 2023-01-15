@@ -419,24 +419,22 @@ class HomeProvider with ChangeNotifier {
     // getDataFromDatabase(database);
   }
 
-  getdates(String date) {
+  String getdates(String date) {
     DateTime dateConverted = DateTime.parse(date);
+    final DateTime nowDate = DateTime.now();
+    DateTime nowShortDate = DateTime(nowDate.year, nowDate.month, nowDate.day);
+    DateTime weekFromToday = nowShortDate.subtract(const Duration(days: 6));
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
     String yesterday = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().subtract(const Duration(days: 1)));
-    //DateTime dateYesterday = DateTime.now().subtract(const Duration(days: 1));
     if (date == today) {
-      print('اليوم');
+      return 'اليوم';
     } else if (date == yesterday) {
-      print('أمس');
+      return 'أمس';
+    } else if (weekFromToday.isBefore(dateConverted)) {
+      return 'منذ أسبوع';
+    } else {
+      return 'سابقاً';
     }
-
-    var week = DateTime.now().weekday;
-
-    // String str = DateTime.now().toString();
-    // String str2 = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-
-    // print(str);
-    // print(str2);
   }
 }
