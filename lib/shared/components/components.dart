@@ -791,7 +791,7 @@ class CellTile extends StatelessWidget {
         ),
         child: Text(
           '${watchProvider.lastCells[index]['date']}',
-          style: TextStyle(fontWeight: FontWeight.w400),
+          style: const TextStyle(fontWeight: FontWeight.w400),
         ),
       ),
     );
