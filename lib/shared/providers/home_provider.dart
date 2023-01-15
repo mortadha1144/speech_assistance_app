@@ -421,7 +421,7 @@ class HomeProvider with ChangeNotifier {
     String nowDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
     DateTime dateYesterday = DateTime.now().subtract(const Duration(days: 1));
     if (date == nowDate) {
-      print('today');
+      print('اليوم');
     }
     print(dateYesterday);
   }
