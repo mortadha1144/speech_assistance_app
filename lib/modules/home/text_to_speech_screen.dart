@@ -119,7 +119,7 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                         width: 20,
                       ),
                       TextButtonForTapBar(
-                        onPressed: () => watchProvider.getdates('2023-01-12'),
+                        onPressed: () => watchProvider.testOnDatabase(),
                         text: 'test',
                       ),
                     ],

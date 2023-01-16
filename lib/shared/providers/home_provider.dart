@@ -197,6 +197,7 @@ class HomeProvider with ChangeNotifier {
 
   Database? database;
   List<Map> lastCells = [];
+  var distinctLastDateOfLastCells = <String>{};
 
   void createDatabase() {
     openDatabase(
@@ -284,7 +285,10 @@ class HomeProvider with ChangeNotifier {
             'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type from last_cells order by date(date) DESC')
         .then((value) {
       lastCells = value;
+      distinctLastDateOfLastCells = List<String>.generate(
+          lastCells.length, (index) => lastCells[index]['short_date']).toSet();
       print(lastCells);
+      print(distinctLastDateOfLastCells);
       //value.forEach((element) => print(element['cells']));
     });
   }
@@ -417,6 +421,10 @@ class HomeProvider with ChangeNotifier {
     // print(queryd);
 
     // getDataFromDatabase(database);
+
+    var testList = List.generate(
+        lastCells.length, (index) => lastCells[index]['short_date']).toSet();
+    print(testList);
   }
 
   String getdates(String date) {
