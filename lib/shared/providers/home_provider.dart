@@ -197,7 +197,10 @@ class HomeProvider with ChangeNotifier {
 
   Database? database;
   List<Map> lastCells = [];
-  var distinctLastDateOfLastCells = <String>{};
+  Set<String> distinctLastDateOfLastCells = <String>{};
+
+  Map<String,List<Map>> lastCellsAsMap = {};
+
 
   void createDatabase() {
     openDatabase(
@@ -285,10 +288,16 @@ class HomeProvider with ChangeNotifier {
             'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type from last_cells order by date(date) DESC')
         .then((value) {
       lastCells = value;
-      distinctLastDateOfLastCells = List<String>.generate(
-          lastCells.length, (index) => lastCells[index]['short_date']).toSet();
+      distinctLastDateOfLastCells = List<String>.generate(lastCells.length,
+          (index) => getdates(lastCells[index]['short_date'])).toSet();
+      lastCellsAsMap = Map.fromIterable(
+        distinctLastDateOfLastCells,
+        value: (element1) => lastCells
+            .where((element2) => getdates(element2['short_date']) == element1).toList(),
+      );
       print(lastCells);
       print(distinctLastDateOfLastCells);
+      print(lastCellsAsMap);
       //value.forEach((element) => print(element['cells']));
     });
   }
@@ -378,26 +387,6 @@ class HomeProvider with ChangeNotifier {
     //print(formatted);
   }
 
-  void showCellsRecord(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Colors.grey[200],
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      context: context,
-      builder: (context) => DraggableScrollableSheet(
-        expand: false,
-        maxChildSize: 0.9,
-        builder: (context, scrollController) => CellsRecord(
-          scrollController: scrollController,
-        ),
-      ),
-    );
-  }
-
   testOnDatabase() async {
     //var list = await database!.rawQuery('SELECT * FROM old_last_cells');
 
@@ -444,5 +433,15 @@ class HomeProvider with ChangeNotifier {
     } else {
       return 'سابقاً';
     }
+  }
+
+  litToMap() {
+    var map = Map.fromIterable(
+      distinctLastDateOfLastCells,
+      value: (element1) => lastCells
+          .where((element2) => getdates(element2['short_date']) == element1),
+    );
+
+    print(map);
   }
 }

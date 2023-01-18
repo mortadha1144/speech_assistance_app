@@ -725,64 +725,28 @@ class PressedText extends StatelessWidget {
   }
 }
 
-class CellsRecord extends StatelessWidget {
-  const CellsRecord({Key? key, this.scrollController}) : super(key: key);
-
-  final ScrollController? scrollController;
-
-  @override
-  Widget build(BuildContext context) {
-    HomeProvider watchProvider = context.watch<HomeProvider>();
-    HomeProvider raedProvider = context.read<HomeProvider>();
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 8),
-          width: 50,
-          height: 5,
-          decoration: BoxDecoration(
-              color: Colors.grey[400], borderRadius: BorderRadius.circular(10)),
-        ),
-        Flexible(
-          fit: FlexFit.loose,
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: ListView.separated(
-              controller: scrollController,
-              shrinkWrap: true,
-              itemCount: watchProvider.lastCells.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  CellTile(index: index),
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class CellTile extends StatelessWidget {
-  const CellTile({Key? key, required this.index}) : super(key: key);
+  const CellTile({
+    Key? key,
+    required this.index,
+    required this.key1,
+  }) : super(key: key);
 
   final int index;
+  final String key1;
 
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
-    int cellsType = watchProvider.lastCells[index]['cells_type'];
+    int cellsType = watchProvider.lastCellsAsMap[key1]![index]['cells_type'];
     return ListTile(
       title: cellsType == 1
           ? Text(
-              '${watchProvider.lastCells[index]['cells']}',
+              '${watchProvider.lastCellsAsMap[key1]![index]['cells']}',
               textDirection: TextDirection.rtl,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
-          : CellsType(str: watchProvider.lastCells[index]['cells']),
+          : CellsType(str: watchProvider.lastCellsAsMap[key1]![index]['cells']),
       trailing: Container(
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
         decoration: BoxDecoration(
@@ -790,7 +754,7 @@ class CellTile extends StatelessWidget {
           color: Colors.grey.withOpacity(0.5),
         ),
         child: Text(
-          '${watchProvider.lastCells[index]['date']}',
+          '${watchProvider.lastCellsAsMap[key1]![index]['date']}',
           style: const TextStyle(fontWeight: FontWeight.w400),
         ),
       ),

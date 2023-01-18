@@ -119,7 +119,7 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                         width: 20,
                       ),
                       TextButtonForTapBar(
-                        onPressed: () => watchProvider.testOnDatabase(),
+                        onPressed: () => watchProvider.litToMap(),
                         text: 'test',
                       ),
                     ],
@@ -127,7 +127,7 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                 ),
                 const Expanded(child: SizedBox()),
                 TextButtonForTapBar(
-                  onPressed: () => watchProvider.showCellsRecord(context),
+                  onPressed: () {},
                   text: 'الرئيسية',
                   icon: Icons.chevron_right,
                 )
