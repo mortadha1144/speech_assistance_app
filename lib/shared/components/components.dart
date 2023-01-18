@@ -754,7 +754,8 @@ class CellTile extends StatelessWidget {
           color: Colors.grey.withOpacity(0.5),
         ),
         child: Text(
-          '${watchProvider.lastCellsAsMap[key1]![index]['date']}',
+          //'${watchProvider.lastCellsAsMap[key1]![index]['date']}',
+          watchProvider.getCustomDates(key1, watchProvider.lastCellsAsMap[key1]![index]['date'] ),
           style: const TextStyle(fontWeight: FontWeight.w400),
         ),
       ),

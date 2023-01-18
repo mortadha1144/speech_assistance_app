@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/layout/speech_assistance_app/speech_assistance_layout.dart';
 import 'package:speech_assistance_app/shared/providers/home_provider.dart';
 //import 'package:speech_assistance_app/cell_widget.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => HomeProvider()..createDatabase()),
-    ],
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => HomeProvider()..createDatabase()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

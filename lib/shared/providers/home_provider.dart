@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:speech_assistance_app/models/cell/cell.dart';
 import 'package:speech_assistance_app/modules/home/home_screen.dart';
@@ -199,8 +200,7 @@ class HomeProvider with ChangeNotifier {
   List<Map> lastCells = [];
   Set<String> distinctLastDateOfLastCells = <String>{};
 
-  Map<String,List<Map>> lastCellsAsMap = {};
-
+  Map<String, List<Map>> lastCellsAsMap = {};
 
   void createDatabase() {
     openDatabase(
@@ -289,11 +289,13 @@ class HomeProvider with ChangeNotifier {
         .then((value) {
       lastCells = value;
       distinctLastDateOfLastCells = List<String>.generate(lastCells.length,
-          (index) => getdates(lastCells[index]['short_date'])).toSet();
+          (index) => getSinceDates(lastCells[index]['short_date'])).toSet();
       lastCellsAsMap = Map.fromIterable(
         distinctLastDateOfLastCells,
         value: (element1) => lastCells
-            .where((element2) => getdates(element2['short_date']) == element1).toList(),
+            .where(
+                (element2) => getSinceDates(element2['short_date']) == element1)
+            .toList(),
       );
       print(lastCells);
       print(distinctLastDateOfLastCells);
@@ -387,36 +389,38 @@ class HomeProvider with ChangeNotifier {
     //print(formatted);
   }
 
-  testOnDatabase() async {
-    //var list = await database!.rawQuery('SELECT * FROM old_last_cells');
-
-    // Batch? batch = database?.batch();
-
-    // batch?.update('last_cells', {'date': '2023-01-11 22:18:48'},
-    //     where: 'id = 1');
-    // batch?.update('last_cells', {'date': '2023-01-12 18:18:48'},
-    //     where: 'id = 2');
-    // batch?.update('last_cells', {'date': '2023-01-13 21:18:48'},
-    //     where: 'id = 3');
-    //batch?.update('last_cells',{'date':'2023-01-13 11:18:48'},where: 'id = 4');
-
-    // Future<List<Object?>>? commit = batch?.commit();
-
-    // print(commit.toString());
-
-    // var queryd = await database!.rawQuery(
-    //   'select id,strftime(\'%d/%m/%Y\',date) AS date,cells,cells_type from last_cells order by date(date) DESC',
-    // );
-    // print(queryd);
-
-    // getDataFromDatabase(database);
-
-    var testList = List.generate(
-        lastCells.length, (index) => lastCells[index]['short_date']).toSet();
-    print(testList);
+  testOnDatabase(String sinceDate, String date) {
+    DateTime dateConverted = DateTime.parse(date);
+    String dateFormatted = '';
+    // initializeDateFormatting('ar_DZ').then((value) {
+    //   var date = DateFormat('EEEE', 'ar_DZ').format(dateConverted);
+    //   print(date);
+    // });
+    switch (sinceDate) {
+      case 'أمس':
+      case 'اليوم':
+        initializeDateFormatting('ar_DZ').then((value) {
+          dateFormatted = DateFormat('hh:mm a', 'ar_DZ').format(dateConverted);
+        });
+        print(dateFormatted);
+        break;
+      case 'منذ أسبوع':
+        initializeDateFormatting('ar_DZ').then((value) {
+          dateFormatted = DateFormat('EEEE', 'ar_DZ').format(dateConverted);
+        });
+        print(dateFormatted);
+        print('منذ أسبوع');
+        break;
+      case 'سابقاً':
+        print(dateFormatted);
+        break;
+      default:
+        print('خطأ');
+    }
+    //print(dateConverted);
   }
 
-  String getdates(String date) {
+  String getSinceDates(String date) {
     DateTime dateConverted = DateTime.parse(date);
     final DateTime nowDate = DateTime.now();
     DateTime nowShortDate = DateTime(nowDate.year, nowDate.month, nowDate.day);
@@ -435,11 +439,27 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
+  String getCustomDates(String sinceDate, String date) {
+    DateTime dateConverted = DateTime.parse(date);
+    initializeDateFormatting('ar_DZ', null);
+    switch (sinceDate) {
+      case 'أمس':
+      case 'اليوم':
+        return DateFormat('hh:mm a', 'ar_DZ').format(dateConverted);
+      case 'منذ أسبوع':
+        return DateFormat('EEEE', 'ar_DZ').format(dateConverted);
+      case 'سابقاً':
+        return DateFormat('dd/MM/yyyy').format(dateConverted);
+      default:
+        return '';
+    }
+  }
+
   litToMap() {
     var map = Map.fromIterable(
       distinctLastDateOfLastCells,
-      value: (element1) => lastCells
-          .where((element2) => getdates(element2['short_date']) == element1),
+      value: (element1) => lastCells.where(
+          (element2) => getSinceDates(element2['short_date']) == element1),
     );
 
     print(map);
