@@ -10,6 +10,7 @@ class LastRecordsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
+    Iterable<String> keyValue = watchProvider.lastCellsAsMap.keys;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -39,18 +40,16 @@ class LastRecordsScreen extends StatelessWidget {
                 children: [
                   ListTile(
                     title: Text(
-                      watchProvider.lastCellsAsMap.keys.elementAt(index1),
+                      keyValue.elementAt(index1),
                     ),
                   ),
                   ListView.separated(
                     shrinkWrap: true,
                     itemCount: watchProvider
-                        .lastCellsAsMap[watchProvider.lastCellsAsMap.keys
-                            .elementAt(index1)]!
-                        .length,
+                        .lastCellsAsMap[keyValue.elementAt(index1)]!.length,
                     itemBuilder: (BuildContext context, int index2) => CellTile(
                       index: index2,
-                      key1: watchProvider.lastCellsAsMap.keys.elementAt(index1),
+                      keyValue: keyValue.elementAt(index1),
                     ),
                     separatorBuilder: (BuildContext context, int index) =>
                         const Divider(),

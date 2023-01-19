@@ -729,33 +729,31 @@ class CellTile extends StatelessWidget {
   const CellTile({
     Key? key,
     required this.index,
-    required this.key1,
+    required this.keyValue,
   }) : super(key: key);
 
   final int index;
-  final String key1;
+  final String keyValue;
 
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
-    int cellsType = watchProvider.lastCellsAsMap[key1]![index]['cells_type'];
+    int cellsType =
+        watchProvider.lastCellsAsMap[keyValue]![index]['cells_type'];
+    String cells = watchProvider.lastCellsAsMap[keyValue]![index]['cells'];
+    String date = watchProvider.lastCellsAsMap[keyValue]![index]['date'];
     return ListTile(
       title: cellsType == 1
           ? Text(
-              '${watchProvider.lastCellsAsMap[key1]![index]['cells']}',
+              cells,
               textDirection: TextDirection.rtl,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
-          : CellsType(str: watchProvider.lastCellsAsMap[key1]![index]['cells']),
-      trailing: Container(
+          : CellsType(str: cells),
+      trailing: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.grey.withOpacity(0.5),
-        ),
         child: Text(
-          //'${watchProvider.lastCellsAsMap[key1]![index]['date']}',
-          watchProvider.getCustomDates(key1, watchProvider.lastCellsAsMap[key1]![index]['date'] ),
+          watchProvider.getCustomDates(keyValue, date),
           style: const TextStyle(fontWeight: FontWeight.w400),
         ),
       ),

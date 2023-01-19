@@ -455,13 +455,5 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  litToMap() {
-    var map = Map.fromIterable(
-      distinctLastDateOfLastCells,
-      value: (element1) => lastCells.where(
-          (element2) => getSinceDates(element2['short_date']) == element1),
-    );
 
-    print(map);
-  }
 }
