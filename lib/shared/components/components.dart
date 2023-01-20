@@ -743,6 +743,7 @@ class CellTile extends StatelessWidget {
     String cells = watchProvider.lastCellsAsMap[keyValue]![index]['cells'];
     String date = watchProvider.lastCellsAsMap[keyValue]![index]['date'];
     return ListTile(
+      contentPadding: const EdgeInsets.only(right: 30,left: 16),
       title: cellsType == 1
           ? Text(
               cells,
@@ -750,12 +751,9 @@ class CellTile extends StatelessWidget {
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
           : CellsType(str: cells),
-      trailing: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-        child: Text(
-          watchProvider.getCustomDates(keyValue, date),
-          style: const TextStyle(fontWeight: FontWeight.w400),
-        ),
+      trailing: Text(
+        watchProvider.getCustomDates(keyValue, date),
+        style:  const TextStyle(fontWeight: FontWeight.w400,color: Colors.grey),
       ),
     );
   }

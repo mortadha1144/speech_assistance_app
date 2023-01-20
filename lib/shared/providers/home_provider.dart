@@ -205,7 +205,7 @@ class HomeProvider with ChangeNotifier {
   void createDatabase() {
     openDatabase(
       'my_cells.db',
-      version: 7,
+      version: 10,
       onCreate: (db, version) async {
         print('database created');
         Batch batch = db.batch();
@@ -233,12 +233,24 @@ class HomeProvider with ChangeNotifier {
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         print('database upgrade open');
+
+        // await db
+        //     .execute(
+        //         'ALTER TABLE last_cells ADD COLUMN is_fixed BOOLEAN DEFAULT 0;')
+        //     .then((value) => print('database upgraded'))
+        //     .catchError((error) =>
+        //         print('Error When upgrade Table ${error.toString()}'));
+        // await db.transaction((txn) async {
+        //   await txn.execute('ALTER TABLE last_cells DROP COLUMN is_fixed;');
+        //   await txn.execute('ALTER TABLE last_cells ADD COLUMN is_fixed BOOLEAN DEFAULT 0 NOT NULL CHECK (is_fixed IN (0, 1);');
+        //   return null;
+        // });
         // await db
         //     .transaction((txn) async {
-        //       await txn.execute(
-        //           'CREATE TABLE cell_types(type_id INTEGER PRIMARY KEY,type_name TEXT NOT NULL UNIQUE)');
-        //       await txn.insert('cell_types', {'type_name': 'text'});
-        //       await txn.insert('cell_types', {'type_name': 'cells'});
+        //       // await txn.execute(
+        //       //     'CREATE TABLE cell_types(type_id INTEGER PRIMARY KEY,type_name TEXT NOT NULL UNIQUE)');
+        //       // await txn.insert('cell_types', {'type_name': 'text'});
+        //       // await txn.insert('cell_types', {'type_name': 'cells'});
         //       await txn
         //           .execute('ALTER TABLE last_cells RENAME TO old_last_cells');
         //       await txn.execute('''CREATE TABLE last_cells(
@@ -254,7 +266,7 @@ class HomeProvider with ChangeNotifier {
         //                     ''');
         //       await txn.execute(
         //           'INSERT INTO last_cells SELECT id,date,cells,1 FROM old_last_cells;');
-
+        //
         //       return null;
         //     })
         //     .then((value) => print('database upgraded'))
@@ -285,7 +297,7 @@ class HomeProvider with ChangeNotifier {
   void getDataFromDatabase(Database? database) async {
     await database!
         .rawQuery(
-            'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type from last_cells order by date(date) DESC')
+            'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_fixed from last_cells order by datetime(date) DESC')
         .then((value) {
       lastCells = value;
       distinctLastDateOfLastCells = List<String>.generate(lastCells.length,
@@ -449,11 +461,9 @@ class HomeProvider with ChangeNotifier {
       case 'منذ أسبوع':
         return DateFormat('EEEE', 'ar_DZ').format(dateConverted);
       case 'سابقاً':
-        return DateFormat('dd/MM/yyyy').format(dateConverted);
+        return DateFormat('yy.MM.dd').format(dateConverted);
       default:
         return '';
     }
   }
-
-
 }
