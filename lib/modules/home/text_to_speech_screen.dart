@@ -119,9 +119,7 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                         width: 20,
                       ),
                       TextButtonForTapBar(
-                        onPressed: () {
-
-                        },
+                        onPressed: () => watchProvider.testOnDatabase(),
                         text: 'test',
                       ),
                     ],

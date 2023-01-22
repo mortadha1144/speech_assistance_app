@@ -199,6 +199,11 @@ class HomeProvider with ChangeNotifier {
   Database? database;
   List<Map> lastCells = [];
   Set<String> distinctLastDateOfLastCells = <String>{};
+  Set<String> distinctIsFixedOrNotOfLastCells = <String>{};
+
+  List<Map> lastCellsFixed = [];
+  List<Map> lastCellsNotFixed = [];
+  Map fixedAndNotFixed = {};
 
   Map<String, List<Map>> lastCellsAsMap = {};
 
@@ -222,6 +227,7 @@ class HomeProvider with ChangeNotifier {
                                    date TEXT NOT NULL,
                                    cells TEXT NOT NULL UNIQUE,
                                    cells_type INTEGER ,
+                                   is_fixed BOOLEAN DEFAULT 0,
                                    FOREIGN KEY (cells_type)
                                         REFERENCES cell_types (type_id)
                                         ON UPDATE CASCADE
@@ -300,8 +306,37 @@ class HomeProvider with ChangeNotifier {
             'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_fixed from last_cells order by datetime(date) DESC')
         .then((value) {
       lastCells = value;
+      distinctIsFixedOrNotOfLastCells = List<String>.generate(
+        lastCells.length,
+        (index) => isFixedOrNot(lastCells[index]['is_fixed']),
+      ).toSet();
       distinctLastDateOfLastCells = List<String>.generate(lastCells.length,
           (index) => getSinceDates(lastCells[index]['short_date'])).toSet();
+      fixedAndNotFixed = Map.fromIterable(
+        distinctIsFixedOrNotOfLastCells,
+        value: (element) {
+          if (element == 'مثبتة') {
+            return lastCells
+                .where((element2) => element2['is_fixed'] == 1)
+                .toList();
+          } else if (element == 'غير مثبتة') {
+            return Map.fromIterable(
+              distinctLastDateOfLastCells,
+              value: (element1) => lastCells
+                  .where((element2) =>
+                      element2['is_fixed'] == 0 &&
+                      getSinceDates(element2['short_date']) == element1)
+                  .toList(),
+            );
+          }else {
+            return null;
+          }
+        },
+      );
+      lastCellsFixed =
+          lastCells.where((element) => element['is_fixed'] == 1).toList();
+      lastCellsNotFixed =
+          lastCells.where((element) => element['is_fixed'] == 0).toList();
       lastCellsAsMap = Map.fromIterable(
         distinctLastDateOfLastCells,
         value: (element1) => lastCells
@@ -309,9 +344,10 @@ class HomeProvider with ChangeNotifier {
                 (element2) => getSinceDates(element2['short_date']) == element1)
             .toList(),
       );
-      print(lastCells);
-      print(distinctLastDateOfLastCells);
-      print(lastCellsAsMap);
+      //print(lastCells);
+      //print(distinctLastDateOfLastCells);
+      //print(lastCellsAsMap);
+      print(fixedAndNotFixed);
       //value.forEach((element) => print(element['cells']));
     });
   }
@@ -401,35 +437,26 @@ class HomeProvider with ChangeNotifier {
     //print(formatted);
   }
 
-  testOnDatabase(String sinceDate, String date) {
-    DateTime dateConverted = DateTime.parse(date);
-    String dateFormatted = '';
-    // initializeDateFormatting('ar_DZ').then((value) {
-    //   var date = DateFormat('EEEE', 'ar_DZ').format(dateConverted);
-    //   print(date);
-    // });
-    switch (sinceDate) {
-      case 'أمس':
-      case 'اليوم':
-        initializeDateFormatting('ar_DZ').then((value) {
-          dateFormatted = DateFormat('hh:mm a', 'ar_DZ').format(dateConverted);
-        });
-        print(dateFormatted);
-        break;
-      case 'منذ أسبوع':
-        initializeDateFormatting('ar_DZ').then((value) {
-          dateFormatted = DateFormat('EEEE', 'ar_DZ').format(dateConverted);
-        });
-        print(dateFormatted);
-        print('منذ أسبوع');
-        break;
-      case 'سابقاً':
-        print(dateFormatted);
-        break;
-      default:
-        print('خطأ');
-    }
-    //print(dateConverted);
+  testOnDatabase() async {
+    Batch batch = database!.batch();
+
+    batch.update(
+      'last_cells',
+      {'is_fixed': 1},
+      where: 'id=?',
+      whereArgs: [9],
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+    batch.update(
+      'last_cells',
+      {'is_fixed': 1},
+      where: 'id=?',
+      whereArgs: [7],
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+    await batch.commit().then((value) => print('table updated')).catchError(
+            (error) => print('Error When batch database ${error.toString()}'));
+
   }
 
   String getSinceDates(String date) {
@@ -464,6 +491,14 @@ class HomeProvider with ChangeNotifier {
         return DateFormat('yy.MM.dd').format(dateConverted);
       default:
         return '';
+    }
+  }
+
+  String isFixedOrNot(int isFixedValue) {
+    if (isFixedValue == 0) {
+      return 'غير مثبتة';
+    } else {
+      return 'مثبتة';
     }
   }
 }
