@@ -346,7 +346,7 @@ class HomeProvider with ChangeNotifier {
       );
       //print(lastCells);
       //print(distinctLastDateOfLastCells);
-      //print(lastCellsAsMap);
+      print(lastCellsAsMap);
       print(fixedAndNotFixed);
       //value.forEach((element) => print(element['cells']));
     });
