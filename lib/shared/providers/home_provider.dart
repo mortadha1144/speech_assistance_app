@@ -199,7 +199,7 @@ class HomeProvider with ChangeNotifier {
   Database? database;
   List<Map> lastCells = [];
   Set<String> distinctLastDateOfLastCells = <String>{};
-  Set<String> distinctIsFixedOrNotOfLastCells = <String>{};
+  Set<int> distinctIsFixedOrNotOfLastCells = <int>{};
 
   List<Map> lastCellsFixed = [];
   List<Map> lastCellsNotFixed = [];
@@ -303,23 +303,23 @@ class HomeProvider with ChangeNotifier {
   void getDataFromDatabase(Database? database) async {
     await database!
         .rawQuery(
-            'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_fixed from last_cells order by datetime(date) DESC')
+            'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_fixed from last_cells order by is_fixed DESC, datetime(date) DESC')
         .then((value) {
       lastCells = value;
-      distinctIsFixedOrNotOfLastCells = List<String>.generate(
+      distinctIsFixedOrNotOfLastCells = List<int>.generate(
         lastCells.length,
-        (index) => isFixedOrNot(lastCells[index]['is_fixed']),
+        (index) => lastCells[index]['is_fixed'],
       ).toSet();
       distinctLastDateOfLastCells = List<String>.generate(lastCells.length,
           (index) => getSinceDates(lastCells[index]['short_date'])).toSet();
       fixedAndNotFixed = Map.fromIterable(
         distinctIsFixedOrNotOfLastCells,
         value: (element) {
-          if (element == 'مثبتة') {
+          if (element == 1) {
             return lastCells
                 .where((element2) => element2['is_fixed'] == 1)
                 .toList();
-          } else if (element == 'غير مثبتة') {
+          } else if (element == 0) {
             return Map.fromIterable(
               distinctLastDateOfLastCells,
               value: (element1) => lastCells
