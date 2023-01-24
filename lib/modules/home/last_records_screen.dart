@@ -10,7 +10,7 @@ class LastRecordsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
-    Iterable<String> keyValue = watchProvider.lastCellsAsMap.keys;
+    Iterable keyValue = watchProvider.fixedAndNotFixed.keys;
     return Column(
       children: [
         AppBar(
@@ -32,28 +32,54 @@ class LastRecordsScreen extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.zero,
-            itemCount: watchProvider.distinctLastDateOfLastCells.length,
+            itemCount: watchProvider.distinctIsFixedOrNotOfLastCells.length,
             itemBuilder: (context, index1) => Column(
               children: [
-                ListTile(
-                  title: Text(
-                    keyValue.elementAt(index1),
-                    style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.grey),
-                  ),
-                ),
-                ListView.separated(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: watchProvider
-                      .lastCellsAsMap[keyValue.elementAt(index1)]!.length,
-                  itemBuilder: (BuildContext context, int index2) => CellTile(
-                    index: index2,
-                    keyValue: keyValue.elementAt(index1),
-                  ),
-                  separatorBuilder: (BuildContext context, int index) =>
+                keyValue.elementAt(index1) == 1
+                    ? const ListTile(
+                        title: Text(
+                          'مثبتة',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey),
+                        ),
+                      )
+                    : const SizedBox(),
+                keyValue.elementAt(index1) == 1
+                ? ListView.separated(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: watchProvider
+                          .fixedAndNotFixed[keyValue.elementAt(index1)]!.length,
+                      itemBuilder: (BuildContext context, int index2) => CellTile(
+                        index: index2,
+                        keyValue: keyValue.elementAt(index1),
+                      ),
+                      separatorBuilder: (BuildContext context, int index) =>
                       const Divider(),
-                ),
+                    ):const SizedBox(),
+                // ListView.separated(
+                //   padding: EdgeInsets.zero,
+                //   shrinkWrap: true,
+                //   itemCount:keyValue.elementAt(index1)==1? null,
+                //   physics: const NeverScrollableScrollPhysics(),
+                //   itemBuilder: (BuildContext context, int index2) =>ListView.separated(
+                //     padding: EdgeInsets.zero,
+                //     shrinkWrap: true,
+                //     physics: const NeverScrollableScrollPhysics(),
+                //     itemCount: watchProvider
+                //         .lastCellsAsMap[keyValue.elementAt(index1)]!.length,
+                //     itemBuilder: (BuildContext context, int index2) => CellTile(
+                //       index: index2,
+                //       keyValue: keyValue.elementAt(index1),
+                //     ),
+                //     separatorBuilder: (BuildContext context, int index) =>
+                //     const Divider(),
+                //   ),
+                //   separatorBuilder: (BuildContext context, int index) =>
+                //   const Divider(),
               ],
             ),
           ),

@@ -310,8 +310,11 @@ class HomeProvider with ChangeNotifier {
         lastCells.length,
         (index) => lastCells[index]['is_fixed'],
       ).toSet();
-      distinctLastDateOfLastCells = List<String>.generate(lastCells.length,
-          (index) => getSinceDates(lastCells[index]['short_date'])).toSet();
+      distinctLastDateOfLastCells = List<String>.generate(
+          lastCells.where((element) => element['is_fixed'] == 0).length,
+          (index) => getSinceDates(lastCells
+              .where((element) => element['is_fixed'] == 0)
+              .toList()[index]['short_date'])).toSet();
       fixedAndNotFixed = Map.fromIterable(
         distinctIsFixedOrNotOfLastCells,
         value: (element) {
@@ -328,7 +331,7 @@ class HomeProvider with ChangeNotifier {
                       getSinceDates(element2['short_date']) == element1)
                   .toList(),
             );
-          }else {
+          } else {
             return null;
           }
         },
@@ -438,25 +441,33 @@ class HomeProvider with ChangeNotifier {
   }
 
   testOnDatabase() async {
-    Batch batch = database!.batch();
+    // Batch batch = database!.batch();
+    //
+    // batch.update(
+    //   'last_cells',
+    //   {'is_fixed': 1},
+    //   where: 'id=?',
+    //   whereArgs: [9],
+    //   conflictAlgorithm: ConflictAlgorithm.ignore,
+    // );
+    // batch.update(
+    //   'last_cells',
+    //   {'is_fixed': 1},
+    //   where: 'id=?',
+    //   whereArgs: [7],
+    //   conflictAlgorithm: ConflictAlgorithm.ignore,
+    // );
+    // await batch.commit().then((value) => print('table updated')).catchError(
+    //     (error) => print('Error When batch database ${error.toString()}'));
 
-    batch.update(
-      'last_cells',
-      {'is_fixed': 1},
-      where: 'id=?',
-      whereArgs: [9],
-      conflictAlgorithm: ConflictAlgorithm.ignore,
-    );
-    batch.update(
-      'last_cells',
-      {'is_fixed': 1},
-      where: 'id=?',
-      whereArgs: [7],
-      conflictAlgorithm: ConflictAlgorithm.ignore,
-    );
-    await batch.commit().then((value) => print('table updated')).catchError(
-            (error) => print('Error When batch database ${error.toString()}'));
+    Set<String> set = List<String>.generate(
+        lastCells.where((element) => element['is_fixed'] == 0).length,
+        //(index) => getSinceDates(lastCells[index]['short_date'])).toSet();
+        (index) => getSinceDates(lastCells
+            .where((element) => element['is_fixed'] == 0)
+            .toList()[index]['short_date'])).toSet();
 
+    print(set);
   }
 
   String getSinceDates(String date) {

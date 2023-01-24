@@ -733,15 +733,15 @@ class CellTile extends StatelessWidget {
   }) : super(key: key);
 
   final int index;
-  final String keyValue;
+  final int keyValue;
 
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
     int cellsType =
-        watchProvider.lastCellsAsMap[keyValue]![index]['cells_type'];
-    String cells = watchProvider.lastCellsAsMap[keyValue]![index]['cells'];
-    String date = watchProvider.lastCellsAsMap[keyValue]![index]['date'];
+        watchProvider.fixedAndNotFixed[keyValue]![index]['cells_type'];
+    String cells = watchProvider.fixedAndNotFixed[keyValue]![index]['cells'];
+    String date = watchProvider.fixedAndNotFixed[keyValue]![index]['date'];
     return ListTile(
       contentPadding: const EdgeInsets.only(right: 30,left: 16),
       title: cellsType == 1
@@ -752,7 +752,7 @@ class CellTile extends StatelessWidget {
             )
           : CellsType(str: cells),
       trailing: Text(
-        watchProvider.getCustomDates(keyValue, date),
+        watchProvider.getCustomDates(watchProvider.getSinceDates(date), date),
         style:  const TextStyle(fontWeight: FontWeight.w400,color: Colors.grey),
       ),
     );
