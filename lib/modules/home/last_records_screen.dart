@@ -10,13 +10,10 @@ class LastRecordsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
-    Iterable keyValue = watchProvider.fixedAndNotFixed.keys;
+    //Iterable watchProvider.fixedAndNotFixed.keys = watchProvider.fixedAndNotFixed.keys;
     return Column(
       children: [
         AppBar(
-          // systemOverlayStyle: const SystemUiOverlayStyle(
-          //   statusBarColor: Colors.blueGrey, // Status bar
-          // ),
           title: const Text(
             'سجل العبارات المستخدمة',
             style: TextStyle(
@@ -31,57 +28,69 @@ class LastRecordsScreen extends StatelessWidget {
         ),
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: watchProvider.distinctIsFixedOrNotOfLastCells.length,
-            itemBuilder: (context, index1) => Column(
-              children: [
-                keyValue.elementAt(index1) == 1
-                    ? const ListTile(
-                        title: Text(
-                          'مثبتة',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey),
+            padding: const EdgeInsets.only(top: 8),
+            itemCount: watchProvider.fixedAndNotFixed.length,
+            itemBuilder: (context, index1) {
+              int keyAtIndex1 =
+                  watchProvider.fixedAndNotFixed.keys.elementAt(index1);
+              var itemsAtIndex1 = watchProvider
+                              .fixedAndNotFixed[keyAtIndex1];
+              return Column(
+                children: [
+                  keyAtIndex1 == 1
+                      ? ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: itemsAtIndex1.length,
+                          itemBuilder: (BuildContext context, int index2) {
+                            var elementAtIndex2 = itemsAtIndex1[index2];
+                            return CellTile(
+                              cellsType: elementAtIndex2['cells_type'],
+                              cells: elementAtIndex2['cells'],
+                              date: elementAtIndex2['date'],
+                              isFixed: true,
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.only(right: 8),
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                          itemsAtIndex1.length,
+                          itemBuilder: (context, index2) {
+                            String keyAtIndex2 = itemsAtIndex1.keys
+                                .elementAt(index2);
+                            List<Map> notFixedListAtIndex2 = itemsAtIndex1[keyAtIndex2];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  keyAtIndex2,
+                                ),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  padding: const EdgeInsets.only(right: 8),
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: notFixedListAtIndex2.length,
+                                  itemBuilder: (context, index3) {
+                                    var elementAtIndex3 =
+                                        notFixedListAtIndex2[index3];
+                                    return CellTile(
+                                      cellsType: elementAtIndex3['cells_type'],
+                                      cells: elementAtIndex3['cells'],
+                                      date: elementAtIndex3['date'],
+                                    );
+                                  },
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                      )
-                    : const SizedBox(),
-                keyValue.elementAt(index1) == 1
-                ? ListView.separated(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: watchProvider
-                          .fixedAndNotFixed[keyValue.elementAt(index1)]!.length,
-                      itemBuilder: (BuildContext context, int index2) => CellTile(
-                        index: index2,
-                        keyValue: keyValue.elementAt(index1),
-                      ),
-                      separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
-                    ):const SizedBox(),
-                // ListView.separated(
-                //   padding: EdgeInsets.zero,
-                //   shrinkWrap: true,
-                //   itemCount:keyValue.elementAt(index1)==1? null,
-                //   physics: const NeverScrollableScrollPhysics(),
-                //   itemBuilder: (BuildContext context, int index2) =>ListView.separated(
-                //     padding: EdgeInsets.zero,
-                //     shrinkWrap: true,
-                //     physics: const NeverScrollableScrollPhysics(),
-                //     itemCount: watchProvider
-                //         .lastCellsAsMap[keyValue.elementAt(index1)]!.length,
-                //     itemBuilder: (BuildContext context, int index2) => CellTile(
-                //       index: index2,
-                //       keyValue: keyValue.elementAt(index1),
-                //     ),
-                //     separatorBuilder: (BuildContext context, int index) =>
-                //     const Divider(),
-                //   ),
-                //   separatorBuilder: (BuildContext context, int index) =>
-                //   const Divider(),
-              ],
-            ),
+                ],
+              );
+            },
           ),
         )
       ],

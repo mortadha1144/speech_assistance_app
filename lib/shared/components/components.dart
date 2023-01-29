@@ -728,22 +728,25 @@ class PressedText extends StatelessWidget {
 class CellTile extends StatelessWidget {
   const CellTile({
     Key? key,
-    required this.index,
-    required this.keyValue,
+    required this.cellsType,
+    required this.cells,
+    required this.date,
+    this.isFixed = false,
   }) : super(key: key);
 
-  final int index;
-  final int keyValue;
+  final int cellsType;
+  final String cells;
+  final String date;
+  final bool isFixed;
 
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
-    int cellsType =
-        watchProvider.fixedAndNotFixed[keyValue]![index]['cells_type'];
-    String cells = watchProvider.fixedAndNotFixed[keyValue]![index]['cells'];
-    String date = watchProvider.fixedAndNotFixed[keyValue]![index]['date'];
+   // int cellsType =watchProvider.fixedAndNotFixed[keyValue]![index]['cells_type'];
+    //String cells = watchProvider.fixedAndNotFixed[keyValue]![index]['cells'];
+    //String date = watchProvider.fixedAndNotFixed[keyValue]![index]['date'];
     return ListTile(
-      contentPadding: const EdgeInsets.only(right: 30,left: 16),
+      contentPadding: const EdgeInsets.only(right: 30, left: 16),
       title: cellsType == 1
           ? Text(
               cells,
@@ -751,9 +754,19 @@ class CellTile extends StatelessWidget {
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
           : CellsType(str: cells),
-      trailing: Text(
-        watchProvider.getCustomDates(watchProvider.getSinceDates(date), date),
-        style:  const TextStyle(fontWeight: FontWeight.w400,color: Colors.grey),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            watchProvider.getCustomDates(watchProvider.getSinceDates(date), date),
+            style: const TextStyle(
+                fontWeight: FontWeight.w400, color: Colors.grey),
+          ),
+          isFixed
+              ? const Icon(Icons.push_pin_outlined)
+              : const SizedBox.shrink()
+        ],
       ),
     );
   }

@@ -210,7 +210,7 @@ class HomeProvider with ChangeNotifier {
   void createDatabase() {
     openDatabase(
       'my_cells.db',
-      version: 10,
+      version: 11,
       onCreate: (db, version) async {
         print('database created');
         Batch batch = db.batch();
@@ -227,7 +227,7 @@ class HomeProvider with ChangeNotifier {
                                    date TEXT NOT NULL,
                                    cells TEXT NOT NULL UNIQUE,
                                    cells_type INTEGER ,
-                                   is_fixed BOOLEAN DEFAULT 0,
+                                   is_pinned BOOLEAN DEFAULT 0,
                                    FOREIGN KEY (cells_type)
                                         REFERENCES cell_types (type_id)
                                         ON UPDATE CASCADE
@@ -239,10 +239,17 @@ class HomeProvider with ChangeNotifier {
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         print('database upgrade open');
+          Batch batch = db.batch();
+
+          batch.execute('ALTER TABLE last_cells RENAME COLUMN is_fixed TO is_pinned;');
+          batch.execute('ALTER TABLE last_cells ADD COLUMN pinning_serial INTEGER DEFAULT 0;');
+
+        await batch.commit().then((value) => print('database upgraded')).catchError(
+                (error) => print('Error When upgrade Table ${error.toString()}'));
 
         // await db
         //     .execute(
-        //         'ALTER TABLE last_cells ADD COLUMN is_fixed BOOLEAN DEFAULT 0;')
+        //         'ALTER TABLE last_cells ADD COLUMN fixed_serial INTEGER DEFAULT 0;')
         //     .then((value) => print('database upgraded'))
         //     .catchError((error) =>
         //         print('Error When upgrade Table ${error.toString()}'));
@@ -303,31 +310,31 @@ class HomeProvider with ChangeNotifier {
   void getDataFromDatabase(Database? database) async {
     await database!
         .rawQuery(
-            'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_fixed from last_cells order by is_fixed DESC, datetime(date) DESC')
+            'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_pinned,pinning_serial from last_cells order by is_pinned DESC, datetime(date) DESC')
         .then((value) {
       lastCells = value;
       distinctIsFixedOrNotOfLastCells = List<int>.generate(
         lastCells.length,
-        (index) => lastCells[index]['is_fixed'],
+        (index) => lastCells[index]['is_pinned'],
       ).toSet();
       distinctLastDateOfLastCells = List<String>.generate(
-          lastCells.where((element) => element['is_fixed'] == 0).length,
+          lastCells.where((element) => element['is_pinned'] == 0).length,
           (index) => getSinceDates(lastCells
-              .where((element) => element['is_fixed'] == 0)
+              .where((element) => element['is_pinned'] == 0)
               .toList()[index]['short_date'])).toSet();
       fixedAndNotFixed = Map.fromIterable(
         distinctIsFixedOrNotOfLastCells,
         value: (element) {
           if (element == 1) {
             return lastCells
-                .where((element2) => element2['is_fixed'] == 1)
+                .where((element2) => element2['is_pinned'] == 1)
                 .toList();
           } else if (element == 0) {
             return Map.fromIterable(
               distinctLastDateOfLastCells,
               value: (element1) => lastCells
                   .where((element2) =>
-                      element2['is_fixed'] == 0 &&
+                      element2['is_pinned'] == 0 &&
                       getSinceDates(element2['short_date']) == element1)
                   .toList(),
             );
@@ -337,9 +344,9 @@ class HomeProvider with ChangeNotifier {
         },
       );
       lastCellsFixed =
-          lastCells.where((element) => element['is_fixed'] == 1).toList();
+          lastCells.where((element) => element['is_pinned'] == 1).toList();
       lastCellsNotFixed =
-          lastCells.where((element) => element['is_fixed'] == 0).toList();
+          lastCells.where((element) => element['is_pinned'] == 0).toList();
       lastCellsAsMap = Map.fromIterable(
         distinctLastDateOfLastCells,
         value: (element1) => lastCells
@@ -440,7 +447,7 @@ class HomeProvider with ChangeNotifier {
     //print(formatted);
   }
 
-  testOnDatabase() async {
+  testOnDatabase() async{
     // Batch batch = database!.batch();
     //
     // batch.update(
@@ -460,14 +467,7 @@ class HomeProvider with ChangeNotifier {
     // await batch.commit().then((value) => print('table updated')).catchError(
     //     (error) => print('Error When batch database ${error.toString()}'));
 
-    Set<String> set = List<String>.generate(
-        lastCells.where((element) => element['is_fixed'] == 0).length,
-        //(index) => getSinceDates(lastCells[index]['short_date'])).toSet();
-        (index) => getSinceDates(lastCells
-            .where((element) => element['is_fixed'] == 0)
-            .toList()[index]['short_date'])).toSet();
-
-    print(set);
+    print((await database?.rawQuery('SELECT sqlite_version()'))?.first.values.first);
   }
 
   String getSinceDates(String date) {
