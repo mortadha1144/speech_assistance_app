@@ -197,7 +197,7 @@ class HomeProvider with ChangeNotifier {
   }
 
   Database? database;
-  List<Map> lastCells = [];
+  List<Map> lastCells = <Map>[];
   Set<String> distinctLastDateOfLastCells = <String>{};
   Set<int> distinctIsFixedOrNotOfLastCells = <int>{};
 
@@ -239,13 +239,18 @@ class HomeProvider with ChangeNotifier {
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         print('database upgrade open');
-          Batch batch = db.batch();
+        Batch batch = db.batch();
 
-          batch.execute('ALTER TABLE last_cells RENAME COLUMN is_fixed TO is_pinned;');
-          batch.execute('ALTER TABLE last_cells ADD COLUMN pinning_serial INTEGER DEFAULT 0;');
+        batch.execute(
+            'ALTER TABLE last_cells RENAME COLUMN is_fixed TO is_pinned;');
+        batch.execute(
+            'ALTER TABLE last_cells ADD COLUMN pinning_serial INTEGER DEFAULT 0;');
 
-        await batch.commit().then((value) => print('database upgraded')).catchError(
-                (error) => print('Error When upgrade Table ${error.toString()}'));
+        await batch
+            .commit()
+            .then((value) => print('database upgraded'))
+            .catchError((error) =>
+                print('Error When upgrade Table ${error.toString()}'));
 
         // await db
         //     .execute(
@@ -308,58 +313,72 @@ class HomeProvider with ChangeNotifier {
   }
 
   void getDataFromDatabase(Database? database) async {
-    await database!
-        .rawQuery(
-            'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_pinned,pinning_serial from last_cells order by is_pinned DESC, datetime(date) DESC')
-        .then((value) {
-      lastCells = value;
-      distinctIsFixedOrNotOfLastCells = List<int>.generate(
-        lastCells.length,
-        (index) => lastCells[index]['is_pinned'],
-      ).toSet();
-      distinctLastDateOfLastCells = List<String>.generate(
-          lastCells.where((element) => element['is_pinned'] == 0).length,
-          (index) => getSinceDates(lastCells
-              .where((element) => element['is_pinned'] == 0)
-              .toList()[index]['short_date'])).toSet();
-      fixedAndNotFixed = Map.fromIterable(
-        distinctIsFixedOrNotOfLastCells,
-        value: (element) {
-          if (element == 1) {
-            return lastCells
-                .where((element2) => element2['is_pinned'] == 1)
-                .toList();
-          } else if (element == 0) {
-            return Map.fromIterable(
-              distinctLastDateOfLastCells,
-              value: (element1) => lastCells
-                  .where((element2) =>
-                      element2['is_pinned'] == 0 &&
-                      getSinceDates(element2['short_date']) == element1)
-                  .toList(),
-            );
-          } else {
-            return null;
-          }
-        },
-      );
-      lastCellsFixed =
-          lastCells.where((element) => element['is_pinned'] == 1).toList();
-      lastCellsNotFixed =
-          lastCells.where((element) => element['is_pinned'] == 0).toList();
-      lastCellsAsMap = Map.fromIterable(
-        distinctLastDateOfLastCells,
-        value: (element1) => lastCells
-            .where(
-                (element2) => getSinceDates(element2['short_date']) == element1)
-            .toList(),
-      );
-      //print(lastCells);
-      //print(distinctLastDateOfLastCells);
-      //print(lastCellsAsMap);
-      print(fixedAndNotFixed);
-      //value.forEach((element) => print(element['cells']));
+    lastCells = await database!.query('last_cells');
+    //to allow sorting in list because it read only
+    lastCells = lastCells.map((e) => Map<String, dynamic>.from(e)).toList();
+    // multi sort on list
+    lastCells.sort((a, b) {
+      int result = b['is_pinned'].compareTo(a['is_pinned']);
+      if (result == 0) {
+        return DateTime.parse(b['date']).compareTo(DateTime.parse(a['date']));
+      } else {
+        return b['is_pinned'].compareTo(a['is_pinned']);
+      }
     });
+    print(lastCells);
+    //fixedAndNotFixed = Map.fromIterable(lastCells,key: (element) => ,);
+    // await database!
+    //     .rawQuery(
+    //         'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_pinned,pinning_serial from last_cells order by is_pinned DESC, datetime(date) DESC')
+    //     .then((value) {
+    //   lastCells = value;
+    //   distinctIsFixedOrNotOfLastCells = List<int>.generate(
+    //     lastCells.length,
+    //     (index) => lastCells[index]['is_pinned'],
+    //   ).toSet();
+    //   distinctLastDateOfLastCells = List<String>.generate(
+    //       lastCells.where((element) => element['is_pinned'] == 0).length,
+    //       (index) => getSinceDates(lastCells
+    //           .where((element) => element['is_pinned'] == 0)
+    //           .toList()[index]['short_date'])).toSet();
+    //   fixedAndNotFixed = Map.fromIterable(
+    //     distinctIsFixedOrNotOfLastCells,
+    //     value: (element) {
+    //       if (element == 1) {
+    //         return lastCells
+    //             .where((element2) => element2['is_pinned'] == 1)
+    //             .toList();
+    //       } else if (element == 0) {
+    //         return Map.fromIterable(
+    //           distinctLastDateOfLastCells,
+    //           value: (element1) => lastCells
+    //               .where((element2) =>
+    //                   element2['is_pinned'] == 0 &&
+    //                   getSinceDates(element2['short_date']) == element1)
+    //               .toList(),
+    //         );
+    //       } else {
+    //         return null;
+    //       }
+    //     },
+    //   );
+    //   lastCellsFixed =
+    //       lastCells.where((element) => element['is_pinned'] == 1).toList();
+    //   lastCellsNotFixed =
+    //       lastCells.where((element) => element['is_pinned'] == 0).toList();
+    //   lastCellsAsMap = Map.fromIterable(
+    //     distinctLastDateOfLastCells,
+    //     value: (element1) => lastCells
+    //         .where(
+    //             (element2) => getSinceDates(element2['short_date']) == element1)
+    //         .toList(),
+    //   );
+    //   //print(lastCells);
+    //   //print(distinctLastDateOfLastCells);
+    //   //print(lastCellsAsMap);
+    //   print(fixedAndNotFixed);
+    //   //value.forEach((element) => print(element['cells']));
+    // });
   }
 
   insertIntoDatabase({required int cellsType}) async {
@@ -447,7 +466,7 @@ class HomeProvider with ChangeNotifier {
     //print(formatted);
   }
 
-  testOnDatabase() async{
+  testOnDatabase() async {
     // Batch batch = database!.batch();
     //
     // batch.update(
@@ -467,7 +486,7 @@ class HomeProvider with ChangeNotifier {
     // await batch.commit().then((value) => print('table updated')).catchError(
     //     (error) => print('Error When batch database ${error.toString()}'));
 
-    print((await database?.rawQuery('SELECT sqlite_version()'))?.first.values.first);
+    getDataFromDatabase(database);
   }
 
   String getSinceDates(String date) {
