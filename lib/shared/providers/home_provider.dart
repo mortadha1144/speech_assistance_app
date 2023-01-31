@@ -228,6 +228,7 @@ class HomeProvider with ChangeNotifier {
                                    cells TEXT NOT NULL UNIQUE,
                                    cells_type INTEGER ,
                                    is_pinned BOOLEAN DEFAULT 0,
+                                   pinning_serial INTEGER DEFAULT 0,
                                    FOREIGN KEY (cells_type)
                                         REFERENCES cell_types (type_id)
                                         ON UPDATE CASCADE
@@ -318,14 +319,28 @@ class HomeProvider with ChangeNotifier {
     lastCells = lastCells.map((e) => Map<String, dynamic>.from(e)).toList();
     // multi sort on list
     lastCells.sort((a, b) {
-      int result = b['is_pinned'].compareTo(a['is_pinned']);
+      int result = a['is_pinned'].compareTo(b['is_pinned']);
       if (result == 0) {
-        return DateTime.parse(b['date']).compareTo(DateTime.parse(a['date']));
+        if (a['is_pinned'] == 1) {
+          int result2 = a['pinning_serial'].compareTo(b['pinning_serial']);
+          if (result2 == 0) {
+            return DateTime.parse(b['date'])
+                .compareTo(DateTime.parse(a['date']));
+          } else {
+            return -result2;
+          }
+        } else {
+          return DateTime.parse(b['date']).compareTo(DateTime.parse(a['date']));
+        }
       } else {
-        return b['is_pinned'].compareTo(a['is_pinned']);
+        return -result;
       }
     });
     print(lastCells);
+    fixedAndNotFixed = Map.fromIterable(
+      lastCells,
+    );
+    print(fixedAndNotFixed);
     //fixedAndNotFixed = Map.fromIterable(lastCells,key: (element) => ,);
     // await database!
     //     .rawQuery(
@@ -471,16 +486,16 @@ class HomeProvider with ChangeNotifier {
     //
     // batch.update(
     //   'last_cells',
-    //   {'is_fixed': 1},
+    //   {'pinning_serial': 2},
     //   where: 'id=?',
-    //   whereArgs: [9],
+    //   whereArgs: [7],
     //   conflictAlgorithm: ConflictAlgorithm.ignore,
     // );
     // batch.update(
     //   'last_cells',
-    //   {'is_fixed': 1},
+    //   {'pinning_serial': 1},
     //   where: 'id=?',
-    //   whereArgs: [7],
+    //   whereArgs: [9],
     //   conflictAlgorithm: ConflictAlgorithm.ignore,
     // );
     // await batch.commit().then((value) => print('table updated')).catchError(
