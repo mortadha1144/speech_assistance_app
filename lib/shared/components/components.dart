@@ -731,22 +731,22 @@ class CellTile extends StatelessWidget {
     required this.cellsType,
     required this.cells,
     required this.date,
-    this.isFixed = false,
+    this.isPinned = false,
+    this.onTap,
+
+    
   }) : super(key: key);
 
   final int cellsType;
   final String cells;
   final String date;
-  final bool isFixed;
+  final bool isPinned;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    HomeProvider watchProvider = context.watch<HomeProvider>();
-   // int cellsType =watchProvider.fixedAndNotFixed[keyValue]![index]['cells_type'];
-    //String cells = watchProvider.fixedAndNotFixed[keyValue]![index]['cells'];
-    //String date = watchProvider.fixedAndNotFixed[keyValue]![index]['date'];
     return ListTile(
-      contentPadding: const EdgeInsets.only(right: 30, left: 16),
+      onTap: onTap,
       title: cellsType == 1
           ? Text(
               cells,
@@ -759,11 +759,11 @@ class CellTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            watchProvider.getCustomDates(watchProvider.getSinceDates(date), date),
+            date,
             style: const TextStyle(
                 fontWeight: FontWeight.w400, color: Colors.grey),
           ),
-          isFixed
+          isPinned
               ? const Icon(Icons.push_pin_outlined)
               : const SizedBox.shrink()
         ],

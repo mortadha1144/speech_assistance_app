@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -98,13 +97,17 @@ class HomeProvider with ChangeNotifier {
   Future<void> onPressedDefault(Cell cell) async {
     final int index = lengthOfCellsList;
     _tapedCells.add(cell);
-    await _flutterTts.setLanguage("ar");
-    await _flutterTts.setSpeechRate(0.4);
-    await _flutterTts.speak(cell.name);
+    await speakText(cell.name);
     _key.currentState!
         .insertItem(index, duration: const Duration(milliseconds: 200));
     notifyListeners();
     _scrollToBottom();
+  }
+
+  Future<void> speakText(String text) async {
+    await _flutterTts.setLanguage("ar");
+    await _flutterTts.setSpeechRate(0.4);
+    await _flutterTts.speak(text);
   }
 
   void onPressedBackspace() {
@@ -162,11 +165,9 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  Future<void> speakList() async {
+  Future<void> onTapPlayBar() async {
     _scrollToTop();
-    await _flutterTts.setLanguage("ar");
-    await _flutterTts.setSpeechRate(0.3);
-    await _flutterTts.speak(strOfNames);
+    await speakText(strOfNames);
     _scrollToBottom(from: 'speak');
     insertIntoDatabase(cellsType: 2);
   }
@@ -190,22 +191,14 @@ class HomeProvider with ChangeNotifier {
 
   void speechTextInTexField() async {
     if (_textToSpeechController.text.isNotEmpty) {
-      await _flutterTts.setLanguage("ar");
-      await _flutterTts.setSpeechRate(0.4);
-      await _flutterTts.speak(textToSpeechController.text);
+      await speakText(textToSpeechController.text);
     }
   }
 
   Database? database;
   List<Map> lastCells = <Map>[];
-  Set<String> distinctLastDateOfLastCells = <String>{};
-  Set<int> distinctIsFixedOrNotOfLastCells = <int>{};
-
-  List<Map> lastCellsFixed = [];
-  List<Map> lastCellsNotFixed = [];
-  Map fixedAndNotFixed = {};
-
-  Map<String, List<Map>> lastCellsAsMap = {};
+  Set<String> mainListFixedFirstThenLastCells = <String>{};
+  Map<String, List<Map>> indexedLastCells = {};
 
   void createDatabase() {
     openDatabase(
@@ -318,82 +311,35 @@ class HomeProvider with ChangeNotifier {
     //to allow sorting in list because it read only
     lastCells = lastCells.map((e) => Map<String, dynamic>.from(e)).toList();
     // multi sort on list
-    lastCells.sort((a, b) {
-      int result = a['is_pinned'].compareTo(b['is_pinned']);
-      if (result == 0) {
-        if (a['is_pinned'] == 1) {
-          int result2 = a['pinning_serial'].compareTo(b['pinning_serial']);
-          if (result2 == 0) {
-            return DateTime.parse(b['date'])
-                .compareTo(DateTime.parse(a['date']));
-          } else {
-            return -result2;
-          }
-        } else {
+    lastCells.sort((a, b) => sortLastCellsList(a, b));
+    print(lastCells);
+    mainListFixedFirstThenLastCells = List<String>.generate(
+            lastCells.length, (index) => getOneOrSinceDates(lastCells[index]))
+        .toSet();
+
+    indexedLastCells = Map.fromIterable(mainListFixedFirstThenLastCells,
+        value: (element) => lastCells
+            .where((element2) => element == getOneOrSinceDates(element2))
+            .toList());
+    print(indexedLastCells);
+  }
+
+  int sortLastCellsList(Map<dynamic, dynamic> a, Map<dynamic, dynamic> b) {
+    int result = a['is_pinned'].compareTo(b['is_pinned']);
+    if (result == 0) {
+      if (a['is_pinned'] == 1) {
+        int result2 = a['pinning_serial'].compareTo(b['pinning_serial']);
+        if (result2 == 0) {
           return DateTime.parse(b['date']).compareTo(DateTime.parse(a['date']));
+        } else {
+          return -result2;
         }
       } else {
-        return -result;
+        return DateTime.parse(b['date']).compareTo(DateTime.parse(a['date']));
       }
-    });
-    print(lastCells);
-    fixedAndNotFixed = Map.fromIterable(
-      lastCells,
-    );
-    print(fixedAndNotFixed);
-    //fixedAndNotFixed = Map.fromIterable(lastCells,key: (element) => ,);
-    // await database!
-    //     .rawQuery(
-    //         'select id,date,strftime(\'%Y-%m-%d\',date) AS short_date,cells,cells_type,is_pinned,pinning_serial from last_cells order by is_pinned DESC, datetime(date) DESC')
-    //     .then((value) {
-    //   lastCells = value;
-    //   distinctIsFixedOrNotOfLastCells = List<int>.generate(
-    //     lastCells.length,
-    //     (index) => lastCells[index]['is_pinned'],
-    //   ).toSet();
-    //   distinctLastDateOfLastCells = List<String>.generate(
-    //       lastCells.where((element) => element['is_pinned'] == 0).length,
-    //       (index) => getSinceDates(lastCells
-    //           .where((element) => element['is_pinned'] == 0)
-    //           .toList()[index]['short_date'])).toSet();
-    //   fixedAndNotFixed = Map.fromIterable(
-    //     distinctIsFixedOrNotOfLastCells,
-    //     value: (element) {
-    //       if (element == 1) {
-    //         return lastCells
-    //             .where((element2) => element2['is_pinned'] == 1)
-    //             .toList();
-    //       } else if (element == 0) {
-    //         return Map.fromIterable(
-    //           distinctLastDateOfLastCells,
-    //           value: (element1) => lastCells
-    //               .where((element2) =>
-    //                   element2['is_pinned'] == 0 &&
-    //                   getSinceDates(element2['short_date']) == element1)
-    //               .toList(),
-    //         );
-    //       } else {
-    //         return null;
-    //       }
-    //     },
-    //   );
-    //   lastCellsFixed =
-    //       lastCells.where((element) => element['is_pinned'] == 1).toList();
-    //   lastCellsNotFixed =
-    //       lastCells.where((element) => element['is_pinned'] == 0).toList();
-    //   lastCellsAsMap = Map.fromIterable(
-    //     distinctLastDateOfLastCells,
-    //     value: (element1) => lastCells
-    //         .where(
-    //             (element2) => getSinceDates(element2['short_date']) == element1)
-    //         .toList(),
-    //   );
-    //   //print(lastCells);
-    //   //print(distinctLastDateOfLastCells);
-    //   //print(lastCellsAsMap);
-    //   print(fixedAndNotFixed);
-    //   //value.forEach((element) => print(element['cells']));
-    // });
+    } else {
+      return -result;
+    }
   }
 
   insertIntoDatabase({required int cellsType}) async {
@@ -447,7 +393,6 @@ class HomeProvider with ChangeNotifier {
           print('Error When Inserting New Record  ${error.toString()}');
         });
       }
-      //await database?.update('last_cells', values)
     }
 
     // await database?.rawInsert(
@@ -523,10 +468,14 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  String getCustomDates(String sinceDate, String date) {
+  String getOneOrSinceDates(Map<dynamic, dynamic> element) =>
+      element['is_pinned'] == 1 ? '1' : getSinceDates(element['date']);
+
+  String getCustomDates(String date) {
     DateTime dateConverted = DateTime.parse(date);
+
     initializeDateFormatting('ar_DZ', null);
-    switch (sinceDate) {
+    switch (getSinceDates(date)) {
       case 'أمس':
       case 'اليوم':
         return DateFormat('hh:mm a', 'ar_DZ').format(dateConverted);
@@ -536,14 +485,6 @@ class HomeProvider with ChangeNotifier {
         return DateFormat('yy.MM.dd').format(dateConverted);
       default:
         return '';
-    }
-  }
-
-  String isFixedOrNot(int isFixedValue) {
-    if (isFixedValue == 0) {
-      return 'غير مثبتة';
-    } else {
-      return 'مثبتة';
     }
   }
 }

@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         _controller
                             .forward()
                             .then((value) => _controller.reverse());
-                        context.read<HomeProvider>().speakList();
+                        context.read<HomeProvider>().onTapPlayBar();
                       },
                       child: FadeTransition(
                         opacity: _fadeAnimation,
@@ -79,18 +79,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 alignment: Alignment.centerRight,
                                 scale: _scaleAnimation,
                                 child: PressedCell(
-                                        text: context
-                                            .watch<HomeProvider>()
-                                            .tapedCells[index]
-                                            .name,
-                                        imagePath: context
-                                            .watch<HomeProvider>()
-                                            .tapedCells[index]
-                                            .image,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                6,
-                                      ),
+                                  text: context
+                                      .watch<HomeProvider>()
+                                      .tapedCells[index]
+                                      .name,
+                                  imagePath: context
+                                      .watch<HomeProvider>()
+                                      .tapedCells[index]
+                                      .image,
+                                  width: MediaQuery.of(context).size.width / 6,
+                                ),
                               ),
                             );
                           },

@@ -29,65 +29,38 @@ class LastRecordsScreen extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.only(top: 8),
-            itemCount: watchProvider.fixedAndNotFixed.length,
+            itemCount: watchProvider.indexedLastCells.length,
             itemBuilder: (context, index1) {
-              int keyAtIndex1 =
-                  watchProvider.fixedAndNotFixed.keys.elementAt(index1);
-              var itemsAtIndex1 = watchProvider
-                              .fixedAndNotFixed[keyAtIndex1];
+              String keyAtIndex1 =
+                  watchProvider.indexedLastCells.keys.elementAt(index1);
+              var itemsAtIndex1 = watchProvider.indexedLastCells[keyAtIndex1];
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  keyAtIndex1 == 1
-                      ? ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: itemsAtIndex1.length,
-                          itemBuilder: (BuildContext context, int index2) {
-                            var elementAtIndex2 = itemsAtIndex1[index2];
-                            return CellTile(
-                              cellsType: elementAtIndex2['cells_type'],
-                              cells: elementAtIndex2['cells'],
-                              date: elementAtIndex2['date'],
-                              isFixed: true,
-                            );
-                          },
-                        )
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.only(right: 8),
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount:
-                          itemsAtIndex1.length,
-                          itemBuilder: (context, index2) {
-                            String keyAtIndex2 = itemsAtIndex1.keys
-                                .elementAt(index2);
-                            List<Map> notFixedListAtIndex2 = itemsAtIndex1[keyAtIndex2];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  keyAtIndex2,
-                                ),
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  padding: const EdgeInsets.only(right: 8),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: notFixedListAtIndex2.length,
-                                  itemBuilder: (context, index3) {
-                                    var elementAtIndex3 =
-                                        notFixedListAtIndex2[index3];
-                                    return CellTile(
-                                      cellsType: elementAtIndex3['cells_type'],
-                                      cells: elementAtIndex3['cells'],
-                                      date: elementAtIndex3['date'],
-                                    );
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                  keyAtIndex1 == '1'
+                      ? const SizedBox.shrink()
+                      : ListTile(
+                          title: Text(keyAtIndex1),
                         ),
+                  ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: itemsAtIndex1?.length,
+                    itemBuilder: (context, index2) => CellTile(
+                      cellsType: itemsAtIndex1![index2]['cells_type'],
+                      cells: itemsAtIndex1[index2]['cells'],
+                      date: watchProvider
+                          .getCustomDates(itemsAtIndex1[index2]['date']),
+                      isPinned: itemsAtIndex1[index2]['is_pinned'] == 1
+                          ? true
+                          : false,
+                      onTap: () async {
+                        await watchProvider
+                            .speakText(itemsAtIndex1[index2]['cells']);
+                      },
+                    ),
+                  ),
                 ],
               );
             },
