@@ -733,8 +733,10 @@ class CellTile extends StatelessWidget {
     required this.date,
     this.isPinned = false,
     this.onTap,
-
-    
+    this.onLongPress,
+    this.showOptions = false,
+    this.checkBoxValue = false,
+    this.checkBoxOnChanged,
   }) : super(key: key);
 
   final int cellsType;
@@ -742,11 +744,16 @@ class CellTile extends StatelessWidget {
   final String date;
   final bool isPinned;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final bool showOptions;
+  final bool checkBoxValue;
+  final void Function(bool?)? checkBoxOnChanged;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
+      onLongPress: onLongPress,
       title: cellsType == 1
           ? Text(
               cells,
@@ -754,18 +761,29 @@ class CellTile extends StatelessWidget {
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
           : CellsType(str: cells),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.end,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            date,
-            style: const TextStyle(
-                fontWeight: FontWeight.w400, color: Colors.grey),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                date,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w400, color: Colors.grey),
+              ),
+              isPinned
+                  ? const Icon(Icons.push_pin_outlined)
+                  : const SizedBox.shrink()
+            ],
           ),
-          isPinned
-              ? const Icon(Icons.push_pin_outlined)
-              : const SizedBox.shrink()
+          showOptions
+              ? Checkbox(
+                  value: checkBoxValue,
+                  onChanged: checkBoxOnChanged,
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );

@@ -16,6 +16,8 @@ class HomeProvider with ChangeNotifier {
   int _currentScreen = 0;
   int _currentPage = 0;
 
+  bool _showOptions = false;
+
   PageController _homePagesController = PageController(initialPage: 0);
 
   int get currentIndex => _currentIndex;
@@ -25,6 +27,8 @@ class HomeProvider with ChangeNotifier {
   int get currentPage => _currentPage;
 
   PageController get homePagesController => _homePagesController;
+
+  bool get showOptions => _showOptions;
 
   List<BottomNavigationBarItem> bottomItems = [
     const BottomNavigationBarItem(
@@ -195,10 +199,23 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
+  void onLongPressCellTile() {
+    _showOptions = !_showOptions;
+    notifyListeners();
+  }
+
+  void checkBoxOnChanged(
+      {required bool value, required String key, required int index}) {
+    checkeCellTile[key]![index] = value;
+    notifyListeners();
+  }
+
   Database? database;
   List<Map> lastCells = <Map>[];
   Set<String> mainListFixedFirstThenLastCells = <String>{};
   Map<String, List<Map>> indexedLastCells = {};
+
+  Map<String, List<bool>> checkeCellTile = {};
 
   void createDatabase() {
     openDatabase(
@@ -321,7 +338,19 @@ class HomeProvider with ChangeNotifier {
         value: (element) => lastCells
             .where((element2) => element == getOneOrSinceDates(element2))
             .toList());
+
+    checkeCellTile = Map.fromIterable(
+      mainListFixedFirstThenLastCells,
+      value: (element1) {
+        return List<bool>.generate(
+            lastCells
+                .where((element2) => element1 == getOneOrSinceDates(element2))
+                .length,
+            (index) => false);
+      },
+    );
     print(indexedLastCells);
+    print(checkeCellTile);
   }
 
   int sortLastCellsList(Map<dynamic, dynamic> a, Map<dynamic, dynamic> b) {

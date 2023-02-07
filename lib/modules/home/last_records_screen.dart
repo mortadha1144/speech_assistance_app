@@ -14,17 +14,33 @@ class LastRecordsScreen extends StatelessWidget {
     return Column(
       children: [
         AppBar(
-          title: const Text(
-            'سجل العبارات المستخدمة',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          title: watchProvider.showOptions
+              ? Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {}, icon: const Icon(Icons.delete)),
+                    IconButton(
+                        onPressed: () {}, icon: const Icon(Icons.push_pin)),
+                  ],
+                )
+              : const Text(
+                  'سجل العبارات المستخدمة',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
           backgroundColor: Colors.blueGrey,
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
-          ],
+          actions: watchProvider.showOptions
+              ? [
+                  IconButton(
+                      onPressed: () => watchProvider.onLongPressCellTile(),
+                      icon: const Icon(Icons.close)),
+                ]
+              : [
+                  IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.more_vert)),
+                ],
         ),
         Expanded(
           child: ListView.builder(
@@ -58,7 +74,16 @@ class LastRecordsScreen extends StatelessWidget {
                       onTap: () async {
                         await watchProvider
                             .speakText(itemsAtIndex1[index2]['cells']);
+                        print(
+                            "${watchProvider.checkeCellTile[keyAtIndex1]![index2]}");
                       },
+                      showOptions: watchProvider.showOptions,
+                      onLongPress: () => watchProvider.onLongPressCellTile(),
+                      checkBoxValue:
+                          watchProvider.checkeCellTile[keyAtIndex1]![index2],
+                      checkBoxOnChanged: (value) =>
+                          watchProvider.checkBoxOnChanged(
+                              value: value!, key: keyAtIndex1, index: index2),
                     ),
                   ),
                 ],
