@@ -204,18 +204,36 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void onPressCloseButton() {
+    _showOptions = false;
+    selectedCellTilesId.clear();
+    selectedCellTiles.forEach(
+      (key, value) {
+        selectedCellTiles[key] = value.map((e) => false).toList();
+      },
+    );
+    print(selectedCellTiles);
+    notifyListeners();
+  }
+
   void checkBoxOnChanged(
       {required bool value, required String key, required int index}) {
-    checkeCellTile[key]![index] = value;
+    selectedCellTiles[key]![index] = value;
+    value
+        ? selectedCellTilesId.add(indexedLastCells[key]![index]['id'])
+        : selectedCellTilesId.remove(indexedLastCells[key]![index]['id']);
+    print(selectedCellTilesId);
+    print(selectedCellTiles);
     notifyListeners();
   }
 
   Database? database;
   List<Map> lastCells = <Map>[];
-  Set<String> mainListFixedFirstThenLastCells = <String>{};
+  Set<String> mainListPinnedFirstThenLastCells = <String>{};
   Map<String, List<Map>> indexedLastCells = {};
 
-  Map<String, List<bool>> checkeCellTile = {};
+  Map<String, List<bool>> selectedCellTiles = {};
+  List<int> selectedCellTilesId = [];
 
   void createDatabase() {
     openDatabase(
@@ -330,17 +348,18 @@ class HomeProvider with ChangeNotifier {
     // multi sort on list
     lastCells.sort((a, b) => sortLastCellsList(a, b));
     print(lastCells);
-    mainListFixedFirstThenLastCells = List<String>.generate(
+    // create main set of pinned and since dates
+    mainListPinnedFirstThenLastCells = List<String>.generate(
             lastCells.length, (index) => getOneOrSinceDates(lastCells[index]))
         .toSet();
-
-    indexedLastCells = Map.fromIterable(mainListFixedFirstThenLastCells,
+    //create indexed map with since dates
+    indexedLastCells = Map.fromIterable(mainListPinnedFirstThenLastCells,
         value: (element) => lastCells
             .where((element2) => element == getOneOrSinceDates(element2))
             .toList());
-
-    checkeCellTile = Map.fromIterable(
-      mainListFixedFirstThenLastCells,
+    //create map to checkedd cells tile to use it in last records screen
+    selectedCellTiles = Map.fromIterable(
+      mainListPinnedFirstThenLastCells,
       value: (element1) {
         return List<bool>.generate(
             lastCells
@@ -350,7 +369,7 @@ class HomeProvider with ChangeNotifier {
       },
     );
     print(indexedLastCells);
-    print(checkeCellTile);
+    print(selectedCellTiles);
   }
 
   int sortLastCellsList(Map<dynamic, dynamic> a, Map<dynamic, dynamic> b) {

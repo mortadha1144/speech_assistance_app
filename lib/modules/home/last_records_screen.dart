@@ -15,27 +15,60 @@ class LastRecordsScreen extends StatelessWidget {
       children: [
         AppBar(
           title: watchProvider.showOptions
-              ? Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.delete)),
-                    IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.push_pin)),
-                  ],
-                )
+              ? IconButton(
+                  onPressed: () => watchProvider.onPressCloseButton(),
+                  icon: const Icon(
+                    Icons.close,
+                    size: 30,
+                  ))
               : const Text(
-                  'سجل العبارات المستخدمة',
+                  'العبارات المستخدمة',
                   style: TextStyle(
                     fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
           backgroundColor: Colors.blueGrey,
           actions: watchProvider.showOptions
               ? [
-                  IconButton(
-                      onPressed: () => watchProvider.onLongPressCellTile(),
-                      icon: const Icon(Icons.close)),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          watchProvider.selectedCellTilesId.isEmpty
+                              ? ''
+                              : watchProvider.selectedCellTilesId.length
+                                  .toString(),
+                          style: const TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w600),
+                        ),
+
+                        const SizedBox(
+                          width: 20,
+                        ),
+
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.push_pin,
+                              size: 30,
+                            )),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.delete,
+                              size: 30,
+                            )),
+
+                        //const Spacer(),
+                      ],
+                    ),
+                  )
                 ]
               : [
                   IconButton(
@@ -58,13 +91,13 @@ class LastRecordsScreen extends StatelessWidget {
                       : ListTile(
                           title: Text(keyAtIndex1),
                         ),
-                  ListView.builder(
-                    padding: EdgeInsets.zero,
+                  ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: itemsAtIndex1?.length,
+                    itemCount: itemsAtIndex1!.length,
                     itemBuilder: (context, index2) => CellTile(
-                      cellsType: itemsAtIndex1![index2]['cells_type'],
+                      cellsType: itemsAtIndex1[index2]['cells_type'],
                       cells: itemsAtIndex1[index2]['cells'],
                       date: watchProvider
                           .getCustomDates(itemsAtIndex1[index2]['date']),
@@ -72,18 +105,30 @@ class LastRecordsScreen extends StatelessWidget {
                           ? true
                           : false,
                       onTap: () async {
-                        await watchProvider
-                            .speakText(itemsAtIndex1[index2]['cells']);
-                        print(
-                            "${watchProvider.checkeCellTile[keyAtIndex1]![index2]}");
+                        if (watchProvider.showOptions) {
+                          bool value = !watchProvider
+                              .selectedCellTiles[keyAtIndex1]![index2];
+                          watchProvider.checkBoxOnChanged(
+                              value: value, key: keyAtIndex1, index: index2);
+                        } else {
+                          await watchProvider
+                              .speakText(itemsAtIndex1[index2]['cells']);
+                        }
                       },
                       showOptions: watchProvider.showOptions,
-                      onLongPress: () => watchProvider.onLongPressCellTile(),
-                      checkBoxValue:
-                          watchProvider.checkeCellTile[keyAtIndex1]![index2],
+                      onLongPress: () {
+                        watchProvider.onLongPressCellTile();
+                        watchProvider.checkBoxOnChanged(
+                            value: true, key: keyAtIndex1, index: index2);
+                      },
+                      selected:
+                          watchProvider.selectedCellTiles[keyAtIndex1]![index2],
                       checkBoxOnChanged: (value) =>
                           watchProvider.checkBoxOnChanged(
                               value: value!, key: keyAtIndex1, index: index2),
+                    ),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 4,
                     ),
                   ),
                 ],

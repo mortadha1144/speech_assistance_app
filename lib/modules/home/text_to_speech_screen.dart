@@ -93,30 +93,29 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.only(right: 8),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButtonForTapBar(
                         onPressed: () => watchProvider.speechTextInTexField(),
                         text: 'تحدث',
                       ),
                       const SizedBox(
-                        width: 20,
+                        width: 10,
                       ),
                       TextButtonForTapBar(
                         onPressed: () => watchProvider.addTextToSpeech(),
                         text: 'إضافة',
                       ),
                       const SizedBox(
-                        width: 20,
+                        width: 10,
                       ),
                       TextButtonForTapBar(
                         onPressed: () => watchProvider.deleteTextToSpeech(),
                         text: 'حذف',
                       ),
                       const SizedBox(
-                        width: 20,
+                        width: 10,
                       ),
                       TextButtonForTapBar(
                         onPressed: () => watchProvider.testOnDatabase(),

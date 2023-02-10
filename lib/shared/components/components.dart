@@ -735,7 +735,7 @@ class CellTile extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.showOptions = false,
-    this.checkBoxValue = false,
+    this.selected = false,
     this.checkBoxOnChanged,
   }) : super(key: key);
 
@@ -746,12 +746,26 @@ class CellTile extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final bool showOptions;
-  final bool checkBoxValue;
+  final bool selected;
   final void Function(bool?)? checkBoxOnChanged;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      //contentPadding: EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      selected: selected,
+      selectedTileColor: Colors.grey[400],
+      selectedColor: Colors.black,
+      leading: CircleAvatar(
+        backgroundColor: selected ? Colors.blue : Colors.pink[100],
+        child: selected
+            ? const Icon(
+                Icons.done,
+                color: Colors.white,
+              )
+            : Text(cells[0]),
+      ),
       onTap: onTap,
       onLongPress: onLongPress,
       title: cellsType == 1
@@ -760,12 +774,12 @@ class CellTile extends StatelessWidget {
               textDirection: TextDirection.rtl,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
-          : CellsType(str: cells),
+          : CellsType(str: cells,isReverse: false,),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
@@ -778,12 +792,12 @@ class CellTile extends StatelessWidget {
                   : const SizedBox.shrink()
             ],
           ),
-          showOptions
-              ? Checkbox(
-                  value: checkBoxValue,
-                  onChanged: checkBoxOnChanged,
-                )
-              : const SizedBox.shrink(),
+          // showOptions
+          //     ? Checkbox(
+          //         value: selected,
+          //         onChanged: checkBoxOnChanged,
+          //       )
+          //     : const SizedBox.shrink(),
         ],
       ),
     );
@@ -791,9 +805,10 @@ class CellTile extends StatelessWidget {
 }
 
 class CellsType extends StatelessWidget {
-  const CellsType({Key? key, required this.str}) : super(key: key);
+  const CellsType({Key? key, required this.str,this.isReverse=true}) : super(key: key);
 
   final String str;
+  final bool isReverse ;
 
   @override
   Widget build(BuildContext context) {
@@ -801,7 +816,7 @@ class CellsType extends StatelessWidget {
     return SizedBox(
       height: 75,
       child: ListView.builder(
-        reverse: true,
+        reverse: isReverse,
         itemCount: list.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) => Column(
