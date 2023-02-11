@@ -57,11 +57,11 @@ class HomeProvider with ChangeNotifier {
 
   TextEditingController get textToSpeechController => _textToSpeechController;
 
-  List<String> _addedText = [];
+  String _addedText='';
 
-  List<String> get addedText => _addedText;
+  String get addedText => _addedText;
 
-  int get lengthOfAddedTextList => _addedText.length;
+  //int get lengthOfAddedTextList => _addedText.length;
 
   List<Widget> homePages = [
     const CellsPage(),
@@ -173,22 +173,21 @@ class HomeProvider with ChangeNotifier {
     _scrollToTop();
     await speakText(strOfNames);
     _scrollToBottom(from: 'speak');
-    insertIntoDatabase(cellsType: 2);
+    insertIntoDatabase(text: strOfNames,cellsType: 2);
   }
 
-  void addTextToSpeech() {
-    deleteTextToSpeech();
-    if (textToSpeechController.text.isNotEmpty) {
-      String text = textToSpeechController.text;
-      _addedText = text.split(' ');
-      insertIntoDatabase(cellsType: 1);
+  void addTextToSpeech({required String text}) {
+    //deleteTextToSpeech();
+    if (text.isNotEmpty) {
+      _addedText = text;
+      insertIntoDatabase(text: text,cellsType: 1);
       notifyListeners();
     }
   }
 
   void deleteTextToSpeech() {
     if (_addedText.isNotEmpty) {
-      _addedText.clear();
+      _addedText='';
       notifyListeners();
     }
   }
@@ -357,7 +356,7 @@ class HomeProvider with ChangeNotifier {
         value: (element) => lastCells
             .where((element2) => element == getOneOrSinceDates(element2))
             .toList());
-    //create map to checkedd cells tile to use it in last records screen
+    //create map to checked cells tile to use it in last records screen
     selectedCellTiles = Map.fromIterable(
       mainListPinnedFirstThenLastCells,
       value: (element1) {
@@ -390,28 +389,25 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  insertIntoDatabase({required int cellsType}) async {
+  insertIntoDatabase({required String text,required int cellsType}) async {
     String date = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-    ;
-    String cells = cellsType == 1 ? _addedText.join(' ') : strOfNames;
     List<Map<String, Object?>>? checkBeforeInsert = await database?.query(
       'last_cells',
       columns: ['cells'],
       where: 'cells =?',
-      whereArgs: [cells],
+      whereArgs: [text],
     );
     if (checkBeforeInsert!.isEmpty) {
       await database
           ?.insert(
         'last_cells',
-        {'date': date, 'cells': cells, 'cells_type': cellsType},
+        {'date': date, 'cells': text, 'cells_type': cellsType},
         conflictAlgorithm: ConflictAlgorithm.ignore,
       )
           .then((value) {
         print('inserted success');
         getDataFromDatabase(database);
         notifyListeners();
-        return null;
       }).catchError((error) {
         print('Error When Inserting New Record  ${error.toString()}');
       });
@@ -420,7 +416,7 @@ class HomeProvider with ChangeNotifier {
         'last_cells',
         columns: ['date', 'cells'],
         where: 'date =? AND cells =?',
-        whereArgs: [date, cells],
+        whereArgs: [date, text],
       );
 
       if (checkBeforeUpdate!.isEmpty) {
@@ -429,14 +425,13 @@ class HomeProvider with ChangeNotifier {
           'last_cells',
           {'date': date},
           where: 'cells = ?',
-          whereArgs: [cells],
+          whereArgs: [text],
           conflictAlgorithm: ConflictAlgorithm.ignore,
         )
             .then((value) {
           print('updating success');
           getDataFromDatabase(database);
           notifyListeners();
-          return null;
         }).catchError((error) {
           print('Error When Inserting New Record  ${error.toString()}');
         });
@@ -499,15 +494,16 @@ class HomeProvider with ChangeNotifier {
 
   String getSinceDates(String date) {
     DateTime dateConverted = DateTime.parse(date);
+    String dateFormatted = DateFormat('yyyy-MM-dd').format(dateConverted);
     final DateTime nowDate = DateTime.now();
     DateTime nowShortDate = DateTime(nowDate.year, nowDate.month, nowDate.day);
     DateTime weekFromToday = nowShortDate.subtract(const Duration(days: 6));
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
     String yesterday = DateFormat('yyyy-MM-dd')
         .format(DateTime.now().subtract(const Duration(days: 1)));
-    if (date == today) {
+    if (dateFormatted == today) {
       return 'اليوم';
-    } else if (date == yesterday) {
+    } else if (dateFormatted == yesterday) {
       return 'أمس';
     } else if (weekFromToday.isBefore(dateConverted)) {
       return 'منذ أسبوع';

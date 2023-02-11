@@ -715,11 +715,10 @@ class PressedText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-        ),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+        //textAlign: TextAlign.start,
       ),
     );
   }

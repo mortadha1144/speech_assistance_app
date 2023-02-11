@@ -56,15 +56,11 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                       },
                       child: FadeTransition(
                         opacity: _fadeAnimation,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: watchProvider.lengthOfAddedTextList,
-                          itemBuilder: (context, index) => ScaleTransition(
-                            alignment: Alignment.centerRight,
-                            scale: _scaleAnimation,
-                            child: PressedText(
-                                text: watchProvider.addedText[index]),
-                          ),
+                        child: ScaleTransition(
+                          alignment: Alignment.centerRight,
+                          scale: _scaleAnimation,
+                          child: PressedText(
+                              text: watchProvider.addedText),
                         ),
                       ),
                     ),
@@ -104,7 +100,7 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                         width: 10,
                       ),
                       TextButtonForTapBar(
-                        onPressed: () => watchProvider.addTextToSpeech(),
+                        onPressed: () => watchProvider.addTextToSpeech(text: watchProvider.textToSpeechController.text),
                         text: 'إضافة',
                       ),
                       const SizedBox(
