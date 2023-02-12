@@ -774,29 +774,18 @@ class CellTile extends StatelessWidget {
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
           : CellsType(str: cells,isReverse: false,),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                date,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400, color: Colors.grey),
-              ),
-              isPinned
-                  ? const Icon(Icons.push_pin_outlined)
-                  : const SizedBox.shrink()
-            ],
+          Text(
+            date,
+            style: const TextStyle(
+                fontWeight: FontWeight.w400, color: Colors.grey),
           ),
-          // showOptions
-          //     ? Checkbox(
-          //         value: selected,
-          //         onChanged: checkBoxOnChanged,
-          //       )
-          //     : const SizedBox.shrink(),
+          isPinned
+              ? const Icon(Icons.push_pin_outlined)
+              : const SizedBox.shrink()
         ],
       ),
     );
@@ -813,18 +802,21 @@ class CellsType extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<String> list = str.split(' ');
     return SizedBox(
-      height: 75,
+      height: 70,
       child: ListView.builder(
         reverse: isReverse,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: list.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) => Column(
           children: [
             Expanded(
-                child: Image.asset(cells[cells
-                        .indexWhere((element) => element.name == list[index])]
-                    .image)),
-            Text(list[index]),
+              child: Image.asset(cells[cells
+                      .indexWhere((element) => element.name == list[index])]
+                  .image),
+            ),
+            Text(list[index],style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w700),),
           ],
         ),
       ),

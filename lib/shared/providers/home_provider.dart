@@ -57,7 +57,7 @@ class HomeProvider with ChangeNotifier {
 
   TextEditingController get textToSpeechController => _textToSpeechController;
 
-  String _addedText='';
+  String _addedText = '';
 
   String get addedText => _addedText;
 
@@ -169,25 +169,25 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  Future<void> onTapPlayBar() async {
+  Future<void> onTapPlayBar({required String text}) async {
     _scrollToTop();
-    await speakText(strOfNames);
+    await speakText(text);
     _scrollToBottom(from: 'speak');
-    insertIntoDatabase(text: strOfNames,cellsType: 2);
+    insertIntoDatabase(text: text, cellsType: 2);
   }
 
   void addTextToSpeech({required String text}) {
     //deleteTextToSpeech();
     if (text.isNotEmpty) {
       _addedText = text;
-      insertIntoDatabase(text: text,cellsType: 1);
+      insertIntoDatabase(text: text, cellsType: 1);
       notifyListeners();
     }
   }
 
   void deleteTextToSpeech() {
     if (_addedText.isNotEmpty) {
-      _addedText='';
+      _addedText = '';
       notifyListeners();
     }
   }
@@ -389,7 +389,7 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  insertIntoDatabase({required String text,required int cellsType}) async {
+  insertIntoDatabase({required String text, required int cellsType}) async {
     String date = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
     List<Map<String, Object?>>? checkBeforeInsert = await database?.query(
       'last_cells',
@@ -530,5 +530,65 @@ class HomeProvider with ChangeNotifier {
       default:
         return '';
     }
+  }
+
+  Future<void> onTapCellTile({
+    required bool showOptions,
+    required bool value,
+    required String key,
+    required int index,
+    required String text,
+  }) async {
+    if (showOptions) {
+      checkBoxOnChanged(value: !value, key: key, index: index);
+      if (selectedCellTilesId.isEmpty) {
+        onPressCloseButton();
+      }
+    } else {
+      await speakText(text);
+    }
+  }
+
+  pinningCellsTile(int id) async {
+    lastCells[lastCells.indexWhere((element) => element['id']==id)]['is_pinned']=1;
+    lastCells.sort((a, b) => sortLastCellsList(a, b));
+    print(lastCells);
+    // create main set of pinned and since dates
+    mainListPinnedFirstThenLastCells = List<String>.generate(
+        lastCells.length, (index) => getOneOrSinceDates(lastCells[index]))
+        .toSet();
+    //create indexed map with since dates
+    indexedLastCells = Map.fromIterable(mainListPinnedFirstThenLastCells,
+        value: (element) => lastCells
+            .where((element2) => element == getOneOrSinceDates(element2))
+            .toList());
+    //create map to checked cells tile to use it in last records screen
+    selectedCellTiles = Map.fromIterable(
+      mainListPinnedFirstThenLastCells,
+      value: (element1) {
+        return List<bool>.generate(
+            lastCells
+                .where((element2) => element1 == getOneOrSinceDates(element2))
+                .length,
+                (index) => false);
+      },
+    );
+    onPressCloseButton();
+    // await database
+    // ?.update(
+    // 'last_cells',
+    // {'is_pinned': 1},
+    // where: 'id = ?',
+    // whereArgs: [id],
+    // conflictAlgorithm: ConflictAlgorithm.ignore,
+    // )
+    //     .then((value) {
+    // print('updating success');
+    // getDataFromDatabase(database);
+    // notifyListeners();
+    // }).catchError((error) {
+    // print('Error When Inserting New Record  ${error.toString()}');
+    // });
+
   }
 }

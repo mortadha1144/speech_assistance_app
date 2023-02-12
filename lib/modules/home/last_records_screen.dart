@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/shared/providers/home_provider.dart';
@@ -50,7 +49,10 @@ class LastRecordsScreen extends StatelessWidget {
                         ),
 
                         IconButton(
-                            onPressed: () {},
+                            onPressed:
+                                watchProvider.selectedCellTilesId.length > 1
+                                    ? null
+                                    : () => watchProvider.pinningCellsTile(watchProvider.selectedCellTilesId.single),
                             icon: const Icon(
                               Icons.push_pin,
                               size: 30,
@@ -104,17 +106,14 @@ class LastRecordsScreen extends StatelessWidget {
                       isPinned: itemsAtIndex1[index2]['is_pinned'] == 1
                           ? true
                           : false,
-                      onTap: () async {
-                        if (watchProvider.showOptions) {
-                          bool value = !watchProvider
-                              .selectedCellTiles[keyAtIndex1]![index2];
-                          watchProvider.checkBoxOnChanged(
-                              value: value, key: keyAtIndex1, index: index2);
-                        } else {
-                          await watchProvider
-                              .speakText(itemsAtIndex1[index2]['cells']);
-                        }
-                      },
+                      onTap: () => watchProvider.onTapCellTile(
+                        showOptions: watchProvider.showOptions,
+                        value: watchProvider
+                            .selectedCellTiles[keyAtIndex1]![index2],
+                        key: keyAtIndex1,
+                        index: index2,
+                        text: itemsAtIndex1[index2]['cells'],
+                      ),
                       showOptions: watchProvider.showOptions,
                       onLongPress: () {
                         watchProvider.onLongPressCellTile();

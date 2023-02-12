@@ -61,14 +61,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         _controller
                             .forward()
                             .then((value) => _controller.reverse());
-                        context.read<HomeProvider>().onTapPlayBar();
+                        watchProvider.onTapPlayBar(
+                            text: watchProvider.strOfNames);
                       },
                       child: FadeTransition(
                         opacity: _fadeAnimation,
                         child: AnimatedList(
-                          controller:
-                              context.watch<HomeProvider>().scrollController,
-                          key: context.read<HomeProvider>().key,
+                          controller: watchProvider.scrollController,
+                          key: watchProvider.key,
                           scrollDirection: Axis.horizontal,
                           initialItemCount: watchProvider.lengthOfCellsList,
                           itemBuilder: (context, index, animation) {
@@ -79,14 +79,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 alignment: Alignment.centerRight,
                                 scale: _scaleAnimation,
                                 child: PressedCell(
-                                  text: context
-                                      .watch<HomeProvider>()
-                                      .tapedCells[index]
-                                      .name,
-                                  imagePath: context
-                                      .watch<HomeProvider>()
-                                      .tapedCells[index]
-                                      .image,
+                                  text: watchProvider.tapedCells[index].name,
+                                  imagePath:
+                                      watchProvider.tapedCells[index].image,
                                   width: MediaQuery.of(context).size.width / 6,
                                 ),
                               ),
@@ -100,8 +95,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: Center(
                       child: CupertinoButton(
                         padding: const EdgeInsets.symmetric(horizontal: 2),
-                        onPressed: () =>
-                            context.read<HomeProvider>().onPressedBackspace(),
+                        onPressed: () => watchProvider.onPressedBackspace(),
                         child: const Icon(
                           Icons.backspace_rounded,
                           color: Colors.black,
@@ -116,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
           Expanded(
             child: PageView(
-              controller: context.watch<HomeProvider>().homePagesController,
+              controller: watchProvider.homePagesController,
               children: watchProvider.homePages,
             ),
           ),
