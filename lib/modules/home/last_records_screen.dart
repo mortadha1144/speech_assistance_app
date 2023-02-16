@@ -49,14 +49,23 @@ class LastRecordsScreen extends StatelessWidget {
                         ),
 
                         IconButton(
-                            onPressed:
-                                watchProvider.selectedCellTilesId.length > 1
-                                    ? null
-                                    : () => watchProvider.pinningCellsTile(watchProvider.selectedCellTilesId.single),
-                            icon: const Icon(
-                              Icons.push_pin,
-                              size: 30,
-                            )),
+                            onPressed: watchProvider
+                                        .selectedCellTilesId.length >
+                                    1
+                                ? null
+                                : () => watchProvider.pinningCellsTile(
+                                    watchProvider.selectedCellTilesId.single),
+                            icon: watchProvider.selectedCellTilesId
+                                        .single['is_pinned'] ==
+                                    1
+                                ? const Icon(
+                                    Icons.undo,
+                                    size: 30,
+                                  )
+                                : const Icon(
+                                    Icons.push_pin,
+                                    size: 30,
+                                  )),
                         const SizedBox(
                           width: 15,
                         ),

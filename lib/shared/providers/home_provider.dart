@@ -219,8 +219,18 @@ class HomeProvider with ChangeNotifier {
       {required bool value, required String key, required int index}) {
     selectedCellTiles[key]![index] = value;
     value
-        ? selectedCellTilesId.add(indexedLastCells[key]![index]['id'])
-        : selectedCellTilesId.remove(indexedLastCells[key]![index]['id']);
+        ? selectedCellTilesId.add({
+            'key': key,
+            'index': index,
+            'id': indexedLastCells[key]![index]['id'],
+            'is_pinned': indexedLastCells[key]![index]['is_pinned'],
+          })
+        : selectedCellTilesId.remove({
+            'key': key,
+            'index': index,
+            'id': indexedLastCells[key]![index]['id'],
+            'is_pinned': indexedLastCells[key]![index]['is_pinned'],
+          });
     print(selectedCellTilesId);
     print(selectedCellTiles);
     notifyListeners();
@@ -232,7 +242,7 @@ class HomeProvider with ChangeNotifier {
   Map<String, List<Map>> indexedLastCells = {};
 
   Map<String, List<bool>> selectedCellTiles = {};
-  List<int> selectedCellTilesId = [];
+  List<Map> selectedCellTilesId = [];
 
   void createDatabase() {
     openDatabase(
@@ -549,31 +559,61 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  pinningCellsTile(int id) async {
-    lastCells[lastCells.indexWhere((element) => element['id']==id)]['is_pinned']=1;
-    lastCells.sort((a, b) => sortLastCellsList(a, b));
-    print(lastCells);
-    // create main set of pinned and since dates
-    mainListPinnedFirstThenLastCells = List<String>.generate(
-        lastCells.length, (index) => getOneOrSinceDates(lastCells[index]))
-        .toSet();
-    //create indexed map with since dates
-    indexedLastCells = Map.fromIterable(mainListPinnedFirstThenLastCells,
-        value: (element) => lastCells
-            .where((element2) => element == getOneOrSinceDates(element2))
-            .toList());
-    //create map to checked cells tile to use it in last records screen
-    selectedCellTiles = Map.fromIterable(
-      mainListPinnedFirstThenLastCells,
-      value: (element1) {
-        return List<bool>.generate(
-            lastCells
-                .where((element2) => element1 == getOneOrSinceDates(element2))
-                .length,
-                (index) => false);
-      },
-    );
+  pinningCellsTile(Map item) async {
+    Map element = indexedLastCells[item['key']]!.removeAt(item['index']);
+    bool element2 = selectedCellTiles[item['key']]!.removeAt(item['index']);
+
+    if (element['is_pinned'] == 0) {
+      element['is_pinned'] = 1;
+      bool findOnekey = indexedLastCells.keys.contains('1');
+      if (findOnekey) {
+        indexedLastCells['1']!.add(element);
+        selectedCellTiles['1']!.add(element2);
+      } else {
+        indexedLastCells['1'] = [element];
+        selectedCellTiles['1'] = [false];
+      }
+    } else {
+      element['is_pinned'] = 0;
+      String getSinceDate = getSinceDates(element['date']);
+      bool findSinceDate = indexedLastCells.keys.contains(getSinceDate);
+      if (findSinceDate) {
+        indexedLastCells[getSinceDate]!.add(element);
+        indexedLastCells[getSinceDate]!.sort(
+          (a, b) =>
+              DateTime.parse(b['date']).compareTo(DateTime.parse(a['date'])),
+        );
+        selectedCellTiles[getSinceDate]!.add(element2);
+      } else {
+        indexedLastCells[getSinceDate] = [element];
+        selectedCellTiles[getSinceDate] = [false];
+      }
+    }
+
     onPressCloseButton();
+    // lastCells.sort((a, b) => sortLastCellsList(a, b));
+    // print(lastCells);
+    // // create main set of pinned and since dates
+    // mainListPinnedFirstThenLastCells = List<String>.generate(
+    //     lastCells.length, (index) => getOneOrSinceDates(lastCells[index]))
+    //     .toSet();
+    // //create indexed map with since dates
+    // indexedLastCells = Map.fromIterable(mainListPinnedFirstThenLastCells,
+    //     value: (element) => lastCells
+    //         .where((element2) => element == getOneOrSinceDates(element2))
+    //         .toList());
+    // //create map to checked cells tile to use it in last records screen
+    // selectedCellTiles = Map.fromIterable(
+    //   mainListPinnedFirstThenLastCells,
+    //   value: (element1) {
+    //     return List<bool>.generate(
+    //         lastCells
+    //             .where((element2) => element1 == getOneOrSinceDates(element2))
+    //             .length,
+    //             (index) => false);
+    //   },
+    // );
+    //
     // await database
     // ?.update(
     // 'last_cells',
@@ -589,6 +629,5 @@ class HomeProvider with ChangeNotifier {
     // }).catchError((error) {
     // print('Error When Inserting New Record  ${error.toString()}');
     // });
-
   }
 }
