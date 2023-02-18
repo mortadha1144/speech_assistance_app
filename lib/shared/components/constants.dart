@@ -1,4 +1,4 @@
-import 'package:speech_assistance_app/models/cell/cell.dart';
+import 'package:speech_assistance_app/models/cell.dart';
 
 //types 
 //1:ضمير/برتقالي/اطار مثلث

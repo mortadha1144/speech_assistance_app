@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:speech_assistance_app/models/cell/cell.dart';
+import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/providers/home_provider.dart';

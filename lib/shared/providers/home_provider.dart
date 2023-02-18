@@ -3,20 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:speech_assistance_app/models/cell/cell.dart';
+import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/models/cells_record.dart';
+import 'package:speech_assistance_app/shared/providers/database_provider.dart';
 import 'package:speech_assistance_app/modules/home/home_screen.dart';
 import 'package:speech_assistance_app/modules/home/last_records_screen.dart';
+import 'package:speech_assistance_app/modules/home/last_records_screen2.dart';
 import 'package:speech_assistance_app/modules/home/settings_screen.dart';
 import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:sqflite/sqflite.dart';
 
 class HomeProvider with ChangeNotifier {
+  HomeProvider() {
+    init();
+  }
   int _currentIndex = 0;
   int _currentScreen = 0;
   int _currentPage = 0;
 
-  bool _showOptions = false;
+  
 
   PageController _homePagesController = PageController(initialPage: 0);
 
@@ -28,7 +34,7 @@ class HomeProvider with ChangeNotifier {
 
   PageController get homePagesController => _homePagesController;
 
-  bool get showOptions => _showOptions;
+  
 
   List<BottomNavigationBarItem> bottomItems = [
     const BottomNavigationBarItem(
@@ -69,7 +75,7 @@ class HomeProvider with ChangeNotifier {
   List<Widget> screens = [
     const TextToSpeechScreen(),
     const HomeScreen(),
-    const LastRecordsScreen(),
+    const LastRecordScreen2(),
     const SettingScreen(),
   ];
 
@@ -176,11 +182,12 @@ class HomeProvider with ChangeNotifier {
     insertIntoDatabase(text: text, cellsType: 2);
   }
 
-  void addTextToSpeech({required String text}) {
+  void addTextToSpeech({required CellsRecord cellsRecord}) async {
     //deleteTextToSpeech();
-    if (text.isNotEmpty) {
-      _addedText = text;
-      insertIntoDatabase(text: text, cellsType: 1);
+    if (cellsRecord.cells.isNotEmpty) {
+      _addedText = cellsRecord.cells;
+      await DatabaseProvider().addCells(cellsRecord);
+      //insertIntoDatabase(text: text, cellsType: 1);
       notifyListeners();
     }
   }
@@ -198,22 +205,9 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  void onLongPressCellTile() {
-    _showOptions = !_showOptions;
-    notifyListeners();
-  }
+  
 
-  void onPressCloseButton() {
-    _showOptions = false;
-    selectedCellTilesId.clear();
-    selectedCellTiles.forEach(
-      (key, value) {
-        selectedCellTiles[key] = value.map((e) => false).toList();
-      },
-    );
-    print(selectedCellTiles);
-    notifyListeners();
-  }
+  
 
   void checkBoxOnChanged(
       {required bool value, required String key, required int index}) {
@@ -243,6 +237,21 @@ class HomeProvider with ChangeNotifier {
 
   Map<String, List<bool>> selectedCellTiles = {};
   List<Map> selectedCellTilesId = [];
+
+  late Future<List<CellsRecord>> _cellsRecordList;
+
+  List<CellsRecord> cellsRecords = DatabaseProvider().cellsRecords;
+
+  Future<List<CellsRecord>> get cellsRecordsList => _cellsRecordList;
+
+  Future<List<CellsRecord>> _getCellRecordList() async {
+    final dbProvider = DatabaseProvider();
+    return await dbProvider.fetchCellsRecord();
+  }
+
+  init() {
+    _cellsRecordList = _getCellRecordList();
+  }
 
   void createDatabase() {
     openDatabase(
@@ -289,60 +298,9 @@ class HomeProvider with ChangeNotifier {
             .then((value) => print('database upgraded'))
             .catchError((error) =>
                 print('Error When upgrade Table ${error.toString()}'));
-
-        // await db
-        //     .execute(
-        //         'ALTER TABLE last_cells ADD COLUMN fixed_serial INTEGER DEFAULT 0;')
-        //     .then((value) => print('database upgraded'))
-        //     .catchError((error) =>
-        //         print('Error When upgrade Table ${error.toString()}'));
-        // await db.transaction((txn) async {
-        //   await txn.execute('ALTER TABLE last_cells DROP COLUMN is_fixed;');
-        //   await txn.execute('ALTER TABLE last_cells ADD COLUMN is_fixed BOOLEAN DEFAULT 0 NOT NULL CHECK (is_fixed IN (0, 1);');
-        //   return null;
-        // });
-        // await db
-        //     .transaction((txn) async {
-        //       // await txn.execute(
-        //       //     'CREATE TABLE cell_types(type_id INTEGER PRIMARY KEY,type_name TEXT NOT NULL UNIQUE)');
-        //       // await txn.insert('cell_types', {'type_name': 'text'});
-        //       // await txn.insert('cell_types', {'type_name': 'cells'});
-        //       await txn
-        //           .execute('ALTER TABLE last_cells RENAME TO old_last_cells');
-        //       await txn.execute('''CREATE TABLE last_cells(
-        //                            id INTEGER PRIMARY KEY,
-        //                            date TEXT NOT NULL,
-        //                            cells TEXT NOT NULL UNIQUE,
-        //                            cells_type INTEGER ,
-        //                            FOREIGN KEY (cells_type)
-        //                                 REFERENCES cell_types (type_id)
-        //                                 ON UPDATE CASCADE
-        //                                 ON DELETE SET NULL
-        //                         );
-        //                     ''');
-        //       await txn.execute(
-        //           'INSERT INTO last_cells SELECT id,date,cells,1 FROM old_last_cells;');
-        //
-        //       return null;
-        //     })
-        //     .then((value) => print('database upgraded'))
-        //     .catchError((error) =>
-        //         print('Error When upgrade Table ${error.toString()}'));
-
-        //await db.transaction((txn) async{
-        //await txn.execute('ALTER TABLE last_cells RENAME TO old_last_cells');
-        //await txn.execute('CREATE TABLE last_cells(id INTEGER PRIMARY KEY,date TEXT NOT NULL,cells TEXT NOT NULL UNIQUE)');
-        //   await txn.execute('INSERT INTO last_cells SELECT * FROM old_last_cells;');
-        // }).then((value) => print('database upgraded')).catchError((error) =>
-        //     print('Error When upgrade Table ${error.toString()}'));
       },
       onOpen: (db) async {
-        // await db.execute('DROP TABLE old_last_cells;').then((value) {
-        //   //getDataFromDatabase(db);
-        //   print('table deleted');
-        //   return null;
-        // });
-        getDataFromDatabase(db);
+        //getDataFromDatabase(db);
         print('database opened');
       },
     ).then((value) {
@@ -358,25 +316,25 @@ class HomeProvider with ChangeNotifier {
     lastCells.sort((a, b) => sortLastCellsList(a, b));
     print(lastCells);
     // create main set of pinned and since dates
-    mainListPinnedFirstThenLastCells = List<String>.generate(
-            lastCells.length, (index) => getOneOrSinceDates(lastCells[index]))
-        .toSet();
+    // mainListPinnedFirstThenLastCells = List<String>.generate(
+    //         lastCells.length, (index) => getOneOrSinceDates(lastCells[index]))
+    //     .toSet();
     //create indexed map with since dates
-    indexedLastCells = Map.fromIterable(mainListPinnedFirstThenLastCells,
-        value: (element) => lastCells
-            .where((element2) => element == getOneOrSinceDates(element2))
-            .toList());
+    // indexedLastCells = Map.fromIterable(mainListPinnedFirstThenLastCells,
+    //     value: (element) => lastCells
+    //         .where((element2) => element == getOneOrSinceDates(element2))
+    //         .toList());
     //create map to checked cells tile to use it in last records screen
-    selectedCellTiles = Map.fromIterable(
-      mainListPinnedFirstThenLastCells,
-      value: (element1) {
-        return List<bool>.generate(
-            lastCells
-                .where((element2) => element1 == getOneOrSinceDates(element2))
-                .length,
-            (index) => false);
-      },
-    );
+    // selectedCellTiles = Map.fromIterable(
+    //   mainListPinnedFirstThenLastCells,
+    //   value: (element1) {
+    //     return List<bool>.generate(
+    //         lastCells
+    //             .where((element2) => element1 == getOneOrSinceDates(element2))
+    //             .length,
+    //         (index) => false);
+    //   },
+    // );
     print(indexedLastCells);
     print(selectedCellTiles);
   }
@@ -412,7 +370,7 @@ class HomeProvider with ChangeNotifier {
           ?.insert(
         'last_cells',
         {'date': date, 'cells': text, 'cells_type': cellsType},
-        conflictAlgorithm: ConflictAlgorithm.ignore,
+        conflictAlgorithm: ConflictAlgorithm.replace,
       )
           .then((value) {
         print('inserted success');
@@ -480,6 +438,7 @@ class HomeProvider with ChangeNotifier {
   }
 
   testOnDatabase() async {
+    print(DatabaseProvider().cellsRecords);
     // Batch batch = database!.batch();
     //
     // batch.update(
@@ -499,135 +458,13 @@ class HomeProvider with ChangeNotifier {
     // await batch.commit().then((value) => print('table updated')).catchError(
     //     (error) => print('Error When batch database ${error.toString()}'));
 
-    getDataFromDatabase(database);
+    //getDataFromDatabase(database);
   }
 
-  String getSinceDates(String date) {
-    DateTime dateConverted = DateTime.parse(date);
-    String dateFormatted = DateFormat('yyyy-MM-dd').format(dateConverted);
-    final DateTime nowDate = DateTime.now();
-    DateTime nowShortDate = DateTime(nowDate.year, nowDate.month, nowDate.day);
-    DateTime weekFromToday = nowShortDate.subtract(const Duration(days: 6));
-    String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    String yesterday = DateFormat('yyyy-MM-dd')
-        .format(DateTime.now().subtract(const Duration(days: 1)));
-    if (dateFormatted == today) {
-      return 'اليوم';
-    } else if (dateFormatted == yesterday) {
-      return 'أمس';
-    } else if (weekFromToday.isBefore(dateConverted)) {
-      return 'منذ أسبوع';
-    } else {
-      return 'سابقاً';
-    }
+  
+
+  //String getOneOrSinceDates(Map<dynamic, dynamic> element) =>
+      //element['is_pinned'] == 1 ? '1' : getSinceDates(element['date']);
+
+  
   }
-
-  String getOneOrSinceDates(Map<dynamic, dynamic> element) =>
-      element['is_pinned'] == 1 ? '1' : getSinceDates(element['date']);
-
-  String getCustomDates(String date) {
-    DateTime dateConverted = DateTime.parse(date);
-
-    initializeDateFormatting('ar_DZ', null);
-    switch (getSinceDates(date)) {
-      case 'أمس':
-      case 'اليوم':
-        return DateFormat('hh:mm a', 'ar_DZ').format(dateConverted);
-      case 'منذ أسبوع':
-        return DateFormat('EEEE', 'ar_DZ').format(dateConverted);
-      case 'سابقاً':
-        return DateFormat('yy.MM.dd').format(dateConverted);
-      default:
-        return '';
-    }
-  }
-
-  Future<void> onTapCellTile({
-    required bool showOptions,
-    required bool value,
-    required String key,
-    required int index,
-    required String text,
-  }) async {
-    if (showOptions) {
-      checkBoxOnChanged(value: !value, key: key, index: index);
-      if (selectedCellTilesId.isEmpty) {
-        onPressCloseButton();
-      }
-    } else {
-      await speakText(text);
-    }
-  }
-
-  pinningCellsTile(Map item) async {
-    Map element = indexedLastCells[item['key']]!.removeAt(item['index']);
-    bool element2 = selectedCellTiles[item['key']]!.removeAt(item['index']);
-
-    if (element['is_pinned'] == 0) {
-      element['is_pinned'] = 1;
-      bool findOnekey = indexedLastCells.keys.contains('1');
-      if (findOnekey) {
-        indexedLastCells['1']!.add(element);
-        selectedCellTiles['1']!.add(element2);
-      } else {
-        indexedLastCells['1'] = [element];
-        selectedCellTiles['1'] = [false];
-      }
-    } else {
-      element['is_pinned'] = 0;
-      String getSinceDate = getSinceDates(element['date']);
-      bool findSinceDate = indexedLastCells.keys.contains(getSinceDate);
-      if (findSinceDate) {
-        indexedLastCells[getSinceDate]!.add(element);
-        indexedLastCells[getSinceDate]!.sort(
-          (a, b) =>
-              DateTime.parse(b['date']).compareTo(DateTime.parse(a['date'])),
-        );
-        selectedCellTiles[getSinceDate]!.add(element2);
-      } else {
-        indexedLastCells[getSinceDate] = [element];
-        selectedCellTiles[getSinceDate] = [false];
-      }
-    }
-
-    onPressCloseButton();
-    // lastCells.sort((a, b) => sortLastCellsList(a, b));
-    // print(lastCells);
-    // // create main set of pinned and since dates
-    // mainListPinnedFirstThenLastCells = List<String>.generate(
-    //     lastCells.length, (index) => getOneOrSinceDates(lastCells[index]))
-    //     .toSet();
-    // //create indexed map with since dates
-    // indexedLastCells = Map.fromIterable(mainListPinnedFirstThenLastCells,
-    //     value: (element) => lastCells
-    //         .where((element2) => element == getOneOrSinceDates(element2))
-    //         .toList());
-    // //create map to checked cells tile to use it in last records screen
-    // selectedCellTiles = Map.fromIterable(
-    //   mainListPinnedFirstThenLastCells,
-    //   value: (element1) {
-    //     return List<bool>.generate(
-    //         lastCells
-    //             .where((element2) => element1 == getOneOrSinceDates(element2))
-    //             .length,
-    //             (index) => false);
-    //   },
-    // );
-    //
-    // await database
-    // ?.update(
-    // 'last_cells',
-    // {'is_pinned': 1},
-    // where: 'id = ?',
-    // whereArgs: [id],
-    // conflictAlgorithm: ConflictAlgorithm.ignore,
-    // )
-    //     .then((value) {
-    // print('updating success');
-    // getDataFromDatabase(database);
-    // notifyListeners();
-    // }).catchError((error) {
-    // print('Error When Inserting New Record  ${error.toString()}');
-    // });
-  }
-}

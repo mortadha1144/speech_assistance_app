@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_assistance_app/models/cells_record.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/shared/providers/home_provider.dart';
 
@@ -35,6 +36,8 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
     HomeProvider raedProvider = context.read<HomeProvider>();
+    CellsRecord cellsRecord =
+        CellsRecord.fromTextToSpeech(watchProvider.textToSpeechController.text);
     return SafeArea(
       child: Column(
         children: [
@@ -59,8 +62,7 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                         child: ScaleTransition(
                           alignment: Alignment.centerRight,
                           scale: _scaleAnimation,
-                          child: PressedText(
-                              text: watchProvider.addedText),
+                          child: PressedText(text: cellsRecord.cells),
                         ),
                       ),
                     ),
@@ -100,7 +102,8 @@ class _TextToSpeechScreenState extends State<TextToSpeechScreen>
                         width: 10,
                       ),
                       TextButtonForTapBar(
-                        onPressed: () => watchProvider.addTextToSpeech(text: watchProvider.textToSpeechController.text),
+                        onPressed: () => watchProvider.addTextToSpeech(
+                            cellsRecord: cellsRecord),
                         text: 'إضافة',
                       ),
                       const SizedBox(

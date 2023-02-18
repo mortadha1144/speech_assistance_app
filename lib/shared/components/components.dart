@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:speech_assistance_app/models/cell/cell.dart';
+import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/models/cells_record.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
+import 'package:speech_assistance_app/shared/functions/functions.dart';
 import 'package:speech_assistance_app/shared/providers/home_provider.dart';
 import 'package:speech_assistance_app/shared/styles/colors.dart';
 
@@ -727,21 +729,14 @@ class PressedText extends StatelessWidget {
 class CellTile extends StatelessWidget {
   const CellTile({
     Key? key,
-    required this.cellsType,
-    required this.cells,
-    required this.date,
-    this.isPinned = false,
+    required this.cellsRecord,
     this.onTap,
     this.onLongPress,
     this.showOptions = false,
     this.selected = false,
     this.checkBoxOnChanged,
   }) : super(key: key);
-
-  final int cellsType;
-  final String cells;
-  final String date;
-  final bool isPinned;
+  final CellsRecord cellsRecord;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final bool showOptions;
@@ -763,27 +758,30 @@ class CellTile extends StatelessWidget {
                 Icons.done,
                 color: Colors.white,
               )
-            : Text(cells[0]),
+            : Text(cellsRecord.cells[0]),
       ),
       onTap: onTap,
       onLongPress: onLongPress,
-      title: cellsType == 1
+      title: cellsRecord.cellsType == 1
           ? Text(
-              cells,
+              cellsRecord.cells,
               textDirection: TextDirection.rtl,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             )
-          : CellsType(str: cells,isReverse: false,),
+          : CellsType(
+              str: cellsRecord.cells,
+              isReverse: false,
+            ),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            date,
+            Functions.getCustomDates(cellsRecord.date),
             style: const TextStyle(
                 fontWeight: FontWeight.w400, color: Colors.grey),
           ),
-          isPinned
+          cellsRecord.isPinned == 1
               ? const Icon(Icons.push_pin_outlined)
               : const SizedBox.shrink()
         ],
@@ -793,10 +791,11 @@ class CellTile extends StatelessWidget {
 }
 
 class CellsType extends StatelessWidget {
-  const CellsType({Key? key, required this.str,this.isReverse=true}) : super(key: key);
+  const CellsType({Key? key, required this.str, this.isReverse = true})
+      : super(key: key);
 
   final String str;
-  final bool isReverse ;
+  final bool isReverse;
 
   @override
   Widget build(BuildContext context) {
@@ -816,7 +815,10 @@ class CellsType extends StatelessWidget {
                       .indexWhere((element) => element.name == list[index])]
                   .image),
             ),
-            Text(list[index],style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w700),),
+            Text(
+              list[index],
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+            ),
           ],
         ),
       ),
