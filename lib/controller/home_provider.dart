@@ -1,17 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/models/cells_record.dart';
-import 'package:speech_assistance_app/shared/providers/database_provider.dart';
-import 'package:speech_assistance_app/modules/home/home_screen.dart';
-import 'package:speech_assistance_app/modules/home/last_records_screen.dart';
-import 'package:speech_assistance_app/modules/home/last_records_screen2.dart';
-import 'package:speech_assistance_app/modules/home/settings_screen.dart';
-import 'package:speech_assistance_app/modules/home/text_to_speech_screen.dart';
+import 'package:speech_assistance_app/controller/database_provider.dart';
+import 'package:speech_assistance_app/view/screens/home_screen.dart';
+import 'package:speech_assistance_app/view/screens/last_records_screen2.dart';
+import 'package:speech_assistance_app/view/screens/settings_screen.dart';
+import 'package:speech_assistance_app/view/screens/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
+import 'package:speech_assistance_app/view/screens/text_to_speech_screen2.dart';
 import 'package:sqflite/sqflite.dart';
 
 class HomeProvider with ChangeNotifier {
@@ -73,7 +72,7 @@ class HomeProvider with ChangeNotifier {
     const CellsPage(),
   ];
   List<Widget> screens = [
-    const TextToSpeechScreen(),
+    const TextReader(),
     const HomeScreen(),
     const LastRecordScreen2(),
     const SettingScreen(),

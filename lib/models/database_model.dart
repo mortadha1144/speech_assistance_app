@@ -1,15 +1,11 @@
-import 'package:flutter/foundation.dart';
-import 'package:speech_assistance_app/models/cells_record.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DatabaseProvider with ChangeNotifier {
-  List<CellsRecord> _cellsRecords = [];
-  List<CellsRecord> get cellsRecords => _cellsRecords;
-
+class DatabaseModel {
   Database? _database;
 
   Future<Database> get database async {
+    if (_database != null) return _database!;
     final String dbDirectory = await getDatabasesPath();
     const String dbName = 'my_cells.db';
     final path = join(dbDirectory, dbName);
@@ -48,38 +44,14 @@ class DatabaseProvider with ChangeNotifier {
     });
   }
 
-  Future<List<CellsRecord>> fetchCellsRecord() async {
+  Future<int> insertData(table, values) async {
     final db = await database;
-
-    return await db.query('last_cells').then((value) {
-      final List<Map<String, dynamic>> converted =
-          List<Map<String, dynamic>>.from(value);
-      List<CellsRecord> nList = List.generate(
-        converted.length,
-        (index) => CellsRecord.fromDatabase(converted[index]),
-      );
-      _cellsRecords = nList;
-      _cellsRecords.sort((a, b) => b.isPinned.compareTo(a.isPinned));
-      return _cellsRecords;
-    });
+   return await db.insert(table, values,conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> addCells(CellsRecord cells) async {
+  Future<List<Map<String, Object?>>> readData(
+      {required String table, String? orderBy}) async {
     final db = await database;
-    await db
-        .insert(
-      'last_cells',
-      {'date': cells.date.toString(), 'cells': cells.cells, 'cells_type': 1},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    )
-        .then((value) {
-      final file = CellsRecord(
-        id: value,
-        date: cells.date,
-        cells: cells.cells,
-      );
-
-      _cellsRecords.add(file);
-    });
+    return await db.query(table, orderBy: orderBy);
   }
 }

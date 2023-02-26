@@ -1,28 +1,36 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/models/cells_record.dart';
-import 'package:speech_assistance_app/shared/providers/database_provider.dart';
+import 'package:speech_assistance_app/services/last_records_sevices.dart';
 
 class LastRecordProvider with ChangeNotifier {
-  final DatabaseProvider _databaseProvider;
-  late Future _cellsRecordList;
+  List<CellsRecord> _cellsRecordList = [];
+  LastRecordSevices? _services;
 
-  Future get cellRecordList => _cellsRecordList;
-  Future _getCellRecordList() async {
-    return await _databaseProvider.fetchCellsRecord();
+  bool isLoading = false;
+
+  List<CellsRecord>? get cellRecordList => _cellsRecordList;
+
+  void getData() async {
+    await _services!.readData().then((value) {
+      print(value);
+      final List<Map<String, dynamic>> converted =
+          List<Map<String, dynamic>>.from(value);
+      List<CellsRecord> nList = List.generate(
+        converted.length,
+        (index) => CellsRecord.fromDatabase(converted[index]),
+      );
+      _cellsRecordList = nList;
+      isLoading = true;
+      notifyListeners();
+    });
   }
 
-  List<bool> _getSelectedCellsRecord() {
-    return _databaseProvider.cellsRecords.map((e) => false).toList();
+  LastRecordProvider() {
+    _services = LastRecordSevices();
+    getData();
+    print('initilize');
   }
-
-  void initialCellsRecordList() {
-    _cellsRecordList = _getCellRecordList();
-    _selectedCellTiles = _getSelectedCellsRecord();
-  }
-
-  LastRecordProvider(this._databaseProvider);
 
   final FlutterTts _flutterTts = FlutterTts();
 
@@ -43,7 +51,7 @@ class LastRecordProvider with ChangeNotifier {
   void onPressCloseButton() {
     _showOptions = false;
     _selectedCellRecordTiles.clear();
-    _selectedCellTiles.fillRange(0, selectedCellTiles.length,false);
+    _selectedCellTiles.fillRange(0, selectedCellTiles.length, false);
     print(selectedCellTiles);
     notifyListeners();
   }
@@ -73,10 +81,6 @@ class LastRecordProvider with ChangeNotifier {
     await _flutterTts.setSpeechRate(0.4);
     await _flutterTts.speak(text);
   }
-
-  
-
-    
 
   pinningCellsTile(Map item) async {
     // Map element = indexedLastCells[item['key']]!.removeAt(item['index']);

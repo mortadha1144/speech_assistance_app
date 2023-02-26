@@ -1,28 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
-import 'package:speech_assistance_app/shared/providers/database_provider.dart';
-import 'package:speech_assistance_app/shared/providers/home_provider.dart';
-import 'package:speech_assistance_app/shared/providers/last_record_provider.dart';
+import 'package:speech_assistance_app/controller/database_provider.dart';
+import 'package:speech_assistance_app/controller/home_provider.dart';
+import 'package:speech_assistance_app/controller/last_record_provider.dart';
 
-class LastRecordScreen2 extends StatefulWidget {
+class LastRecordScreen2 extends StatelessWidget {
   const LastRecordScreen2({super.key});
-
-  @override
-  State<LastRecordScreen2> createState() => _LastRecordScreen2State();
-}
-
-class _LastRecordScreen2State extends State<LastRecordScreen2> {
-  void initialCellsRecordList() {
-    final provider = Provider.of<LastRecordProvider>(context, listen: false);
-    provider.initialCellsRecordList();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initialCellsRecordList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,34 +89,19 @@ class _LastRecordScreen2State extends State<LastRecordScreen2> {
                 ],
         ),
         Expanded(
-          child: FutureBuilder(
-            future: provider.cellRecordList,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text(snapshot.error.toString()),
-                  );
-                } else {
-                  return Consumer<DatabaseProvider>(
-                    builder: (context, value, child) {
-                      var list = value.cellsRecords;
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: list.length,
-                        itemBuilder: (context, index) => CellTile(
-                          cellsRecord: list[index],
-                          
-                        ),
-                      );
-                    },
-                  );
-                }
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+          child: Consumer<LastRecordProvider>(
+            builder: (context, value, child) {
+              var list = value.cellRecordList;
+              var isLoading = value.isLoading;
+              return isLoading
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: list!.length,
+                      itemBuilder: (context, index) => CellTile(
+                        cellsRecord: list[index],
+                      ),
+                    )
+                  : const Center(child: CircularProgressIndicator());
             },
           ),
         ),

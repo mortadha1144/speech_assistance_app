@@ -5,7 +5,7 @@ import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/models/cells_record.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/functions/functions.dart';
-import 'package:speech_assistance_app/shared/providers/home_provider.dart';
+import 'package:speech_assistance_app/controller/home_provider.dart';
 import 'package:speech_assistance_app/shared/styles/colors.dart';
 
 class FolderCustomClip extends CustomClipper<Path> {

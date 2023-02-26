@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:speech_assistance_app/modules/home/home_screen.dart';
-import 'package:speech_assistance_app/shared/providers/home_provider.dart';
+import 'package:speech_assistance_app/view/screens/home_screen.dart';
+import 'package:speech_assistance_app/controller/home_provider.dart';
 
 class SpeechAssistanceLayout extends StatelessWidget {
   const SpeechAssistanceLayout({super.key});

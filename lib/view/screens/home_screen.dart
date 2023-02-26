@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
-import 'package:speech_assistance_app/shared/providers/home_provider.dart';
+import 'package:speech_assistance_app/controller/home_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {

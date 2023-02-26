@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_assistance_app/controller/text_to_speech_provider.dart';
 import 'package:speech_assistance_app/layout/speech_assistance_app/speech_assistance_layout.dart';
-import 'package:speech_assistance_app/shared/providers/database_provider.dart';
-import 'package:speech_assistance_app/shared/providers/home_provider.dart';
-import 'package:speech_assistance_app/shared/providers/last_record_provider.dart';
-//import 'package:speech_assistance_app/cell_widget.dart';
+import 'package:speech_assistance_app/controller/home_provider.dart';
+import 'package:speech_assistance_app/controller/last_record_provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => HomeProvider()),
-        ChangeNotifierProvider<DatabaseProvider>(
-          create: (context) => DatabaseProvider(),
-        ),
-        ChangeNotifierProxyProvider<DatabaseProvider, LastRecordProvider>(
-          create: (context) => LastRecordProvider(
-              Provider.of<DatabaseProvider>(context, listen: false)),
-          update: (context, value, previous) => LastRecordProvider(value),
-        )
+        ChangeNotifierProvider(create: (context) => TextToSpeechProvider()),
+        ChangeNotifierProvider(create: (context) => LastRecordProvider()),
       ],
       child: const MyApp(),
     ),

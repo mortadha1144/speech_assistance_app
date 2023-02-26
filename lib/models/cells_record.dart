@@ -10,7 +10,7 @@ class CellsRecord {
     required this.id,
     required this.date,
     required this.cells,
-    this.cellsType = 1,
+    required this.cellsType,
     this.isPinned = 0,
     this.pinningSerial = 0,
   });
@@ -27,12 +27,9 @@ class CellsRecord {
   }
 
   Map<String, dynamic> toMap() => {
-        'id': id,
         'date': date.toString(),
         'cells': cells,
         'cells_type': cellsType,
-        'is_pinned': isPinned,
-        'pinning_serial': pinningSerial,
       };
 
   factory CellsRecord.fromTextToSpeech(String cells) {
@@ -40,6 +37,7 @@ class CellsRecord {
       id: 0,
       date: DateTime.now(),
       cells: cells,
+      cellsType: 1,
     );
   }
 }

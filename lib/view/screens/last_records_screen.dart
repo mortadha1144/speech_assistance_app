@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
-import 'package:speech_assistance_app/shared/providers/home_provider.dart';
-import 'package:speech_assistance_app/shared/providers/last_record_provider.dart';
+import 'package:speech_assistance_app/controller/home_provider.dart';
+import 'package:speech_assistance_app/controller/last_record_provider.dart';
 
 class LastRecordsScreen extends StatelessWidget {
   const LastRecordsScreen({Key? key}) : super(key: key);
