@@ -745,46 +745,57 @@ class CellTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      //contentPadding: EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      selected: selected,
-      selectedTileColor: Colors.grey[400],
-      selectedColor: Colors.black,
-      leading: CircleAvatar(
-        backgroundColor: selected ? Colors.blue : Colors.pink[100],
-        child: selected
-            ? const Icon(
-                Icons.done,
-                color: Colors.white,
-              )
-            : Text(cellsRecord.cells[0]),
-      ),
-      onTap: onTap,
-      onLongPress: onLongPress,
-      title: cellsRecord.cellsType == 1
-          ? Text(
-              cellsRecord.cells,
-              textDirection: TextDirection.rtl,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            )
-          : CellsType(
-              str: cellsRecord.cells,
-              isReverse: false,
-            ),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            Functions.getCustomDates(cellsRecord.date),
-            style: const TextStyle(
-                fontWeight: FontWeight.w400, color: Colors.grey),
+    return Padding(
+      padding: const EdgeInsets.only(top: 4, right: 8),
+      child: SizedBox(
+        height: 60,
+        child: ListTile(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10))),
+          selected: selected,
+          selectedTileColor: const Color.fromARGB(255, 221, 221, 245),
+          selectedColor: Colors.black,
+          leading: CircleAvatar(
+            backgroundColor: selected ? Colors.blue : Colors.pink[100],
+            child: selected
+                ? const Icon(
+                    Icons.done,
+                    color: Colors.white,
+                  )
+                : Text(cellsRecord.cells[0]),
           ),
-          cellsRecord.isPinned == 1
-              ? const Icon(Icons.push_pin_outlined)
-              : const SizedBox.shrink()
-        ],
+          onTap: onTap,
+          onLongPress: onLongPress,
+          title: cellsRecord.cellsType == 1
+              ? Text(
+                  cellsRecord.cells,
+                  textDirection: TextDirection.rtl,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
+                )
+              : CellsType(
+                  str: cellsRecord.cells,
+                  isReverse: false,
+                ),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                Functions.getCustomDates(cellsRecord.date),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                    fontSize: 12),
+              ),
+              cellsRecord.isPinned == 1
+                  ? const Icon(Icons.push_pin_outlined)
+                  : const SizedBox.shrink()
+            ],
+          ),
+        ),
       ),
     );
   }

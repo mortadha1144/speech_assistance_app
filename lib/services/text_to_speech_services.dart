@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:speech_assistance_app/models/cells_record.dart';
+import 'package:speech_assistance_app/controller/last_record_provider.dart';
 import 'package:speech_assistance_app/models/database_model.dart';
 
 class TextToSpeechSevicies {
@@ -10,8 +9,6 @@ class TextToSpeechSevicies {
   }
 
   Future<void> saveText(vlues) async {
-    await _databaseModel!
-        .insertData('last_cells',vlues)
-        .then((value) => print(value));
+    await _databaseModel!.insertData('last_cells', vlues);
   }
 }

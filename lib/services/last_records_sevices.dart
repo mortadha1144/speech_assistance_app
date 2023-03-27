@@ -9,6 +9,6 @@ class LastRecordSevices {
 
   Future<List<Map<String, Object?>>> readData() async {
     return _databaseModel!
-        .readData(table: 'last_cells', orderBy: 'is_pinned DESC,date(date) DESC');
+        .readData(table: 'last_cells', orderBy: 'is_pinned DESC,datetime(date) DESC');
   }
 }

@@ -7,13 +7,14 @@ class LastRecordProvider with ChangeNotifier {
   List<CellsRecord> _cellsRecordList = [];
   LastRecordSevices? _services;
 
-  bool isLoading = false;
+  bool _isLoading = false;
 
-  List<CellsRecord>? get cellRecordList => _cellsRecordList;
+  List<CellsRecord> get cellRecordList => _cellsRecordList;
+
+  bool get isLoading => _isLoading;
 
   void getData() async {
     await _services!.readData().then((value) {
-      print(value);
       final List<Map<String, dynamic>> converted =
           List<Map<String, dynamic>>.from(value);
       List<CellsRecord> nList = List.generate(
@@ -21,15 +22,17 @@ class LastRecordProvider with ChangeNotifier {
         (index) => CellsRecord.fromDatabase(converted[index]),
       );
       _cellsRecordList = nList;
-      isLoading = true;
+      _isLoading = true;
       notifyListeners();
     });
   }
 
   LastRecordProvider() {
     _services = LastRecordSevices();
-    getData();
-    print('initilize');
+
+    // if(_cellsRecordList.isNotEmpty){
+
+    // }
   }
 
   final FlutterTts _flutterTts = FlutterTts();
@@ -37,13 +40,21 @@ class LastRecordProvider with ChangeNotifier {
   bool _showOptions = false;
   bool get showOptions => _showOptions;
 
-  late List<bool> _selectedCellTiles;
+  List<bool>? _selectedCellTiles;
 
-  List<bool> get selectedCellTiles => _selectedCellTiles;
+  List<bool>? get selectedCellTiles => _selectedCellTiles;
+  List<bool>? get treuSelectedCellTiles =>
+      _selectedCellTiles?.where((element) => element == true).toList();
 
   final List<CellsRecord> _selectedCellRecordTiles = [];
 
-  void onLongPressCellTile() {
+  List<CellsRecord> get selectedCellRecordTiles => _selectedCellRecordTiles;
+
+  void onLongPressCellTile(
+      {required CellsRecord cellsRecord, required int index}) {
+    _selectedCellTiles = List.filled(_cellsRecordList.length, false);
+    _selectedCellTiles![index] = true;
+    _selectedCellRecordTiles.add(cellsRecord);
     _showOptions = !_showOptions;
     notifyListeners();
   }
@@ -51,24 +62,23 @@ class LastRecordProvider with ChangeNotifier {
   void onPressCloseButton() {
     _showOptions = false;
     _selectedCellRecordTiles.clear();
-    _selectedCellTiles.fillRange(0, selectedCellTiles.length, false);
-    print(selectedCellTiles);
+    _selectedCellTiles = null;
     notifyListeners();
   }
 
   Future<void> onTapCellTile({
     required CellsRecord cellsRecord,
-    required bool value,
     required int index,
   }) async {
     if (showOptions) {
-      _selectedCellTiles[index] = !value;
-      value
-          ? _selectedCellRecordTiles.add(cellsRecord)
-          : _selectedCellRecordTiles.remove(cellsRecord);
-
+      _selectedCellTiles![index]
+          ? _selectedCellRecordTiles.remove(cellsRecord)
+          : _selectedCellRecordTiles.add(cellsRecord);
+      _selectedCellTiles![index] = !_selectedCellTiles![index];
+      notifyListeners();
+      print(_selectedCellRecordTiles.length);
       //checkBoxOnChanged(value: !value, key: key, index: index);
-      if (_selectedCellRecordTiles.isEmpty) {
+      if (treuSelectedCellTiles!.isEmpty) {
         onPressCloseButton();
       }
     } else {
@@ -80,6 +90,15 @@ class LastRecordProvider with ChangeNotifier {
     await _flutterTts.setLanguage("ar");
     await _flutterTts.setSpeechRate(0.4);
     await _flutterTts.speak(text);
+  }
+
+  void insertFromAnotherScreen(CellsRecord cellsRecord) {
+    _cellsRecordList.add(cellsRecord);
+  }
+
+  void insertCellFromTextToSpeechScreen(CellsRecord cell) {
+    _cellsRecordList.insert(0, cell);
+    notifyListeners();
   }
 
   pinningCellsTile(Map item) async {

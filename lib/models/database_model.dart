@@ -46,7 +46,8 @@ class DatabaseModel {
 
   Future<int> insertData(table, values) async {
     final db = await database;
-   return await db.insert(table, values,conflictAlgorithm: ConflictAlgorithm.replace);
+    return await db.insert(table, values,
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<Map<String, Object?>>> readData(

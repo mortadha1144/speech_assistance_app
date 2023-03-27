@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/text_to_speech_provider.dart';
 import 'package:speech_assistance_app/layout/speech_assistance_app/speech_assistance_layout.dart';
@@ -11,8 +10,11 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => HomeProvider()),
-        ChangeNotifierProvider(create: (context) => TextToSpeechProvider()),
         ChangeNotifierProvider(create: (context) => LastRecordProvider()),
+        ChangeNotifierProxyProvider<LastRecordProvider, TextToSpeechProvider>(
+          create: (context) => TextToSpeechProvider(),
+          update: (context, value, previous) => previous!..update(value),
+        ),
       ],
       child: const MyApp(),
     ),

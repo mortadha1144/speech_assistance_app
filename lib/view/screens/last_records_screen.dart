@@ -38,9 +38,9 @@ class LastRecordsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          watchProvider.selectedCellTiles.isEmpty
+                          watchProvider.selectedCellTiles!.isEmpty
                               ? ''
-                              : watchProvider.selectedCellTiles.length
+                              : watchProvider.selectedCellTiles!.length
                                   .toString(),
                           style: const TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w600),
@@ -51,7 +51,7 @@ class LastRecordsScreen extends StatelessWidget {
                         ),
 
                         IconButton(
-                          onPressed: watchProvider.selectedCellTiles.length > 1
+                          onPressed: watchProvider.selectedCellTiles!.length > 1
                               ? null
                               : () {
                                   // watchProvider.pinningCellsTile(
