@@ -5,9 +5,11 @@ import 'package:speech_assistance_app/services/last_records_sevices.dart';
 
 class LastRecordProvider with ChangeNotifier {
   List<CellsRecord> _cellsRecordList = [];
-  LastRecordSevices? _services;
+  final LastRecordSevices _services = LastRecordSevices();
 
   bool _isLoading = false;
+
+  int? _onLongPressIndexTile;
 
   List<CellsRecord> get cellRecordList => _cellsRecordList;
 
@@ -25,14 +27,6 @@ class LastRecordProvider with ChangeNotifier {
       _isLoading = true;
       notifyListeners();
     });
-  }
-
-  LastRecordProvider() {
-    _services = LastRecordSevices();
-
-    // if(_cellsRecordList.isNotEmpty){
-
-    // }
   }
 
   final FlutterTts _flutterTts = FlutterTts();
@@ -56,6 +50,7 @@ class LastRecordProvider with ChangeNotifier {
     _selectedCellTiles![index] = true;
     _selectedCellRecordTiles.add(cellsRecord);
     _showOptions = !_showOptions;
+    _onLongPressIndexTile = index;
     notifyListeners();
   }
 
@@ -63,6 +58,7 @@ class LastRecordProvider with ChangeNotifier {
     _showOptions = false;
     _selectedCellRecordTiles.clear();
     _selectedCellTiles = null;
+
     notifyListeners();
   }
 
@@ -76,8 +72,6 @@ class LastRecordProvider with ChangeNotifier {
           : _selectedCellRecordTiles.add(cellsRecord);
       _selectedCellTiles![index] = !_selectedCellTiles![index];
       notifyListeners();
-      print(_selectedCellRecordTiles.length);
-      //checkBoxOnChanged(value: !value, key: key, index: index);
       if (treuSelectedCellTiles!.isEmpty) {
         onPressCloseButton();
       }
@@ -101,7 +95,17 @@ class LastRecordProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  pinningCellsTile(Map item) async {
+  pinningCellsTile() async {
+    if (_cellsRecordList[_onLongPressIndexTile!].isPinned == 1) {
+      _cellsRecordList[_onLongPressIndexTile!].isPinned = 0;
+      _cellsRecordList[_onLongPressIndexTile!].pinningSerial = 0;
+    } else {
+      _cellsRecordList[_onLongPressIndexTile!].isPinned = 1;
+      //need to search all is pinned cells and find count of pinning serial
+      //_cellsRecordList[_onLongPressIndexTile!].pinningSerial += 1;
+    }
+
+    notifyListeners();
     // Map element = indexedLastCells[item['key']]!.removeAt(item['index']);
     // bool element2 = selectedCellTiles[item['key']]!.removeAt(item['index']);
 

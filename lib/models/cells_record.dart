@@ -3,8 +3,8 @@ class CellsRecord {
   final DateTime date;
   final String cells;
   final int cellsType;
-  final int isPinned;
-  final int pinningSerial;
+  int isPinned;
+  int pinningSerial;
 
   CellsRecord({
     required this.id,

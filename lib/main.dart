@@ -9,7 +9,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => HomeProvider()),
+        ChangeNotifierProvider(create: (context) => HomeProvider(context)),
         ChangeNotifierProvider(create: (context) => LastRecordProvider()),
         ChangeNotifierProxyProvider<LastRecordProvider, TextToSpeechProvider>(
           create: (context) => TextToSpeechProvider(),
