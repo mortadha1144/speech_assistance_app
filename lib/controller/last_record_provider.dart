@@ -8,7 +8,7 @@ class LastRecordProvider with ChangeNotifier {
   final LastRecordSevices _services = LastRecordSevices();
 
   bool _isLoading = false;
-
+//to git index when long press on tile
   int? _onLongPressIndexTile;
 
   List<CellsRecord> get cellRecordList => _cellsRecordList;
@@ -103,9 +103,14 @@ class LastRecordProvider with ChangeNotifier {
       _cellsRecordList[_onLongPressIndexTile!].isPinned = 1;
       //need to search all is pinned cells and find count of pinning serial
       //_cellsRecordList[_onLongPressIndexTile!].pinningSerial += 1;
+      int pinningSerial =
+          _cellsRecordList.where((element) => element.isPinned == 1).length;
+      _cellsRecordList[_onLongPressIndexTile!].pinningSerial = pinningSerial;
+      print(pinningSerial);
     }
-
+    sortCellsRecordList();
     notifyListeners();
+    onPressCloseButton();
     // Map element = indexedLastCells[item['key']]!.removeAt(item['index']);
     // bool element2 = selectedCellTiles[item['key']]!.removeAt(item['index']);
 
@@ -175,5 +180,17 @@ class LastRecordProvider with ChangeNotifier {
     // }).catchError((error) {
     // print('Error When Inserting New Record  ${error.toString()}');
     // });
+  }
+
+  void sortCellsRecordList() {
+    _cellsRecordList.sort(
+      (a, b) {
+        int pinningSerialCompare = b.pinningSerial.compareTo(a.pinningSerial);
+        if (pinningSerialCompare != 0) return pinningSerialCompare;
+        int isPinnedCompare = b.isPinned.compareTo(a.isPinned);
+        if (isPinnedCompare != 0) return isPinnedCompare;
+        return b.date.compareTo(a.date);
+      },
+    );
   }
 }

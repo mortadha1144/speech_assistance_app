@@ -7,8 +7,6 @@ class DatabaseProvider with ChangeNotifier {
   List<CellsRecord> _cellsRecords = [];
   List<CellsRecord> get cellsRecords => _cellsRecords;
 
-
-
   Database? _database;
 
   Future<Database> get database async {
