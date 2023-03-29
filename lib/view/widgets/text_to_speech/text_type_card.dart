@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class TextTypeCard extends StatelessWidget {
   const TextTypeCard(
-      {super.key, required this.textController, this.formKey, this.validator});
+      {super.key,
+      required this.textController,
+      this.onSaved});
 
   final TextEditingController textController;
-  final GlobalKey<FormState>? formKey;
-  final String? Function(String?)? validator;
+  final void Function(String?)? onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +18,24 @@ class TextTypeCard extends StatelessWidget {
           elevation: 10,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Form(
-              key: formKey,
-              child: TextFormField(
-                validator: validator,
-                controller: textController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                style: const TextStyle(fontSize: 25),
-                decoration: const InputDecoration(
-                    hintText: 'اكتب النص هنا',
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    errorStyle:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ),
+            child: TextFormField(
+              onSaved: onSaved,
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'يرجي كتابة النص في صندوق النص';
+                }
+                return null;
+              },
+              controller: textController,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              style: const TextStyle(fontSize: 25),
+              decoration: const InputDecoration(
+                  hintText: 'اكتب النص هنا',
+                  //border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  errorStyle:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
           ),
         ),

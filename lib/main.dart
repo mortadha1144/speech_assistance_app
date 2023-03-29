@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/text_to_speech_provider.dart';
 import 'package:speech_assistance_app/layout/speech_assistance_app/speech_assistance_layout.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
+import 'package:speech_assistance_app/models/cell_model.dart';
+import 'package:speech_assistance_app/shared/components/constants.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox<CellModel>(kCellsBox);
+  Hive.registerAdapter(CellModelAdapter());
   runApp(
     MultiProvider(
       providers: [

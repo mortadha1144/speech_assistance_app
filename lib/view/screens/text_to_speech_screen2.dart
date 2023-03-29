@@ -20,36 +20,43 @@ class TextReader extends StatelessWidget {
         backgroundColor: Colors.blueGrey,
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CustomIconButton(
-                  onPressed: provider.speechTheText,
-                  icon: Icons.volume_down,
-                ),
-                CustomIconButton(
-                  onPressed: provider.saveText,
-                  icon: Icons.save,
-                ),
-                CustomIconButton(
-                  onPressed: provider.clearText,
-                  icon: Icons.delete,
-                ),
-                CustomIconButton(
-                  onPressed: provider.test,
-                  icon: Icons.delete,
-                ),
-              ],
+      body: Form(
+        key: provider.formKey,
+        autovalidateMode: provider.autovalidateMode,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustomIconButton(
+                    onPressed: provider.speechTheText,
+                    icon: Icons.volume_down,
+                  ),
+                  CustomIconButton(
+                    onPressed: provider.saveText,
+                    icon: Icons.save,
+                  ),
+                  CustomIconButton(
+                    onPressed: provider.clearText,
+                    icon: Icons.delete,
+                  ),
+                  CustomIconButton(
+                    onPressed: provider.test2,
+                    icon: Icons.delete,
+                  ),
+                ],
+              ),
             ),
-          ),
-          TextTypeCard(textController: provider.textToSpeechController,formKey: provider.formKey,validator: provider.validator,),
-        ],
+            TextTypeCard(
+              textController: provider.textToSpeechController,
+              onSaved: provider.onSaved,
+            ),
+          ],
+        ),
       ),
     );
   }
