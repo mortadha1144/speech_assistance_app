@@ -1,7 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseModel {
+  static DatabaseModel? _databaseModel;
+
+  DatabaseModel._();
+
+  factory DatabaseModel() {
+    return _databaseModel ??= DatabaseModel._();
+  }
   Database? _database;
 
   Future<Database> get database async {
@@ -54,5 +62,11 @@ class DatabaseModel {
       {required String table, String? orderBy}) async {
     final db = await database;
     return await db.query(table, orderBy: orderBy);
+  }
+
+  Future<int> updateData({required String table,required Map<String, Object?> values,String? where,List<Object?>? whereArgs}) async {
+    final db = await database;
+
+    return await db.update(table, values,where: where,whereArgs: whereArgs,conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 }

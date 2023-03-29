@@ -16,7 +16,7 @@ class LastRecordProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   void getData() async {
-    await _services!.readData().then((value) {
+    await _services.readData().then((value) {
       final List<Map<String, dynamic>> converted =
           List<Map<String, dynamic>>.from(value);
       List<CellsRecord> nList = List.generate(
@@ -25,6 +25,7 @@ class LastRecordProvider with ChangeNotifier {
       );
       _cellsRecordList = nList;
       _isLoading = true;
+      print(value);
       notifyListeners();
     });
   }
@@ -96,20 +97,29 @@ class LastRecordProvider with ChangeNotifier {
   }
 
   pinningCellsTile() async {
-    if (_cellsRecordList[_onLongPressIndexTile!].isPinned == 1) {
-      _cellsRecordList[_onLongPressIndexTile!].isPinned = 0;
-      _cellsRecordList[_onLongPressIndexTile!].pinningSerial = 0;
+    CellsRecord selectedCell = _cellsRecordList[_onLongPressIndexTile!];
+    int isPinnig = selectedCell.isPinned;
+    //int pinningSerial = _cellsRecordList[_onLongPressIndexTile!].pinningSerial;
+    int pinningSerial;
+    if (isPinnig == 1) {
+      isPinnig = 0;
+      pinningSerial = 0;
     } else {
-      _cellsRecordList[_onLongPressIndexTile!].isPinned = 1;
+      isPinnig = 1;
       //need to search all is pinned cells and find count of pinning serial
       //_cellsRecordList[_onLongPressIndexTile!].pinningSerial += 1;
-      int pinningSerial =
-          _cellsRecordList.where((element) => element.isPinned == 1).length;
-      _cellsRecordList[_onLongPressIndexTile!].pinningSerial = pinningSerial;
+      pinningSerial =
+          _cellsRecordList.where((element) => element.isPinned == 1).length + 1;
+      //_cellsRecordList[_onLongPressIndexTile!].pinningSerial = pinningSerial;
       print(pinningSerial);
     }
+
+    selectedCell.isPinned = isPinnig;
+    selectedCell.pinningSerial = pinningSerial;
     sortCellsRecordList();
     notifyListeners();
+    await _services.updateData(
+        isPinning: isPinnig, pinningSerial: pinningSerial, id: selectedCell.id);
     onPressCloseButton();
     // Map element = indexedLastCells[item['key']]!.removeAt(item['index']);
     // bool element2 = selectedCellTiles[item['key']]!.removeAt(item['index']);
