@@ -1,17 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:speech_assistance_app/models/cell_model.dart';
 import 'package:speech_assistance_app/models/cells_record.dart';
 import 'package:speech_assistance_app/services/last_records_sevices.dart';
+import 'package:speech_assistance_app/shared/components/constants.dart';
 
 class LastRecordProvider with ChangeNotifier {
-  List<CellsRecord> _cellsRecordList = [];
+  List<CellModel> _cellsRecordList = [];
   final LastRecordSevices _services = LastRecordSevices();
 
   bool _isLoading = false;
 //to git index when long press on tile
   int? _onLongPressIndexTile;
 
-  List<CellsRecord> get cellRecordList => _cellsRecordList;
+  List<CellModel> get cellRecordList => _cellsRecordList;
 
   bool get isLoading => _isLoading;
 
@@ -23,11 +26,18 @@ class LastRecordProvider with ChangeNotifier {
         converted.length,
         (index) => CellsRecord.fromDatabase(converted[index]),
       );
-      _cellsRecordList = nList;
+      //_cellsRecordList = nList;
       _isLoading = true;
       print(value);
       notifyListeners();
     });
+  }
+
+  fetchAllCells() {
+    var cellsBox = Hive.box<CellModel>(kCellsBox);
+    _isLoading = true;
+    _cellsRecordList = cellsBox.values.toList();
+    notifyListeners();
   }
 
   final FlutterTts _flutterTts = FlutterTts();
@@ -41,12 +51,12 @@ class LastRecordProvider with ChangeNotifier {
   List<bool>? get treuSelectedCellTiles =>
       _selectedCellTiles?.where((element) => element == true).toList();
 
-  final List<CellsRecord> _selectedCellRecordTiles = [];
+  final List<CellModel> _selectedCellRecordTiles = [];
 
-  List<CellsRecord> get selectedCellRecordTiles => _selectedCellRecordTiles;
+  List<CellModel> get selectedCellRecordTiles => _selectedCellRecordTiles;
 
   void onLongPressCellTile(
-      {required CellsRecord cellsRecord, required int index}) {
+      {required CellModel cellsRecord, required int index}) {
     _selectedCellTiles = List.filled(_cellsRecordList.length, false);
     _selectedCellTiles![index] = true;
     _selectedCellRecordTiles.add(cellsRecord);
@@ -64,7 +74,7 @@ class LastRecordProvider with ChangeNotifier {
   }
 
   Future<void> onTapCellTile({
-    required CellsRecord cellsRecord,
+    required CellModel cellsRecord,
     required int index,
   }) async {
     if (showOptions) {
@@ -77,7 +87,7 @@ class LastRecordProvider with ChangeNotifier {
         onPressCloseButton();
       }
     } else {
-      await speakText(cellsRecord.cells);
+      await speakText(cellsRecord.text);
     }
   }
 
@@ -88,28 +98,28 @@ class LastRecordProvider with ChangeNotifier {
   }
 
   void insertFromAnotherScreen(CellsRecord cellsRecord) {
-    _cellsRecordList.add(cellsRecord);
+    //_cellsRecordList.add(cellsRecord);
   }
 
   void insertCellFromTextToSpeechScreen(CellsRecord cell) {
-    _cellsRecordList.insert(0, cell);
+    //_cellsRecordList.insert(0, cell);
     notifyListeners();
   }
 
   pinningCellsTile() async {
-    CellsRecord selectedCell = _cellsRecordList[_onLongPressIndexTile!];
-    int isPinnig = selectedCell.isPinned;
+    CellModel selectedCell = _cellsRecordList[_onLongPressIndexTile!];
+    bool isPinnig = selectedCell.isPinned;
     //int pinningSerial = _cellsRecordList[_onLongPressIndexTile!].pinningSerial;
     int pinningSerial;
-    if (isPinnig == 1) {
-      isPinnig = 0;
+    if (isPinnig) {
+      isPinnig =false;
       pinningSerial = 0;
     } else {
-      isPinnig = 1;
+      isPinnig = true;
       //need to search all is pinned cells and find count of pinning serial
       //_cellsRecordList[_onLongPressIndexTile!].pinningSerial += 1;
       pinningSerial =
-          _cellsRecordList.where((element) => element.isPinned == 1).length + 1;
+          _cellsRecordList.where((element) => element.isPinned == true).length + 1;
       //_cellsRecordList[_onLongPressIndexTile!].pinningSerial = pinningSerial;
       print(pinningSerial);
     }
@@ -119,7 +129,7 @@ class LastRecordProvider with ChangeNotifier {
     sortCellsRecordList();
     notifyListeners();
     await _services.updateData(
-        isPinning: isPinnig, pinningSerial: pinningSerial, id: selectedCell.id);
+        isPinning: isPinnig, pinningSerial: pinningSerial, id:0);
     onPressCloseButton();
     // Map element = indexedLastCells[item['key']]!.removeAt(item['index']);
     // bool element2 = selectedCellTiles[item['key']]!.removeAt(item['index']);
@@ -197,8 +207,8 @@ class LastRecordProvider with ChangeNotifier {
       (a, b) {
         int pinningSerialCompare = b.pinningSerial.compareTo(a.pinningSerial);
         if (pinningSerialCompare != 0) return pinningSerialCompare;
-        int isPinnedCompare = b.isPinned.compareTo(a.isPinned);
-        if (isPinnedCompare != 0) return isPinnedCompare;
+        //int isPinnedCompare = b.isPinned.compareTo(a.isPinned);
+        //if (isPinnedCompare != 0) return isPinnedCompare;
         return b.date.compareTo(a.date);
       },
     );

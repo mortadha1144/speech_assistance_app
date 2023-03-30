@@ -17,7 +17,7 @@ class _LastRecordScreen2State extends State<LastRecordScreen2> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<LastRecordProvider>(context, listen: false);
       if (!provider.isLoading) {
-        provider.getData();
+        provider.fetchAllCells();
       }
     });
   }
@@ -67,8 +67,7 @@ class _LastRecordScreen2State extends State<LastRecordScreen2> {
                             ? IconButton(
                                 onPressed: value.pinningCellsTile,
                                 icon: value.selectedCellRecordTiles.single
-                                            .isPinned ==
-                                        1
+                                            .isPinned
                                     ? const Icon(
                                         Icons.undo,
                                       )

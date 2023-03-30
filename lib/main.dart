@@ -11,8 +11,9 @@ import 'package:speech_assistance_app/shared/components/constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox<CellModel>(kCellsBox);
   Hive.registerAdapter(CellModelAdapter());
+  await Hive.openBox<CellModel>(kCellsBox);
+
   runApp(
     MultiProvider(
       providers: [

@@ -14,7 +14,7 @@ class LastRecordSevices {
   }
 
   Future<void> updateData(
-      {required int isPinning,
+      {required bool isPinning,
       required int pinningSerial,
       required int id}) async {
     await _databaseModel!

@@ -45,7 +45,7 @@ class TextReader extends StatelessWidget {
                     icon: Icons.delete,
                   ),
                   CustomIconButton(
-                    onPressed: provider.test2,
+                    onPressed: provider.test,
                     icon: Icons.delete,
                   ),
                 ],

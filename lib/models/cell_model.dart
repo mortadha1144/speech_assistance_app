@@ -10,9 +10,9 @@ class CellModel extends HiveObject {
   @HiveField(2)
   final bool isCell;
   @HiveField(3)
-  final bool isPinned;
+   bool isPinned;
   @HiveField(4)
-  final int pinningSerial;
+   int pinningSerial;
 
   CellModel(
       {required this.date,

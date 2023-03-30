@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/models/cell_model.dart';
 import 'package:speech_assistance_app/models/cells_record.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/functions/functions.dart';
@@ -736,7 +737,7 @@ class CellTile extends StatelessWidget {
     this.selected = false,
     this.checkBoxOnChanged,
   }) : super(key: key);
-  final CellsRecord cellsRecord;
+  final CellModel cellsRecord;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final bool showOptions;
@@ -764,21 +765,21 @@ class CellTile extends StatelessWidget {
                     Icons.done,
                     color: Colors.white,
                   )
-                : Text(cellsRecord.cells[0]),
+                : Text(cellsRecord.text[0]),
           ),
           onTap: onTap,
           onLongPress: onLongPress,
-          title: cellsRecord.cellsType == 1
-              ? Text(
-                  cellsRecord.cells,
+          title: cellsRecord.isCell?CellsType(
+                  str: cellsRecord.text,
+                  isReverse: false,
+                )
+              : Text(
+                  cellsRecord.text,
                   textDirection: TextDirection.rtl,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600),
                 )
-              : CellsType(
-                  str: cellsRecord.cells,
-                  isReverse: false,
-                ),
+              ,
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.end,
