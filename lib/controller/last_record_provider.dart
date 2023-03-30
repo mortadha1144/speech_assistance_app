@@ -32,11 +32,20 @@ class LastRecordProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-
+  
+//with hive
   fetchAllCells() {
     var cellsBox = Hive.box<CellModel>(kCellsBox);
     _isLoading = true;
     _cellsRecordList = cellsBox.values.toList();
+    _cellsRecordList.sort(
+      (a, b) {
+        int pinningSerial = b.pinningSerial.compareTo(a.pinningSerial);
+        if (pinningSerial != 0) return pinningSerial;
+        if (a.isPinned != b.isPinned) return a.isPinned ? -1 : 1;
+        return DateTime.parse(b.date).compareTo(DateTime.parse(a.date));
+      },
+    );
     notifyListeners();
   }
 
@@ -112,14 +121,15 @@ class LastRecordProvider with ChangeNotifier {
     //int pinningSerial = _cellsRecordList[_onLongPressIndexTile!].pinningSerial;
     int pinningSerial;
     if (isPinnig) {
-      isPinnig =false;
+      isPinnig = false;
       pinningSerial = 0;
     } else {
       isPinnig = true;
       //need to search all is pinned cells and find count of pinning serial
       //_cellsRecordList[_onLongPressIndexTile!].pinningSerial += 1;
       pinningSerial =
-          _cellsRecordList.where((element) => element.isPinned == true).length + 1;
+          _cellsRecordList.where((element) => element.isPinned == true).length +
+              1;
       //_cellsRecordList[_onLongPressIndexTile!].pinningSerial = pinningSerial;
       print(pinningSerial);
     }
@@ -129,7 +139,7 @@ class LastRecordProvider with ChangeNotifier {
     sortCellsRecordList();
     notifyListeners();
     await _services.updateData(
-        isPinning: isPinnig, pinningSerial: pinningSerial, id:0);
+        isPinning: isPinnig, pinningSerial: pinningSerial, id: 0);
     onPressCloseButton();
     // Map element = indexedLastCells[item['key']]!.removeAt(item['index']);
     // bool element2 = selectedCellTiles[item['key']]!.removeAt(item['index']);

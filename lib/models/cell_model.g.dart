@@ -17,7 +17,7 @@ class CellModelAdapter extends TypeAdapter<CellModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CellModel(
-      date: fields[0] as DateTime,
+      date: fields[0] as String,
       text: fields[1] as String,
       isCell: fields[2] as bool,
       isPinned: fields[3] as bool,

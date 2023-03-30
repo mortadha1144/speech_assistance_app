@@ -785,13 +785,13 @@ class CellTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                Functions.getCustomDates(cellsRecord.date),
+                Functions.getCustomDates(DateTime.parse(cellsRecord.date)),
                 style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     color: Colors.grey,
                     fontSize: 12),
               ),
-              cellsRecord.isPinned == 1
+              cellsRecord.isPinned
                   ? const Icon(Icons.push_pin_outlined)
                   : const SizedBox.shrink()
             ],

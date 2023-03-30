@@ -4,7 +4,7 @@ part 'cell_model.g.dart';
 @HiveType(typeId: 0)
 class CellModel extends HiveObject {
   @HiveField(0)
-  final DateTime date;
+   String date;
   @HiveField(1)
   final String text;
   @HiveField(2)

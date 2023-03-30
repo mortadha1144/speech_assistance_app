@@ -1,52 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
 import 'package:speech_assistance_app/models/cell_model.dart';
-import 'package:speech_assistance_app/models/cells_record.dart';
-import 'package:speech_assistance_app/services/text_to_speech_services.dart';
 import 'package:speech_assistance_app/services/tts_sevice.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 
 class TextToSpeechProvider with ChangeNotifier {
-  TextEditingController? _textToSpeechController;
-  TextToSpeechSevicies? _services;
-  GlobalKey<FormState>? _formKey;
+  final TextEditingController _textToSpeechController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   LastRecordProvider? _lastRecordProvider;
 
   String? text;
 
-  AutovalidateMode? _autovalidateMode;
+  bool isLoading = false;
 
-  AutovalidateMode? get autovalidateMode => _autovalidateMode;
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+
+  AutovalidateMode get autovalidateMode => _autovalidateMode;
 
   TextEditingController get textToSpeechController => _textToSpeechController!;
-  GlobalKey<FormState> get formKey => _formKey!;
-
-  TextToSpeechProvider() {
-    _textToSpeechController = TextEditingController();
-    _services = TextToSpeechSevicies();
-    _formKey = GlobalKey<FormState>();
-    _autovalidateMode = AutovalidateMode.disabled;
-  }
+  GlobalKey<FormState> get formKey => _formKey;
 
   Future<void> speechTheText() async {
-    if (_formKey!.currentState!.validate()) {
-      await TtsService.speakText(_textToSpeechController!.text);
-      print('hello');
+    if (_formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      await TtsService.speakText(text!);
     }
   }
 
   void clearText() {
-    if (_textToSpeechController!.text.isNotEmpty) {
-      _textToSpeechController!.text = '';
+    if (_textToSpeechController.text.isNotEmpty) {
+      _textToSpeechController.text = '';
       notifyListeners();
     }
   }
 
-  test() {
-    if (_formKey!.currentState!.validate()) {
+  void save() async {
+    if (_formKey.currentState!.validate()) {
       formKey.currentState!.save();
       addCell();
     } else {
@@ -55,41 +46,42 @@ class TextToSpeechProvider with ChangeNotifier {
     }
   }
 
-  test2() async {
-    var cellsBox = await Hive.openBox<CellModel>(kCellsBox);
-    var cell = cellsBox.values.toList();
-    print(cell[0].date);
+  Future<void> addCell() async {
+    var cellsBox = Hive.box<CellModel>(kCellsBox);
+    var findCells =
+        cellsBox.values.where((element) => element.text == text).toList();
+    if (findCells.isNotEmpty) {
+      var oldCell = findCells.first;
+      oldCell.date = DateTime.now().toString();
+      isLoading = true;
+      oldCell.save().then((_) {
+        afterSaveOrAdd();
+      });
+    } else {
+      CellModel newCell = CellModel(
+          date: DateTime.now().toString(),
+          text: text!.trim(),
+          isCell: false,
+          isPinned: false,
+          pinningSerial: 0);
+      isLoading = true;
+      await cellsBox.add(newCell).then((_) {
+        afterSaveOrAdd();
+      });
+    }
   }
 
-  addCell() async {
-    CellModel cell = CellModel(
-        date: DateTime.now(),
-        text: text!,
-        isCell: false,
-        isPinned: false,
-        pinningSerial: 0);
-    var cellsBox = Hive.box<CellModel>(kCellsBox);
-    await cellsBox.add(cell).then((_) => Fluttertoast.showToast(
+  void afterSaveOrAdd() {
+    isLoading = false;
+    if (_lastRecordProvider?.isLoading ?? false) {
+      _lastRecordProvider!.fetchAllCells();
+    }
+    Fluttertoast.showToast(
         msg: 'تم حفظ النص لاستخدامه لاحقاً في صفحة العبارات المستخدمة',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        fontSize: 14.0));
-  }
-
-  saveText() async {
-    if (_formKey!.currentState!.validate()) {
-      CellsRecord cellsRecord =
-          CellsRecord.fromTextToSpeech(_textToSpeechController!.text);
-      await _services!.saveText(cellsRecord.toMap()).then((value) =>
-          Fluttertoast.showToast(
-              msg: 'تم حفظ النص لاستخدامه لاحقاً في صفحة العبارات المستخدمة',
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.CENTER,
-              fontSize: 14.0));
-      if (_lastRecordProvider!.isLoading) {
-        _lastRecordProvider!.insertCellFromTextToSpeechScreen(cellsRecord);
-      }
-    }
+        fontSize: 14.0);
+    notifyListeners();
   }
 
   void update(LastRecordProvider lastRecordProvider) {

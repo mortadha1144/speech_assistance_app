@@ -9,7 +9,6 @@ class TextReader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TextToSpeechProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -20,42 +19,41 @@ class TextReader extends StatelessWidget {
         backgroundColor: Colors.blueGrey,
         centerTitle: true,
       ),
-      body: Form(
-        key: provider.formKey,
-        autovalidateMode: provider.autovalidateMode,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomIconButton(
-                    onPressed: provider.speechTheText,
-                    icon: Icons.volume_down,
-                  ),
-                  CustomIconButton(
-                    onPressed: provider.saveText,
-                    icon: Icons.save,
-                  ),
-                  CustomIconButton(
-                    onPressed: provider.clearText,
-                    icon: Icons.delete,
-                  ),
-                  CustomIconButton(
-                    onPressed: provider.test,
-                    icon: Icons.delete,
-                  ),
-                ],
+      body: Consumer<TextToSpeechProvider>(
+        builder: (context, provider, child) => Form(
+          key: provider.formKey,
+          autovalidateMode: provider.autovalidateMode,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CustomIconButton(
+                      onPressed: provider.speechTheText,
+                      icon: Icons.volume_down,
+                    ),
+                    CustomIconButton(
+                      onPressed: provider.save,
+                      icon: Icons.save,
+                      isLoading: provider.isLoading,
+                    ),
+                    CustomIconButton(
+                      onPressed: provider.clearText,
+                      icon: Icons.delete,
+                    )
+                  ],
+                ),
               ),
-            ),
-            TextTypeCard(
-              textController: provider.textToSpeechController,
-              onSaved: provider.onSaved,
-            ),
-          ],
+              TextTypeCard(
+                textController: provider.textToSpeechController,
+                onSaved: provider.onSaved,
+              ),
+            ],
+          ),
         ),
       ),
     );
