@@ -17,11 +17,11 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => HomeProvider(context)),
-        ChangeNotifierProvider(create: (context) => LastRecordProvider()),
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => LastRecordProvider()),
         ChangeNotifierProxyProvider<LastRecordProvider, TextToSpeechProvider>(
-          create: (context) => TextToSpeechProvider(),
-          update: (context, value, previous) => previous!..update(value),
+          create: (_) => TextToSpeechProvider(),
+          update: (_, value, previous) => previous!..update(value),
         ),
       ],
       child: const MyApp(),

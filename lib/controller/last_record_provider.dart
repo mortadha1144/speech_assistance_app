@@ -32,7 +32,7 @@ class LastRecordProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-  
+
 //with hive
   fetchAllCells() {
     var cellsBox = Hive.box<CellModel>(kCellsBox);
@@ -136,7 +136,7 @@ class LastRecordProvider with ChangeNotifier {
 
     selectedCell.isPinned = isPinnig;
     selectedCell.pinningSerial = pinningSerial;
-    sortCellsRecordList();
+    _cellsRecordList.sort(sortCellsRecordList);
     notifyListeners();
     await _services.updateData(
         isPinning: isPinnig, pinningSerial: pinningSerial, id: 0);
@@ -212,15 +212,10 @@ class LastRecordProvider with ChangeNotifier {
     // });
   }
 
-  void sortCellsRecordList() {
-    _cellsRecordList.sort(
-      (a, b) {
-        int pinningSerialCompare = b.pinningSerial.compareTo(a.pinningSerial);
-        if (pinningSerialCompare != 0) return pinningSerialCompare;
-        //int isPinnedCompare = b.isPinned.compareTo(a.isPinned);
-        //if (isPinnedCompare != 0) return isPinnedCompare;
-        return b.date.compareTo(a.date);
-      },
-    );
+  int sortCellsRecordList(CellModel a, CellModel b) {
+    int pinningSerial = b.pinningSerial.compareTo(a.pinningSerial);
+    if (pinningSerial != 0) return pinningSerial;
+    if (a.isPinned != b.isPinned) return a.isPinned ? -1 : 1;
+    return DateTime.parse(b.date).compareTo(DateTime.parse(a.date));
   }
 }

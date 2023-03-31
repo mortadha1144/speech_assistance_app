@@ -14,14 +14,13 @@ import 'package:speech_assistance_app/view/screens/text_to_speech_screen2.dart';
 import 'package:sqflite/sqflite.dart';
 
 class HomeProvider with ChangeNotifier {
-  HomeProvider(this.context) {
+  HomeProvider() {
     init();
   }
   int _currentIndex = 0;
   int _currentScreen = 0;
   int _currentPage = 0;
 
-  BuildContext context;
 
   PageController _homePagesController = PageController(initialPage: 0);
 
