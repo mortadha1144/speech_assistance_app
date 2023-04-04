@@ -54,16 +54,11 @@ class TextToSpeechProvider with ChangeNotifier {
       var oldCell = findCells.first;
       oldCell.date = DateTime.now().toString();
       isLoading = true;
-      oldCell.save().then((_) {
+      await oldCell.save().then((_) {
         afterSaveOrAdd();
       });
     } else {
-      CellModel newCell = CellModel(
-          date: DateTime.now().toString(),
-          text: text!.trim(),
-          isCell: false,
-          isPinned: false,
-          pinningSerial: 0);
+      CellModel newCell = CellModel.fromTextToSpeechScreen(text!);
       isLoading = true;
       await cellsBox.add(newCell).then((_) {
         afterSaveOrAdd();

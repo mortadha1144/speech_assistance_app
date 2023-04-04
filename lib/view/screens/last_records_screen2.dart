@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
+import 'package:speech_assistance_app/view/widgets/last_records/last_record_app_bar.dart';
+import 'package:speech_assistance_app/view/widgets/last_records/no_last_records.dart';
 
 class LastRecordScreen2 extends StatefulWidget {
   const LastRecordScreen2({super.key});
@@ -25,75 +27,22 @@ class _LastRecordScreen2State extends State<LastRecordScreen2> {
   @override
   Widget build(BuildContext context) {
     return Consumer<LastRecordProvider>(
-      builder: (context, value, child) => Column(children: [
-        AppBar(
-          title: value.showOptions
-              ? Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          value.onPressCloseButton();
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_rounded,
-                        )),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      value.treuSelectedCellTiles?.length.toString() ?? '',
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                )
-              : const Text(
-                  'العبارات المستخدمة',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-          backgroundColor: Colors.blueGrey,
-          actions: value.showOptions
-              ? [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        value.selectedCellRecordTiles.length == 1
-                            ? IconButton(
-                                onPressed: value.pinningCellsTile,
-                                icon: value.selectedCellRecordTiles.single
-                                            .isPinned
-                                    ? const Icon(
-                                        Icons.undo,
-                                      )
-                                    : const Icon(
-                                        Icons.push_pin,
-                                      ))
-                            : const SizedBox(),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.delete,
-                              size: 30,
-                            )),
-                      ],
-                    ),
-                  )
-                ]
-              : [
-                  IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.more_vert)),
-                ],
-        ),
-        Expanded(
+      builder: (context, value, child) {
+        return Column(children: [
+          LastRecordsAppBar(
+            showOptions: value.showOptions,
+            onPressCloseButton: value.onPressCloseButton,
+            selectedTilesCount:
+                value.treuSelectedCellTiles?.length.toString() ?? '',
+            selectedTilesLength: value.selectedCellRecordTiles.length,
+            isSelectedTilePinned: value.isSelectedTilePinned,
+            pinningCellsTile: value.pinningCellsTile,
+            onPressDelete: () {
+              value.onPressDelete(context);
+            },
+            enableDeleteAll: value.enableDeleteAll,
+          ),
+          Expanded(
             child: value.isLoading
                 ? ListView.builder(
                     padding: const EdgeInsets.only(top: 10),
@@ -114,8 +63,10 @@ class _LastRecordScreen2State extends State<LastRecordScreen2> {
                       selected: value.selectedCellTiles?[index] ?? false,
                     ),
                   )
-                : const Center(child: CircularProgressIndicator())),
-      ]),
+                : const Center(child: CircularProgressIndicator()),
+          )
+        ]);
+      },
     );
   }
 }

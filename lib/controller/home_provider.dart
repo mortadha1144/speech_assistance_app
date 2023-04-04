@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:speech_assistance_app/models/cell.dart';
-import 'package:speech_assistance_app/models/cells_record.dart';
-import 'package:speech_assistance_app/controller/database_provider.dart';
 import 'package:speech_assistance_app/view/screens/home_screen.dart';
 import 'package:speech_assistance_app/view/screens/last_records_screen2.dart';
 import 'package:speech_assistance_app/view/screens/settings_screen.dart';
-import 'package:speech_assistance_app/view/screens/text_to_speech_screen.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/view/screens/text_to_speech_screen2.dart';
 import 'package:sqflite/sqflite.dart';
@@ -20,7 +17,6 @@ class HomeProvider with ChangeNotifier {
   int _currentIndex = 0;
   int _currentScreen = 0;
   int _currentPage = 0;
-
 
   PageController _homePagesController = PageController(initialPage: 0);
 
@@ -178,15 +174,15 @@ class HomeProvider with ChangeNotifier {
     insertIntoDatabase(text: text, cellsType: 2);
   }
 
-  void addTextToSpeech({required CellsRecord cellsRecord}) async {
-    //deleteTextToSpeech();
-    if (cellsRecord.cells.isNotEmpty) {
-      _addedText = cellsRecord.cells;
-      await DatabaseProvider().addCells(cellsRecord);
-      //insertIntoDatabase(text: text, cellsType: 1);
-      notifyListeners();
-    }
-  }
+  // void addTextToSpeech({required CellsRecord cellsRecord}) async {
+  //   //deleteTextToSpeech();
+  //   if (cellsRecord.cells.isNotEmpty) {
+  //     _addedText = cellsRecord.cells;
+  //     //await DatabaseProvider().addCells(cellsRecord);
+  //     //insertIntoDatabase(text: text, cellsType: 1);
+  //     notifyListeners();
+  //   }
+  // }
 
   void deleteTextToSpeech() {
     if (_addedText.isNotEmpty) {
@@ -230,19 +226,19 @@ class HomeProvider with ChangeNotifier {
   Map<String, List<bool>> selectedCellTiles = {};
   List<Map> selectedCellTilesId = [];
 
-  late Future<List<CellsRecord>> _cellsRecordList;
+  // late Future<List<CellsRecord>> _cellsRecordList;
 
-  List<CellsRecord> cellsRecords = DatabaseProvider().cellsRecords;
+  // List<CellsRecord> cellsRecords = DatabaseProvider().cellsRecords;
 
-  Future<List<CellsRecord>> get cellsRecordsList => _cellsRecordList;
+  // Future<List<CellsRecord>> get cellsRecordsList => _cellsRecordList;
 
-  Future<List<CellsRecord>> _getCellRecordList() async {
-    final dbProvider = DatabaseProvider();
-    return await dbProvider.fetchCellsRecord();
-  }
+  // Future<List<CellsRecord>> _getCellRecordList() async {
+  //   final dbProvider = DatabaseProvider();
+  //   return await dbProvider.fetchCellsRecord();
+  // }
 
   init() {
-    _cellsRecordList = _getCellRecordList();
+    //_cellsRecordList = _getCellRecordList();
   }
 
   void createDatabase() {
@@ -430,7 +426,6 @@ class HomeProvider with ChangeNotifier {
   }
 
   testOnDatabase() async {
-    print(DatabaseProvider().cellsRecords);
     // Batch batch = database!.batch();
     //
     // batch.update(
