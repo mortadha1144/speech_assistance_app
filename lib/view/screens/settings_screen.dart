@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:speech_assistance_app/view/widgets/settings/about_us.dart';
+import 'package:speech_assistance_app/view/widgets/settings/custom_list_tile.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -10,36 +12,35 @@ class SettingScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image.asset(
-            'images/settings.png',
+            'images/resources/settings.png',
             scale: 2,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 36),
             child: Column(
               children: [
-                ListTile(
-                  iconColor: Colors.white,
-                  textColor: Colors.white,
-                  minLeadingWidth: 10,
-                  leading: const Icon(
-                    Icons.volume_down,
-                  ),
-                  title: const Text(
-                    'نطق الكلمة',
-                  ),
+                CustomListTile(
+                  title: 'نطق صوت الرموز',
+                  leading: const Icon(Icons.volume_down_outlined),
                   trailing: Switch(
                     value: false,
                     onChanged: (value) {},
                   ),
-                  tileColor: Colors.blueGrey,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
                 ),
-                const ListTile(
-                  title: Text('عن التطبيق'),
+                CustomListTile(
+                  title: 'من نحن ؟',
+                  leading: const Icon(Icons.groups_outlined),
+                  trailing: const Icon(Icons.chevron_right_outlined),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const AboutUs(),
+                    ));
+                  },
                 ),
-                const ListTile(
-                  title: Text('من نحن ؟'),
+                const CustomListTile(
+                  title: 'عن التطبيق',
+                  leading: Icon(Icons.info_outline),
+                  trailing: Icon(Icons.chevron_right_outlined),
                 ),
               ],
             ),
