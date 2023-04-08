@@ -23,17 +23,16 @@ class DetailesScreen extends StatelessWidget {
         elevation: 0.0,
       ),
       body: Column(
+        //mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: SizedBox(height: 246, width: 246, child: Image.asset(image)),
+          Image.asset(
+            image,
+            scale: type == DetailesScreenType.aboutApp ? null : 1.8,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              title,
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-            ),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
           ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -49,22 +48,43 @@ class DetailesScreen extends StatelessWidget {
             ),
           ),
           type == DetailesScreenType.aboutApp
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Expanded(
-                    child: Row(
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        Image.asset('images/resources/person.png'),
-                        Column(
-                          children: const [
-                            Text('text1'),
-                            Text('text2'),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Image.asset('images/resources/person.png'),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: Column(
+                        textDirection: TextDirection.rtl,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            aboutAppContactTitle,
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            aboutAppContactDetaile,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            aboutAppContactEmail,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 )
               : const SizedBox()
         ],

@@ -13,7 +13,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CellModelAdapter());
   await Hive.openBox<CellModel>(kCellsBox);
-
+  await Hive.openBox(settingBox);
   runApp(
     MultiProvider(
       providers: [

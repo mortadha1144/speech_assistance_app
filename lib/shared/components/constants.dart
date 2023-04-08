@@ -70,9 +70,11 @@ bool check() {
   return true;
 }
 
-enum DetailesScreenType{aboutUs,aboutApp}
+enum DetailesScreenType { aboutUs, aboutApp }
 
 const kCellsBox = 'cells_box';
+
+const settingBox = 'settingBox';
 
 const aboutUsImage = 'images/resources/code_for_iraq.png';
 
@@ -81,6 +83,10 @@ const aboutUsTitle = 'Code For Iraq';
 const aboutUsContent =
     'هي مبادرة إنسانية غير ربحية تهدف إلى خدمة المجتمع باستخدام التكنولوجيا , تعتبر ( Code For Iraq ) مبادرة تعليمية حقيقية ترعى المهتمين بتعلم تصميم و برمجة تطبيقات الهاتف الجوال و مواقع الأنترنت و برامج الحاسوب و الشبكات و الاتصالات و نظم تشغيل الحاسوب باستخدام التقنيات المفتوحة المصدر  ( Open Source ) , كما توفر لهم جميع الدروس التعليمية اللازمة و بشكل مجاني .';
 
-//[{id: 1, date: 23/12/2022, cells: أنا شخص يتعلم}, {id: 2, date: 23/12/2022, cells: بعدين اروح لطوكيو}, {id: 3, date: 24/12/2022, cells: أنا للعراق شي}, {id: 4, date: 25/12/2022, cells: تبلغ درجة الحرارة}, {id: 6, date: 25/12/2022, cells: اهلا وسهلا في العالم}, {id: 7, date: 29/12/2022, cells: هل يمكن أن تنجب}, {id: 8, date: 29/12/2022, cells: هل يمكن أن تساعد}, {id: 9, date: 29/12/2022, cells: هل يمكن أن تعني}, {id: 10, date: 29/12/2022, cells: هل يمكن أن نلعب}];
-
-//strftime(\'%d/%m/%Y\',date) AS date دالة عرض التاريخ داخل sqlite
+const aboutAppContactTitle = 'برمجة وتصميم :';
+const aboutAppContactDetaile = 'مرتضى ناصر';
+const aboutAppContactEmail = 'mortadha114@gmail.com';
+const aboutAppImage = 'images/resources/aboutAppImage.png';
+const aboutAppTitle = 'تطبيق مساعد النطق';
+const aboutAppContent =
+    'هو تطبيق مجاني انساني ضمن مبادرة ( Code For Iraq ) لمساعدة الاشخاص اللذين يعانون من صعوبة النطق , التطبيق يعتمد على احدث الاليات المتبعة في هذا المجال فهو يعتمد على آلية (AAC) المتبعة في المعاهد العالمية المختصة بمعالجة من يعانون صعوبة النطق . ';
