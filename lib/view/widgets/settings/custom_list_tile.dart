@@ -27,7 +27,7 @@ class CustomListTile extends StatelessWidget {
         leading: leading,
         title: Text(
           title,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         trailing: trailing,
         tileColor: Colors.blueGrey,

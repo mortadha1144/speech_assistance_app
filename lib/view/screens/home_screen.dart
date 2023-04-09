@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     HomeProvider watchProvider = context.watch<HomeProvider>();
-    HomeProvider raedProvider = context.read<HomeProvider>();
     return SafeArea(
       child: Column(
         children: [

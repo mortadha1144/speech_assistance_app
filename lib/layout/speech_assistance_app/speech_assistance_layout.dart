@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:speech_assistance_app/view/screens/home_screen.dart';
-import 'package:speech_assistance_app/controller/home_provider.dart';
+import 'package:speech_assistance_app/controller/layout_provider.dart';
 
 class SpeechAssistanceLayout extends StatelessWidget {
   const SpeechAssistanceLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    HomeProvider watchProvider = context.watch<HomeProvider>();
-    HomeProvider raedProvider = context.read<HomeProvider>();
+    LayoutProvider watchProvider = context.watch<LayoutProvider>();
+    LayoutProvider raedProvider = context.read<LayoutProvider>();
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type:BottomNavigationBarType.fixed,

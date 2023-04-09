@@ -27,6 +27,8 @@ class SettingScreen extends StatelessWidget {
                   trailing: ValueListenableBuilder<Box>(
                     valueListenable: Hive.box(settingBox).listenable(),
                     builder: (context, box, widget) => Switch(
+                      activeColor: Colors.white,
+                      activeTrackColor: Colors.orangeAccent,
                       value: box.get('enable_voice', defaultValue: true),
                       onChanged: (value) {
                         box.put('enable_voice', value);

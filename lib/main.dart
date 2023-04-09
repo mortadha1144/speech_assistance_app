@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_assistance_app/controller/layout_provider.dart';
 import 'package:speech_assistance_app/controller/text_to_speech_provider.dart';
 import 'package:speech_assistance_app/layout/speech_assistance_app/speech_assistance_layout.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
@@ -13,10 +14,11 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CellModelAdapter());
   await Hive.openBox<CellModel>(kCellsBox);
-  await Hive.openBox(settingBox);
+ await Hive.openBox(settingBox);
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => LayoutProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => LastRecordProvider()),
         ChangeNotifierProxyProvider<LastRecordProvider, TextToSpeechProvider>(

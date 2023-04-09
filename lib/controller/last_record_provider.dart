@@ -34,7 +34,7 @@ class LastRecordProvider with ChangeNotifier {
           ? false
           : _selectedCellRecordTiles.single.isPinned;
 
-bool get enableDeleteAll => _cellsRecordList.isNotEmpty? true:false;
+  bool get enableDeleteAll => _cellsRecordList.isNotEmpty ? true : false;
 
 //with hive
   fetchAllCells() {
@@ -77,7 +77,10 @@ bool get enableDeleteAll => _cellsRecordList.isNotEmpty? true:false;
         onPressCloseButton();
       }
     } else {
-      await speakText(cellsRecord.text);
+      bool isVoiceEnabled = Hive.box(settingBox).get('enable_voice', defaultValue: true);
+      if (isVoiceEnabled) {
+        await speakText(cellsRecord.text);
+      }
     }
   }
 
