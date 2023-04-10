@@ -110,14 +110,10 @@ class FolderCustomBorder extends CustomPainter {
 class CellContent extends StatelessWidget {
   const CellContent({
     Key? key,
-    this.text,
-    this.imagePath,
-    this.type,
+    required this.cell,
   }) : super(key: key);
 
-  final String? text;
-  final String? imagePath;
-  final int? type;
+  final Cell cell;
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +121,7 @@ class CellContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
-          flex: type == 7 || type == 8 ? 1 : 0,
+          flex: cell.type == 7 || cell.type == 8 ? 1 : 0,
           child: const SizedBox(),
         ),
         Expanded(
@@ -134,7 +130,7 @@ class CellContent extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(
-                type == 0 ? 'المزيد' : text ?? '',
+                cell.type == 0 ? 'المزيد' : cell.name,
                 style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -145,20 +141,18 @@ class CellContent extends StatelessWidget {
         ),
         Expanded(
           flex: 18,
-          child: type == 0
+          child: cell.type == 0
               ? const FittedBox(
                   child: Icon(
                     Icons.arrow_forward_rounded,
                     color: Colors.black,
                   ),
                 )
-              : imagePath == null
-                  ? const SizedBox()
-                  : Image.asset(
-                      imagePath!,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                    ),
+              : Image.asset(
+                  cell.image,
+                  width: double.infinity,
+                  fit: BoxFit.fill,
+                ),
         ),
       ],
     );
@@ -168,26 +162,22 @@ class CellContent extends StatelessWidget {
 class FolderCell extends StatelessWidget {
   const FolderCell({
     Key? key,
-    this.text,
-    this.imagePath,
-    required this.type,
+    required this.cell,
     this.onPressed,
   }) : super(key: key);
 
-  final String? text;
-  final String? imagePath;
-  final int type;
+  final Cell cell;
   final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     Color borderColor = const Color(0xFF000000);
-    if (type == 8) {
+    if (cell.type == 8) {
       borderColor = Colors.red;
     }
     return CupertinoButton(
       onPressed: onPressed,
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(0),
       // style: TextButton.styleFrom(
       //   padding: const EdgeInsets.symmetric(
       //     horizontal: 4,
@@ -221,9 +211,7 @@ class FolderCell extends StatelessWidget {
                   bottomRight: Radius.circular(7),
                 ),
                 child: CellContent(
-                  text: text,
-                  imagePath: imagePath,
-                  type: type,
+                  cell: cell,
                 ),
               ),
             ),
@@ -237,32 +225,28 @@ class FolderCell extends StatelessWidget {
 class TriangleCell extends StatelessWidget {
   const TriangleCell({
     Key? key,
-    this.text,
-    this.imagePath,
-    required this.type,
+    required this.cell,
     this.onPressed,
   }) : super(key: key);
 
-  final String? text;
-  final String? imagePath;
-  final int type;
+  final Cell cell;
   final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     Color borderColor = orangeBorder;
     Color contentColor = orangeContent;
-    if (type == 2) {
+    if (cell.type == 2) {
       borderColor = pinkBorder;
       contentColor = pinkContent;
     }
-    if (type == 6) {
+    if (cell.type == 6) {
       borderColor = blueBorder;
       contentColor = blueContent;
     }
     return CupertinoButton(
       onPressed: onPressed,
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(0),
       // style: TextButton.styleFrom(
       //   padding: const EdgeInsets.symmetric(
       //     horizontal: 4,
@@ -285,9 +269,7 @@ class TriangleCell extends StatelessWidget {
             child: Container(
               color: contentColor,
               child: CellContent(
-                text: text,
-                imagePath: imagePath,
-                type: type,
+                cell: cell,
               ),
             ),
           ),
@@ -300,31 +282,27 @@ class TriangleCell extends StatelessWidget {
 class NormalCell extends StatelessWidget {
   const NormalCell({
     Key? key,
-    this.text,
-    this.imagePath,
-    required this.type,
+    required this.cell,
     this.onPressed,
   }) : super(key: key);
 
-  final String? text;
-  final String? imagePath;
-  final int type;
+  final Cell cell;
   final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     Color borderColor = const Color(0xFF000000);
     Color contentColor = Colors.white;
-    if (type == 4) {
+    if (cell.type == 4) {
       borderColor = blueBorder;
       contentColor = blueContent;
-    } else if (type == 5) {
+    } else if (cell.type == 5) {
       borderColor = greenBorder;
       contentColor = greenContent;
     }
     return CupertinoButton(
       onPressed: onPressed,
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(0),
       // style: TextButton.styleFrom(
       //   padding: const EdgeInsets.symmetric(
       //     horizontal: 4,
@@ -343,9 +321,7 @@ class NormalCell extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: CellContent(
-            text: text,
-            imagePath: imagePath,
-            type: type,
+            cell: cell,
           ),
         ),
       ),
@@ -394,49 +370,30 @@ class PressedCell extends StatelessWidget {
 class MainCell extends StatelessWidget {
   const MainCell({
     Key? key,
-    required this.id,
+    required this.cell,
   }) : super(key: key);
 
-  final int id;
+  final Cell cell;
 
   @override
   Widget build(BuildContext context) {
-    int index = cells.indexWhere((element) => element.id == id);
-    if (index >= 0) {
-      Cell findCell = cells[index];
-      if (findCell.type == 3 ||
-          findCell.type == 4 ||
-          findCell.type == 5 ||
-          findCell.type == 9) {
-        return NormalCell(
-          text: findCell.name,
-          imagePath: findCell.image,
-          type: findCell.type,
-          onPressed: () =>
-              context.read<HomeProvider>().onPressedDefault(findCell),
-        );
-      } else if (findCell.type == 1 ||
-          findCell.type == 2 ||
-          findCell.type == 6) {
-        return TriangleCell(
-          text: findCell.name,
-          imagePath: findCell.image,
-          type: findCell.type,
-          onPressed: () =>
-              context.read<HomeProvider>().onPressedDefault(findCell),
-        );
-      } else if (findCell.type == 7 || findCell.type == 8) {
-        return FolderCell(
-          text: findCell.name,
-          imagePath: findCell.image,
-          type: findCell.type,
-          onPressed: () {},
-        );
-      }
-    } else if (id == 0) {
+    //int index = cells.indexWhere((element) => element.id == id);
+    //if (index >= 0) {
+    //Cell findCell = cells[index];
+    if (cell.type == 3 || cell.type == 4 || cell.type == 5 || cell.type == 9) {
       return NormalCell(
+        cell: cell,
+        onPressed: () => context.read<HomeProvider>().onPressedDefault(cell),
+      );
+    } else if (cell.type == 1 || cell.type == 2 || cell.type == 6) {
+      return TriangleCell(
+        cell: cell,
+        onPressed: () => context.read<HomeProvider>().onPressedDefault(cell),
+      );
+    } else if (cell.type == 7 || cell.type == 8) {
+      return FolderCell(
+        cell: cell,
         onPressed: () {},
-        type: id,
       );
     }
 
@@ -497,50 +454,23 @@ class CellsPage extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 1),
+                              child: MainCell(cell: cells[0]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 2),
+                              child: MainCell(cell: cells[1]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 3),
+                              child: MainCell(cell: cells[2]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 4),
+                              child: MainCell(cell: cells[3]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 5),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: height,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 6),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 7),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 8),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 9),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 10),
+                              child: MainCell(cell: cells[4]),
                             ),
                           ],
                         ),
@@ -551,50 +481,23 @@ class CellsPage extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 11),
+                              child: MainCell(cell: cells[5]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 12),
+                              child: MainCell(cell: cells[6]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 13),
+                              child: MainCell(cell: cells[7]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 14),
+                              child: MainCell(cell: cells[8]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 15),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: height,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 16),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 17),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 18),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 19),
-                            ),
-                            SizedBox(
-                              width: width,
-                              child: const MainCell(id: 20),
+                              child: MainCell(cell: cells[9]),
                             ),
                           ],
                         ),
@@ -605,23 +508,23 @@ class CellsPage extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 21),
+                              child: MainCell(cell: cells[10]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 22),
+                              child: MainCell(cell: cells[11]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 23),
+                              child: MainCell(cell: cells[12]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 24),
+                              child: MainCell(cell: cells[13]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 25),
+                              child: MainCell(cell: cells[14]),
                             ),
                           ],
                         ),
@@ -632,23 +535,77 @@ class CellsPage extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 26),
+                              child: MainCell(cell: cells[0]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 27),
+                              child: MainCell(cell: cells[0]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 28),
+                              child: MainCell(cell: cells[0]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 29),
+                              child: MainCell(cell: cells[0]),
                             ),
                             SizedBox(
                               width: width,
-                              child: const MainCell(id: 0),
+                              child: MainCell(cell: cells[0]),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
+                            ),
+                            SizedBox(
+                              width: width,
+                              child: MainCell(cell: cells[0]),
                             ),
                           ],
                         ),
@@ -768,7 +725,8 @@ class CellTile extends StatelessWidget {
           ),
           onTap: onTap,
           onLongPress: onLongPress,
-          title: cellsRecord.isCell?CellsType(
+          title: cellsRecord.isCell
+              ? CellsType(
                   str: cellsRecord.text,
                   isReverse: false,
                 )
@@ -777,8 +735,7 @@ class CellTile extends StatelessWidget {
                   textDirection: TextDirection.rtl,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600),
-                )
-              ,
+                ),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.end,

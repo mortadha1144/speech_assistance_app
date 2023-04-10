@@ -5,24 +5,21 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
+import 'package:speech_assistance_app/view/widgets/home/page.dart';
 
 class HomeProvider with ChangeNotifier {
- 
   int _currentPage = 0;
 
   PageController _homePagesController = PageController(initialPage: 0);
-
-  
-
 
   int get currentPage => _currentPage;
 
   PageController get homePagesController => _homePagesController;
   List<Widget> homePages = [
-    const CellsPage(),
+    //const CellsPage(),
+    PageTest(data: cells.sublist(0, 20), itemsPerPage: 20),
   ];
- 
- 
+
   final List<Cell> _tapedCells = [];
 
   List<Cell> get tapedCells => _tapedCells;
@@ -132,15 +129,4 @@ class HomeProvider with ChangeNotifier {
     //change to insert to hive
     //insertIntoDatabase(text: text, cellsType: 2);
   }
-
- 
-
- 
-  
-
-  
-
-  
-   
-
 }
