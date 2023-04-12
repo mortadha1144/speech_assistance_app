@@ -380,7 +380,11 @@ class MainCell extends StatelessWidget {
     //int index = cells.indexWhere((element) => element.id == id);
     //if (index >= 0) {
     //Cell findCell = cells[index];
-    if (cell.type == 3 || cell.type == 4 || cell.type == 5 || cell.type == 9) {
+    if (cell.type == 3 ||
+        cell.type == 4 ||
+        cell.type == 5 ||
+        cell.type == 9 ||
+        cell.type == 10) {
       return NormalCell(
         cell: cell,
         onPressed: () => context.read<HomeProvider>().onPressedDefault(cell),
@@ -393,7 +397,7 @@ class MainCell extends StatelessWidget {
     } else if (cell.type == 7 || cell.type == 8) {
       return FolderCell(
         cell: cell,
-        onPressed: () {},
+        onPressed: () => context.read<HomeProvider>().onTapCategory(),
       );
     }
 

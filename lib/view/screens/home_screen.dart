@@ -5,6 +5,7 @@ import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_assistance_app/view/widgets/home/page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -108,10 +109,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           Expanded(
-            child: PageView(
-              controller: watchProvider.homePagesController,
-              children: watchProvider.homePages,
-            ),
+            child: PageTest(),
           ),
         ],
       ),

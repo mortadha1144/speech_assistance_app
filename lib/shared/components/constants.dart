@@ -10,6 +10,7 @@ import 'package:speech_assistance_app/models/cell.dart';
 //7:فولدر/اسود/اطار فولدر
 //8:فولدر/احمر/اطار فولدر
 //9:اكثر/اسود/اطار عادي
+//10:اشخاص/اصفر/اطار عادي
 
 List<Cell> cells = [
   const Cell(id: 1, serial: 1, name: 'أنا', image: 'images/i.png', type: 1),
@@ -64,6 +65,33 @@ List<Cell> cells = [
       name: 'أنشطة',
       image: 'images/activities.png',
       type: 8),
+];
+
+List<Cell> people = [
+  const Cell(
+      id: 30, serial: 30, name: 'عائلة', image: 'images/family.png', type: 10),
+  const Cell(id: 31, serial: 31, name: 'أم', image: 'images/mom.png', type: 10),
+  const Cell(id: 32, serial: 32, name: 'أب', image: 'images/dad.png', type: 10),
+  const Cell(
+      id: 33,
+      serial: 33,
+      name: 'أخ',
+      image: 'images/brother-sister.png',
+      type: 10),
+  const Cell(
+      id: 34,
+      serial: 34,
+      name: 'أخت',
+      image: 'images/brother-sister.png',
+      type: 10),
+  const Cell(
+      id: 35, serial: 35, name: 'صديق', image: 'images/friend.png', type: 10),
+  const Cell(
+      id: 36, serial: 36, name: 'معلم', image: 'images/teacher.png', type: 10),
+  const Cell(
+      id: 37, serial: 37, name: 'طبيب', image: 'images/doctor.png', type: 10),
+  const Cell(
+      id: 38, serial: 38, name: 'ممرض', image: 'images/nurse.png', type: 10),
 ];
 bool check() {
   cells.indexWhere((element) => element.serial == 1);

@@ -10,15 +10,18 @@ import 'package:speech_assistance_app/view/widgets/home/page.dart';
 class HomeProvider with ChangeNotifier {
   int _currentPage = 0;
 
-  PageController _homePagesController = PageController(initialPage: 0);
+  PageController _pagesController = PageController(initialPage: 0);
 
   int get currentPage => _currentPage;
 
-  PageController get homePagesController => _homePagesController;
+  PageController get pagesController => _pagesController;
   List<Widget> homePages = [
     //const CellsPage(),
-    PageTest(data: cells.sublist(0, 20), itemsPerPage: 20),
+    //PageTest(data: cells.sublist(0, 29), itemsPerPage: 30),
   ];
+
+  List<Cell> homeCells = cells;
+  final int itemsPerPage = 29;
 
   final List<Cell> _tapedCells = [];
 
@@ -82,6 +85,40 @@ class HomeProvider with ChangeNotifier {
       );
       notifyListeners();
     }
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  List<List<Cell>> _slicedData = [];
+
+  List<List<Cell>> get sliceData => _slicedData;
+
+  List<List<Cell>> _sliceData() {
+    List<List<Cell>> chunks = [];
+    for (int i = 0; i < homeCells.length; i += itemsPerPage) {
+      int endIndex = i + itemsPerPage;
+      if (endIndex > homeCells.length) {
+        endIndex = homeCells.length;
+      }
+      chunks.add(homeCells.sublist(i, endIndex));
+    }
+    return chunks;
+  }
+
+  initScreen() {
+    _slicedData = _sliceData();
+    _isLoading = true;
+    notifyListeners();
+  }
+
+  onTapCategory() {
+    var name = 'أشخاص';
+    var length = people.length;
+    List<Cell> tempList = cells..insertAll(29 - length, people);
+    tempList.removeWhere((element) => element.type == 7 || element.type == 8);
+    homeCells = tempList;
+    _slicedData = _sliceData();
+    notifyListeners();
   }
 
   void _scrollToBottom({String from = 'insert'}) {
