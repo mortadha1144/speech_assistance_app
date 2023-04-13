@@ -93,6 +93,9 @@ List<Cell> people = [
   const Cell(
       id: 38, serial: 38, name: 'ممرض', image: 'images/nurse.png', type: 10),
 ];
+
+Cell moreCell =
+    const Cell(id: 0, serial: 0, name: 'المزيد', image: 'images/nurse.png', type: 0);
 bool check() {
   cells.indexWhere((element) => element.serial == 1);
   return true;

@@ -16,11 +16,11 @@ class HomeProvider with ChangeNotifier {
 
   PageController get pagesController => _pagesController;
   List<Widget> homePages = [
-    //const CellsPage(),
+    const CellsPage(),
     //PageTest(data: cells.sublist(0, 29), itemsPerPage: 30),
   ];
 
-  List<Cell> homeCells = cells;
+  List<Cell> homeCells = [];
   final int itemsPerPage = 29;
 
   final List<Cell> _tapedCells = [];
@@ -89,7 +89,56 @@ class HomeProvider with ChangeNotifier {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  bool _enableBack = false;
+  bool get enableBack => _enableBack;
   List<List<Cell>> _slicedData = [];
+
+  List<Cell> _displayedItemList = [];
+
+  List<Cell> get displayedItemList => _displayedItemList;
+
+  int _startIndex = 0;
+
+  static const int _itemsPerScreen = 29;
+
+  int get startIndex => _startIndex;
+
+  void fetchData() {
+    homeCells.addAll(cells);
+    if (startIndex + _itemsPerScreen >= homeCells.length) {
+      _displayedItemList = homeCells.sublist(startIndex);
+    } else {
+      _displayedItemList =
+          homeCells.sublist(startIndex, startIndex + _itemsPerScreen);
+    }
+    _startIndex += _itemsPerScreen;
+    _isLoading = true;
+    notifyListeners();
+  }
+
+  void updateDisplayedItemList() {
+    if (startIndex + _itemsPerScreen >= homeCells.length) {
+      _displayedItemList = homeCells.sublist(startIndex);
+    } else {
+      _displayedItemList =
+          homeCells.sublist(startIndex, startIndex + _itemsPerScreen);
+    }
+    _startIndex += _itemsPerScreen;
+    notifyListeners();
+  }
+
+  bool get showMoreCondition => startIndex < homeCells.length;
+
+  void backToFirstDisplayedItemList() {
+    _startIndex = 0;
+    _enableBack = false;
+    homeCells
+      ..clear()
+      ..addAll(cells);
+    displayedItemList.clear();
+    updateDisplayedItemList();
+  }
 
   List<List<Cell>> get sliceData => _slicedData;
 
@@ -114,11 +163,15 @@ class HomeProvider with ChangeNotifier {
   onTapCategory() {
     var name = 'أشخاص';
     var length = people.length;
-    List<Cell> tempList = cells..insertAll(29 - length, people);
+    List<Cell> tempList = [];
+    tempList.addAll(cells);
+    tempList.insertAll(29 - length, people);
     tempList.removeWhere((element) => element.type == 7 || element.type == 8);
     homeCells = tempList;
-    _slicedData = _sliceData();
-    notifyListeners();
+    _startIndex = 0;
+    _enableBack = true;
+    displayedItemList.clear();
+    updateDisplayedItemList();
   }
 
   void _scrollToBottom({String from = 'insert'}) {
