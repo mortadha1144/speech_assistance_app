@@ -19,7 +19,7 @@ class TextToSpeechProvider with ChangeNotifier {
 
   AutovalidateMode get autovalidateMode => _autovalidateMode;
 
-  TextEditingController get textToSpeechController => _textToSpeechController!;
+  TextEditingController get textToSpeechController => _textToSpeechController;
   GlobalKey<FormState> get formKey => _formKey;
 
   Future<void> speechTheText() async {

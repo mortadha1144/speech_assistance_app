@@ -1,5 +1,8 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/shared/components/components.dart';
 
 class Functions {
   static String getCustomDates(DateTime date) {
@@ -35,6 +38,23 @@ class Functions {
       return 'منذ أسبوع';
     } else {
       return 'سابقاً';
+    }
+  }
+
+  static StatelessWidget getCell({required Cell cell, Function()? onPressed}) {
+    if (cell.type == 'cell') {
+      if (cell.category == 'pronoun' ||
+          cell.category == 'verb' ||
+          cell.category == 'adjective') {
+        return TriangleCell(
+          cell: cell,
+          onPressed: onPressed,
+        );
+      } else {
+        return NormalCell(cell: cell);
+      }
+    } else {
+      return FolderCell(cell: cell);
     }
   }
 }

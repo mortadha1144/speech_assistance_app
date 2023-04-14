@@ -167,7 +167,7 @@ class FolderCell extends StatelessWidget {
   }) : super(key: key);
 
   final Cell cell;
-  final Function()? onPressed;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +230,7 @@ class TriangleCell extends StatelessWidget {
   }) : super(key: key);
 
   final Cell cell;
-  final Function()? onPressed;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -287,7 +287,7 @@ class NormalCell extends StatelessWidget {
   }) : super(key: key);
 
   final Cell cell;
-  final Function()? onPressed;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -387,12 +387,12 @@ class MainCell extends StatelessWidget {
         cell.type == 10) {
       return NormalCell(
         cell: cell,
-        onPressed: () => context.read<HomeProvider>().onPressedDefault(cell),
+        //onPressed: () => context.read<HomeProvider>().onPressedDefault(cell),
       );
     } else if (cell.type == 1 || cell.type == 2 || cell.type == 6) {
       return TriangleCell(
         cell: cell,
-        onPressed: () => context.read<HomeProvider>().onPressedDefault(cell),
+        //onPressed: () => context.read<HomeProvider>().onPressedDefault(cell),
       );
     } else if (cell.type == 7 || cell.type == 8) {
       return FolderCell(

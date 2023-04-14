@@ -4,9 +4,10 @@ import 'package:speech_assistance_app/controller/home_provider.dart';
 import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
+import 'package:speech_assistance_app/shared/functions/functions.dart';
 
 class PageTest extends StatefulWidget {
-  PageTest({super.key});
+  const PageTest({super.key});
   @override
   State<PageTest> createState() => _PageTestState();
 }
@@ -41,15 +42,7 @@ class _PageTestState extends State<PageTest> {
     return Consumer<HomeProvider>(
       builder: (context, provider, child) => provider.isLoading
           ? Column(
-              //itemCount: provider.sliceData.length,
-              //controller: provider.pagesController,
-              // onPageChanged: (value) {
-              //   setState(() {
-              //     controller = PageController(initialPage: value);
-              //   });
-              // },
-              //itemBuilder: (context, pageIndex) => Padding(
-              // padding: const EdgeInsets.all(4.0),
+              
               children: [
                   Container(
                     height: MediaQuery.of(context).size.height / 24,
@@ -93,9 +86,7 @@ class _PageTestState extends State<PageTest> {
                           ),
                           scrollDirection: Axis.vertical,
                           itemCount: provider.displayedItemList.length,
-                          itemBuilder: (context, itemIndex) => MainCell(
-                            cell: provider.displayedItemList[itemIndex],
-                          ),
+                          itemBuilder: (context, itemIndex) => Functions.getCell(cell:provider.displayedItemList[itemIndex]),
                         ),
                         if (provider.showMoreCondition)
                           LayoutBuilder(

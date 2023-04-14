@@ -43,7 +43,15 @@ class HomeProvider with ChangeNotifier {
 
   final FlutterTts _flutterTts = FlutterTts();
 
-  Future<void> onPressedDefault(Cell cell) async {
+  Future<void> onPressedGridView(Cell cell) async {
+    if (cell.type == 'cell') {
+      onPressCell(cell);
+    } else {
+      onTapCategory();
+    }
+  }
+
+  Future<void> onPressCell(Cell cell) async {
     final int index = lengthOfCellsList;
     _tapedCells.add(cell);
     bool isVoiceEnabled =
@@ -161,7 +169,6 @@ class HomeProvider with ChangeNotifier {
   }
 
   onTapCategory() {
-    var name = 'أشخاص';
     var length = people.length;
     List<Cell> tempList = [];
     tempList.addAll(cells);
