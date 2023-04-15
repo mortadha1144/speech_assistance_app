@@ -14,13 +14,16 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CellModelAdapter());
   await Hive.openBox<CellModel>(kCellsBox);
- await Hive.openBox(settingBox);
+  await Hive.openBox(settingBox);
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LayoutProvider()),
-        ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => LastRecordProvider()),
+        ChangeNotifierProxyProvider<LastRecordProvider, HomeProvider>(
+          create: (_) => HomeProvider(),
+          update: (_, value, previous) => previous!..update(value),
+        ),
         ChangeNotifierProxyProvider<LastRecordProvider, TextToSpeechProvider>(
           create: (_) => TextToSpeechProvider(),
           update: (_, value, previous) => previous!..update(value),

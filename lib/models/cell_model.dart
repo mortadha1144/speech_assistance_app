@@ -29,4 +29,12 @@ class CellModel extends HiveObject {
         isPinned: false,
         pinningSerial: 0);
   }
+  factory CellModel.fromHomeScreen(String text) {
+    return CellModel(
+        date: DateTime.now().toString(),
+        text: text.trim(),
+        isCell: true,
+        isPinned: false,
+        pinningSerial: 0);
+  }
 }

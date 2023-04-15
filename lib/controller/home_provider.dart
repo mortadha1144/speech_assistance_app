@@ -2,27 +2,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:speech_assistance_app/controller/last_record_provider.dart';
 import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/models/cell_model.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/components/components.dart';
-import 'package:speech_assistance_app/view/widgets/home/page.dart';
 
 class HomeProvider with ChangeNotifier {
-  int _currentPage = 0;
-
-  PageController _pagesController = PageController(initialPage: 0);
-
-  int get currentPage => _currentPage;
-
-  PageController get pagesController => _pagesController;
-  List<Widget> homePages = [
-    const CellsPage(),
-    //PageTest(data: cells.sublist(0, 29), itemsPerPage: 30),
-  ];
-
   List<Cell> homeCells = [];
   final int itemsPerPage = 29;
-
+  LastRecordProvider? _lastRecordProvider;
   final List<Cell> _tapedCells = [];
 
   List<Cell> get tapedCells => _tapedCells;
@@ -101,7 +90,6 @@ class HomeProvider with ChangeNotifier {
 
   bool _enableBack = false;
   bool get enableBack => _enableBack;
-  List<List<Cell>> _slicedData = [];
 
   List<Cell> _displayedItemList = [];
 
@@ -187,21 +175,51 @@ class HomeProvider with ChangeNotifier {
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 300),
       );
-      notifyListeners();
     }
   }
 
   Future<void> onTapPlayBar({required String text}) async {
-    _scrollToTop();
-    bool isVoiceEnabled =
-        Hive.box(settingBox).get('enable_voice', defaultValue: true);
-    if (isVoiceEnabled) {
-      await speakText(text);
-    }
+    if (_tapedCells.isNotEmpty) {
+      _scrollToTop();
+      bool isVoiceEnabled =
+          Hive.box(settingBox).get('enable_voice', defaultValue: true);
+      if (isVoiceEnabled) {
+        await speakText(text);
+      }
 
-    _scrollToBottom(from: 'speak');
-    //TODO
-    //change to insert to hive
-    //insertIntoDatabase(text: text, cellsType: 2);
+      _scrollToBottom(from: 'speak');
+     await addCell();
+      //change to insert to hive
+      //insertIntoDatabase(text: text, cellsType: 2);
+    }
+  }
+
+  Future<void> addCell() async {
+    var cellsBox = Hive.box<CellModel>(kCellsBox);
+    String text = _tapedCells.map((e) => e.name).join(' ');
+    var findCells =
+        cellsBox.values.where((element) => element.text == text).toList();
+    if (findCells.isNotEmpty) {
+      var oldCell = findCells.first;
+      oldCell.date = DateTime.now().toString();
+      await oldCell.save().then((_) {
+        afterSaveOrAdd();
+      });
+    } else {
+      CellModel newCell = CellModel.fromHomeScreen(text);
+      await cellsBox.add(newCell).then((_) {
+        afterSaveOrAdd();
+      });
+    }
+  }
+
+  void afterSaveOrAdd() {
+    if (_lastRecordProvider?.isLoading ?? false) {
+      _lastRecordProvider!.fetchAllCells();
+    }
+  }
+
+  void update(LastRecordProvider lastRecordProvider) {
+    _lastRecordProvider = lastRecordProvider;
   }
 }
