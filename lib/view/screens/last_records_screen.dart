@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:speech_assistance_app/shared/components/components.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
+import 'package:speech_assistance_app/view/widgets/last_records/cell_tile.dart';
 import 'package:speech_assistance_app/view/widgets/last_records/last_record_app_bar.dart';
 
 class LastRecordScreen extends StatefulWidget {

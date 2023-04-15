@@ -1,5 +1,3 @@
-import 'package:speech_assistance_app/shared/components/components.dart';
-import 'package:speech_assistance_app/shared/components/constants.dart';
 
 class Cell {
   final int id;

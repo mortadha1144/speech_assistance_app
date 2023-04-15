@@ -26,5 +26,3 @@ class SpeechAssistanceLayout extends StatelessWidget {
     );
   }
 }
-
-//watchProvider.screens[watchProvider.currentScreen]

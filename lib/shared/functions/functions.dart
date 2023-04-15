@@ -1,8 +1,10 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:speech_assistance_app/models/cell.dart';
-import 'package:speech_assistance_app/shared/components/components.dart';
+import 'package:speech_assistance_app/view/widgets/home/folder_cell.dart';
+import 'package:speech_assistance_app/view/widgets/home/normal_cell.dart';
+import 'package:speech_assistance_app/view/widgets/home/triangle_cell.dart';
 
 class Functions {
   static String getCustomDates(DateTime date) {

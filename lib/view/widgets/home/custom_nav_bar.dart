@@ -34,9 +34,9 @@ class CustomNavBar extends StatelessWidget {
                     ),
                   )
                 : const Spacer(),
-            const Text(
-              'الرئيسية',
-              style: TextStyle(
+            Text(
+              provider.navBarTitle,
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w700),

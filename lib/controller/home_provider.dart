@@ -6,14 +6,15 @@ import 'package:speech_assistance_app/controller/last_record_provider.dart';
 import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/models/cell_model.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
-import 'package:speech_assistance_app/shared/components/components.dart';
+import 'package:speech_assistance_app/view/widgets/home/pressed_cell.dart';
 
 class HomeProvider with ChangeNotifier {
   List<Cell> homeCells = [];
   final int itemsPerPage = 29;
   LastRecordProvider? _lastRecordProvider;
   final List<Cell> _tapedCells = [];
-
+  String _navBarTitle = 'الرئيسية';
+  String get navBarTitle => _navBarTitle;
   List<Cell> get tapedCells => _tapedCells;
 
   int get lengthOfCellsList => _tapedCells.length;
@@ -124,6 +125,7 @@ class HomeProvider with ChangeNotifier {
   void backToFirstDisplayedItemList() {
     _startIndex = 0;
     _enableBack = false;
+    _navBarTitle = 'الرئيسة';
     homeCells
       ..clear()
       ..addAll(cells);
@@ -142,6 +144,7 @@ class HomeProvider with ChangeNotifier {
       homeCells = tempList;
       _startIndex = 0;
       _enableBack = true;
+      _navBarTitle = category;
       displayedItemList.clear();
       updateDisplayedItemList();
     }
@@ -188,7 +191,7 @@ class HomeProvider with ChangeNotifier {
       }
 
       _scrollToBottom(from: 'speak');
-     await addCell();
+      await addCell();
       //change to insert to hive
       //insertIntoDatabase(text: text, cellsType: 2);
     }
