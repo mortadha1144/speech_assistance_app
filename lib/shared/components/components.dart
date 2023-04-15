@@ -397,7 +397,7 @@ class MainCell extends StatelessWidget {
     } else if (cell.type == 7 || cell.type == 8) {
       return FolderCell(
         cell: cell,
-        onPressed: () => context.read<HomeProvider>().onTapCategory(),
+        //onPressed: () => context.read<HomeProvider>().onTapCategory(),
       );
     }
 

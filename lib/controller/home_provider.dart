@@ -43,11 +43,12 @@ class HomeProvider with ChangeNotifier {
 
   final FlutterTts _flutterTts = FlutterTts();
 
-  Future<void> onPressedGridView(Cell cell) async {
+  Future<void> onPressedGridView(int index) async {
+    Cell cell = displayedItemList[index];
     if (cell.type == 'cell') {
       onPressCell(cell);
     } else {
-      onTapCategory();
+      onTapCategory(cell);
     }
   }
 
@@ -114,13 +115,7 @@ class HomeProvider with ChangeNotifier {
 
   void fetchData() {
     homeCells.addAll(cells);
-    if (startIndex + _itemsPerScreen >= homeCells.length) {
-      _displayedItemList = homeCells.sublist(startIndex);
-    } else {
-      _displayedItemList =
-          homeCells.sublist(startIndex, startIndex + _itemsPerScreen);
-    }
-    _startIndex += _itemsPerScreen;
+    updateDisplayedItemList();
     _isLoading = true;
     notifyListeners();
   }
@@ -148,37 +143,20 @@ class HomeProvider with ChangeNotifier {
     updateDisplayedItemList();
   }
 
-  List<List<Cell>> get sliceData => _slicedData;
-
-  List<List<Cell>> _sliceData() {
-    List<List<Cell>> chunks = [];
-    for (int i = 0; i < homeCells.length; i += itemsPerPage) {
-      int endIndex = i + itemsPerPage;
-      if (endIndex > homeCells.length) {
-        endIndex = homeCells.length;
-      }
-      chunks.add(homeCells.sublist(i, endIndex));
+  onTapCategory(Cell cell) {
+    String category = cell.category;
+    List<Cell>? categoryList = categories[category];
+    if (categoryList?.isNotEmpty ?? false) {
+      List<Cell> tempList = [];
+      tempList.addAll(cells);
+      tempList.insertAll(29 - categoryList!.length, categoryList);
+      tempList.removeWhere((element) => element.type == 'folder');
+      homeCells = tempList;
+      _startIndex = 0;
+      _enableBack = true;
+      displayedItemList.clear();
+      updateDisplayedItemList();
     }
-    return chunks;
-  }
-
-  initScreen() {
-    _slicedData = _sliceData();
-    _isLoading = true;
-    notifyListeners();
-  }
-
-  onTapCategory() {
-    var length = people.length;
-    List<Cell> tempList = [];
-    tempList.addAll(cells);
-    tempList.insertAll(29 - length, people);
-    tempList.removeWhere((element) => element.type == 7 || element.type == 8);
-    homeCells = tempList;
-    _startIndex = 0;
-    _enableBack = true;
-    displayedItemList.clear();
-    updateDisplayedItemList();
   }
 
   void _scrollToBottom({String from = 'insert'}) {

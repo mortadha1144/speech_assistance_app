@@ -157,7 +157,7 @@ List<Cell> cells = [
       id: 21,
       serial: 21,
       name: 'أشخاص',
-      category: 'folder',
+      category: 'people',
       image: 'images/people.png',
       type: 'folder'),
   const Cell(
@@ -292,7 +292,7 @@ Cell moreCell = const Cell(
     image: 'images/more.png',
     type: 'more');
 
-var categories = {'people': people};
+Map<String, List<Cell>> categories = {'people': people};
 bool check() {
   cells.indexWhere((element) => element.serial == 1);
   return true;

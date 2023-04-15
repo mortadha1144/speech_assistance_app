@@ -51,10 +51,10 @@ class Functions {
           onPressed: onPressed,
         );
       } else {
-        return NormalCell(cell: cell);
+        return NormalCell(cell: cell,onPressed: onPressed,);
       }
     } else {
-      return FolderCell(cell: cell);
+      return FolderCell(cell: cell,onPressed: onPressed,);
     }
   }
 }
