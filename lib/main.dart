@@ -8,6 +8,7 @@ import 'package:speech_assistance_app/controller/home_provider.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
 import 'package:speech_assistance_app/models/cell_model.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
+import 'package:speech_assistance_app/view/screens/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,9 +46,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Directionality(
+      home:  const Directionality(
         textDirection: TextDirection.rtl,
-        child: SpeechAssistanceLayout(),
+        child: OnBoarding(),
       ),
     );
   }

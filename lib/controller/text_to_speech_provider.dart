@@ -26,6 +26,10 @@ class TextToSpeechProvider with ChangeNotifier {
     if (_formKey.currentState!.validate()) {
       formKey.currentState!.save();
       await TtsService.speakText(text!);
+      await addCell(showToast: false);
+    } else {
+      _autovalidateMode = AutovalidateMode.always;
+      notifyListeners();
     }
   }
 
@@ -39,44 +43,47 @@ class TextToSpeechProvider with ChangeNotifier {
   void save() async {
     if (_formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      addCell();
+      await addCell();
     } else {
       _autovalidateMode = AutovalidateMode.always;
       notifyListeners();
     }
   }
 
-  Future<void> addCell() async {
+  Future<void> addCell({bool showToast = true}) async {
     var cellsBox = Hive.box<CellModel>(kCellsBox);
-    var findCells =
-        cellsBox.values.where((element) => element.text == text).toList();
+    var findCells = cellsBox.values
+        .where((element) => element.text == text!.trim())
+        .toList();
     if (findCells.isNotEmpty) {
       var oldCell = findCells.first;
       oldCell.date = DateTime.now().toString();
       isLoading = true;
       await oldCell.save().then((_) {
-        afterSaveOrAdd();
+        afterSaveOrAdd(showToast);
       });
     } else {
       CellModel newCell = CellModel.fromTextToSpeechScreen(text!);
       isLoading = true;
       await cellsBox.add(newCell).then((_) {
-        afterSaveOrAdd();
+        afterSaveOrAdd(showToast);
       });
     }
   }
 
-  void afterSaveOrAdd() {
+  void afterSaveOrAdd(bool showToast) {
     isLoading = false;
     if (_lastRecordProvider?.isLoading ?? false) {
       _lastRecordProvider!.fetchAllCells();
     }
-    Fluttertoast.showToast(
-        msg: 'تم حفظ النص لاستخدامه لاحقاً في صفحة العبارات المستخدمة',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        fontSize: 14.0);
-    notifyListeners();
+    if (showToast) {
+      Fluttertoast.showToast(
+          msg: 'تم حفظ النص لاستخدامه لاحقاً في صفحة العبارات المستخدمة',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          fontSize: 14.0);
+      notifyListeners();
+    }
   }
 
   void update(LastRecordProvider lastRecordProvider) {

@@ -18,22 +18,16 @@ class NormalCell extends StatelessWidget {
   Widget build(BuildContext context) {
     Color borderColor = const Color(0xFF000000);
     Color contentColor = Colors.white;
-    if (cell.type == 4) {
+    if (cell.category == 'word') {
       borderColor = blueBorder;
       contentColor = blueContent;
-    } else if (cell.type == 5) {
+    } else if (cell.category == 'preposition') {
       borderColor = greenBorder;
       contentColor = greenContent;
     }
     return CupertinoButton(
       onPressed: onPressed,
       padding: const EdgeInsets.all(0),
-      // style: TextButton.styleFrom(
-      //   padding: const EdgeInsets.symmetric(
-      //     horizontal: 4,
-      //     vertical: 4,
-      //   ),
-      // ),
       child: Container(
         decoration: BoxDecoration(
           color: contentColor,

@@ -26,37 +26,44 @@ class _HomeGridViewState extends State<HomeGridView> {
     return Consumer<HomeProvider>(
       builder: (context, provider, child) => Expanded(
         child: provider.isLoading
-            ? Stack(children: [
-                GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                      childAspectRatio: 5 / 6),
-                  scrollDirection: Axis.vertical,
-                  itemCount: provider.displayedItemList.length,
-                  itemBuilder: (context, itemIndex) => Functions.getCell(
-                      cell: provider.displayedItemList[itemIndex],
-                      onPressed: () => provider.onPressedGridView(itemIndex)),
-                ),
-                // if (provider.showMoreCondition)
-                //   LayoutBuilder(
-                //     builder: (p0, p1) => Align(
-                //       alignment: AlignmentDirectional.bottomEnd,
-                //       child: Container(
-                //         padding:
-                //             const EdgeInsets.only(right: 4.0, bottom: 8.0),
-                //         width: p1.maxWidth / 5,
-                //         height: p1.maxHeight / 6,
-                //         child: NormalCell(
-                //           cell: moreCell,
-                //           onPressed: provider.updateDisplayedItemList,
-                //         ),
-                //       ),
-                //     ),
-                //   )
-              ])
+            ? Padding(
+                padding: const EdgeInsets.only(top: 4, right: 4, left: 4),
+                child: Stack(children: [
+                  LayoutBuilder(
+                    builder: (p0, p1) => GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 5,
+                        crossAxisSpacing: 4,
+                        mainAxisSpacing: 4,
+                        childAspectRatio:
+                            (p1.maxWidth / 5) / (p1.maxHeight / 6),
+                      ),
+                      scrollDirection: Axis.vertical,
+                      itemCount: provider.displayedItemList.length,
+                      itemBuilder: (context, itemIndex) => Functions.getCell(
+                          cell: provider.displayedItemList[itemIndex],
+                          onPressed: () =>
+                              provider.onPressedGridView(itemIndex)),
+                    ),
+                  ),
+                  if (provider.showMoreCondition)
+                    LayoutBuilder(
+                      builder: (p0, p1) => Align(
+                        alignment: AlignmentDirectional.bottomEnd,
+                        child: Container(
+                          padding: const EdgeInsets.only(right: 4.0, bottom: 4),
+                          width: p1.maxWidth / 5,
+                          height: p1.maxHeight / 6,
+                          child: NormalCell(
+                            cell: moreCell,
+                            onPressed: provider.updateDisplayedItemList,
+                          ),
+                        ),
+                      ),
+                    )
+                ]),
+              )
             : const Center(child: CircularProgressIndicator()),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/models/onboarding_model.dart';
 
 //types
 //1:ضمير/برتقالي/اطار مثلث
@@ -332,3 +333,21 @@ const aboutAppImage = 'images/resources/aboutAppImage.png';
 const aboutAppTitle = 'تطبيق مساعد النطق';
 const aboutAppContent =
     'هو تطبيق مجاني انساني ضمن مبادرة ( Code For Iraq ) لمساعدة الاشخاص اللذين يعانون من صعوبة النطق , التطبيق يعتمد على احدث الاليات المتبعة في هذا المجال فهو يعتمد على آلية (AAC) المتبعة في المعاهد العالمية المختصة بمعالجة من يعانون صعوبة النطق . ';
+
+List<OnBoardingModel> onBordingList = [
+  OnBoardingModel(
+      image: 'images/onbording/onboarding1.png',
+      title: 'Tilte Number 1',
+      content:
+          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'),
+  OnBoardingModel(
+      image: 'images/onbording/onboarding2.png',
+      title: 'Tilte Number 2',
+      content:
+          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'),
+  OnBoardingModel(
+      image: 'images/onbording/onboarding3.png',
+      title: 'Tilte Number 3',
+      content:
+          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,')
+];

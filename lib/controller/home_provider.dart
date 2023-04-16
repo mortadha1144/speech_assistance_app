@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
 import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/models/cell_model.dart';
+import 'package:speech_assistance_app/services/tts_sevice.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/view/widgets/home/pressed_cell.dart';
 
@@ -31,8 +31,6 @@ class HomeProvider with ChangeNotifier {
 
   GlobalKey<AnimatedListState> get key => _key;
 
-  final FlutterTts _flutterTts = FlutterTts();
-
   Future<void> onPressedGridView(int index) async {
     Cell cell = displayedItemList[index];
     if (cell.type == 'cell') {
@@ -45,22 +43,12 @@ class HomeProvider with ChangeNotifier {
   Future<void> onPressCell(Cell cell) async {
     final int index = lengthOfCellsList;
     _tapedCells.add(cell);
-    bool isVoiceEnabled =
-        Hive.box(settingBox).get('enable_voice', defaultValue: true);
-    if (isVoiceEnabled) {
-      await speakText(cell.name);
-    }
+    await TtsService.speakText(cell.name);
 
     _key.currentState!
         .insertItem(index, duration: const Duration(milliseconds: 200));
     notifyListeners();
     _scrollToBottom();
-  }
-
-  Future<void> speakText(String text) async {
-    await _flutterTts.setLanguage("ar");
-    await _flutterTts.setSpeechRate(0.4);
-    await _flutterTts.speak(text);
   }
 
   void onPressedBackspace() {
@@ -184,16 +172,11 @@ class HomeProvider with ChangeNotifier {
   Future<void> onTapPlayBar({required String text}) async {
     if (_tapedCells.isNotEmpty) {
       _scrollToTop();
-      bool isVoiceEnabled =
-          Hive.box(settingBox).get('enable_voice', defaultValue: true);
-      if (isVoiceEnabled) {
-        await speakText(text);
-      }
+
+      await TtsService.speakText(text);
 
       _scrollToBottom(from: 'speak');
       await addCell();
-      //change to insert to hive
-      //insertIntoDatabase(text: text, cellsType: 2);
     }
   }
 

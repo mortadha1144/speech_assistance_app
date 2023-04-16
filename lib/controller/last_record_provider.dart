@@ -3,6 +3,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:speech_assistance_app/models/cell_model.dart';
+import 'package:speech_assistance_app/services/tts_sevice.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 
 class LastRecordProvider with ChangeNotifier {
@@ -77,17 +78,8 @@ class LastRecordProvider with ChangeNotifier {
         onPressCloseButton();
       }
     } else {
-      bool isVoiceEnabled = Hive.box(settingBox).get('enable_voice', defaultValue: true);
-      if (isVoiceEnabled) {
-        await speakText(cellsRecord.text);
-      }
+      await TtsService.speakText(cellsRecord.text);
     }
-  }
-
-  Future<void> speakText(String text) async {
-    await _flutterTts.setLanguage("ar");
-    await _flutterTts.setSpeechRate(0.4);
-    await _flutterTts.speak(text);
   }
 
   pinningCellsTile() async {

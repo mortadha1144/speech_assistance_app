@@ -15,7 +15,7 @@ class CellContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
-          flex: cell.type == 7 || cell.type == 8 ? 1 : 0,
+          flex: cell.type == 'folder' ? 1 : 0,
           child: const SizedBox(),
         ),
         Expanded(
@@ -24,7 +24,7 @@ class CellContent extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: Text(
-                cell.type == 0 ? 'المزيد' : cell.name,
+                cell.name,
                 style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -35,7 +35,7 @@ class CellContent extends StatelessWidget {
         ),
         Expanded(
           flex: 18,
-          child: cell.type == 0
+          child: cell.type == 'more'
               ? const FittedBox(
                   child: Icon(
                     Icons.arrow_forward_rounded,
