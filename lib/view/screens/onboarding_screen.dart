@@ -1,37 +1,58 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:speech_assistance_app/shared/components/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:speech_assistance_app/controller/last_record_provider.dart';
+import 'package:speech_assistance_app/controller/onboarding_provider.dart';
+import 'package:speech_assistance_app/view/widgets/onboarding/custom_button.dart';
+import 'package:speech_assistance_app/view/widgets/onboarding/custom_slider.dart';
+import 'package:speech_assistance_app/view/widgets/onboarding/dots_controller.dart';
 
-class OnBoarding extends StatelessWidget {
+class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
+
+  @override
+  State<OnBoarding> createState() => _OnBoardingState();
+}
+
+class _OnBoardingState extends State<OnBoarding> {
+  late OnBoardingProvider provider;
+  @override
+  void initState() {
+    super.initState();
+    provider = Provider.of<OnBoardingProvider>(context, listen: false);
+    provider.onInit();
+  }
+
+  @override
+  void dispose() {
+    provider.pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: PageView.builder(
-          itemCount: onBordingList.length,
-          itemBuilder: (context, index) => Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: Image.asset(
-                  onBordingList[index].image,
-                  width: 400,
-                  height: 400,
-                ),
-              ),
-              Text(
-                onBordingList[index].title,
-                style:
-                    const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                onBordingList[index].content,
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            const Expanded(
+              flex: 3,
+              child: CustomSliderOnBoarding(),
+            ),
+            Expanded(
+                flex: 1,
+                child: Column(
+                  children: const [
+                    SizedBox(
+                      height: 15,
+                    ),
+                    DotsControllerOnBoarding(),
+                    Spacer(
+                      flex: 2,
+                    ),
+                    CustomButtonOnBoarding()
+                  ],
+                ))
+          ],
         ),
       ),
     );
