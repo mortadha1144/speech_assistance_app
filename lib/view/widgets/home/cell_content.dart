@@ -26,9 +26,10 @@ class CellContent extends StatelessWidget {
               child: Text(
                 cell.name,
                 style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black),
+                    fontSize: 12,
+                    color: Colors.black,
+                    fontFamily: 'Cairo',
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),

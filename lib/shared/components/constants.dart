@@ -1,3 +1,6 @@
+// ignore_for_file: unnecessary_const
+
+import 'package:flutter/material.dart';
 import 'package:speech_assistance_app/models/cell.dart';
 import 'package:speech_assistance_app/models/onboarding_model.dart';
 
@@ -19,203 +22,203 @@ List<Cell> cells = [
       serial: 1,
       name: 'أنا',
       category: 'pronoun',
-      image: 'images/i.png',
+      image: 'assets/images/i.png',
       type: 'cell'),
   const Cell(
       id: 2,
       serial: 2,
       name: 'أريد',
       category: 'verb',
-      image: 'images/want.png',
+      image: 'assets/images/want.png',
       type: 'cell'),
   const Cell(
       id: 3,
       serial: 3,
       name: 'ماذا',
       category: 'question_mark',
-      image: 'images/what.png',
+      image: 'assets/images/what.png',
       type: 'cell'),
   const Cell(
       id: 4,
       serial: 4,
       name: 'لا',
       category: 'word',
-      image: 'images/no.png',
+      image: 'assets/images/no.png',
       type: 'cell'),
   const Cell(
       id: 5,
       serial: 5,
       name: 'أكثر',
       category: 'word',
-      image: 'images/more.png',
+      image: 'assets/images/more.png',
       type: 'cell'),
   const Cell(
       id: 6,
       serial: 6,
       name: 'أنت',
       category: 'pronoun',
-      image: 'images/you.png',
+      image: 'assets/images/you.png',
       type: 'cell'),
   const Cell(
       id: 7,
       serial: 7,
       name: 'أذهب',
       category: 'verb',
-      image: 'images/go.png',
+      image: 'assets/images/go.png',
       type: 'cell'),
   const Cell(
       id: 8,
       serial: 8,
       name: 'أفعل',
       category: 'verb',
-      image: 'images/do.png',
+      image: 'assets/images/do.png',
       type: 'cell'),
   const Cell(
       id: 9,
       serial: 9,
       name: 'إلى',
       category: 'preposition',
-      image: 'images/to.png',
+      image: 'assets/images/to.png',
       type: 'cell'),
   const Cell(
       id: 10,
       serial: 10,
       name: 'إنتهى',
       category: 'word',
-      image: 'images/finish.png',
+      image: 'assets/images/finish.png',
       type: 'cell'),
   const Cell(
       id: 11,
       serial: 11,
       name: 'نحن',
       category: 'pronoun',
-      image: 'images/we.png',
+      image: 'assets/images/we.png',
       type: 'cell'),
   const Cell(
       id: 12,
       serial: 12,
       name: 'أأكل',
       category: 'verb',
-      image: 'images/eat.png',
+      image: 'assets/images/eat.png',
       type: 'cell'),
   const Cell(
       id: 13,
       serial: 13,
       name: 'ألعب',
       category: 'verb',
-      image: 'images/play.png',
+      image: 'assets/images/play.png',
       type: 'cell'),
   const Cell(
       id: 14,
       serial: 14,
       name: 'على',
       category: 'preposition',
-      image: 'images/on.png',
+      image: 'assets/images/on.png',
       type: 'cell'),
   const Cell(
       id: 15,
       serial: 15,
       name: 'في',
       category: 'preposition',
-      image: 'images/in.png',
+      image: 'assets/images/in.png',
       type: 'cell'),
   const Cell(
       id: 16,
       serial: 16,
       name: 'أشرب',
       category: 'verb',
-      image: 'images/drink.png',
+      image: 'assets/images/drink.png',
       type: 'cell'),
   const Cell(
       id: 17,
       serial: 17,
       name: 'أرى',
       category: 'verb',
-      image: 'images/see.png',
+      image: 'assets/images/see.png',
       type: 'cell'),
   const Cell(
       id: 18,
       serial: 18,
       name: 'أضع',
       category: 'verb',
-      image: 'images/put.png',
+      image: 'assets/images/put.png',
       type: 'cell'),
   const Cell(
       id: 19,
       serial: 19,
       name: 'توقف',
       category: 'word',
-      image: 'images/stop.png',
+      image: 'assets/images/stop.png',
       type: 'cell'),
   const Cell(
       id: 20,
       serial: 20,
       name: 'جيد',
       category: 'adjective',
-      image: 'images/good.png',
+      image: 'assets/images/good.png',
       type: 'cell'),
   const Cell(
       id: 21,
       serial: 21,
       name: 'أشخاص',
       category: 'people',
-      image: 'images/people.png',
+      image: 'assets/images/people.png',
       type: 'folder'),
   const Cell(
       id: 22,
       serial: 22,
       name: 'أشياء',
       category: 'folder',
-      image: 'images/things.png',
+      image: 'assets/images/things.png',
       type: 'folder'),
   const Cell(
       id: 23,
       serial: 23,
       name: 'غذاء',
       category: 'folder',
-      image: 'images/food.png',
+      image: 'assets/images/food.png',
       type: 'folder'),
   const Cell(
       id: 24,
       serial: 24,
       name: 'أماكن',
       category: 'folder',
-      image: 'images/places.png',
+      image: 'assets/images/places.png',
       type: 'folder'),
   const Cell(
       id: 25,
       serial: 25,
       name: 'محادثة',
       category: 'folder',
-      image: 'images/chat.png',
+      image: 'assets/images/chat.png',
       type: 'folder'),
   const Cell(
       id: 26,
       serial: 26,
       name: 'أفعال',
       category: 'folder',
-      image: 'images/actions.png',
+      image: 'assets/images/actions.png',
       type: 'folder'),
   const Cell(
       id: 27,
       serial: 27,
       name: 'أسئلة',
       category: 'folder',
-      image: 'images/questions.png',
+      image: 'assets/images/questions.png',
       type: 'folder'),
   const Cell(
       id: 28,
       serial: 28,
       name: 'مشاعر',
       category: 'folder',
-      image: 'images/feelings.png',
+      image: 'assets/images/feelings.png',
       type: 'folder'),
   const Cell(
       id: 29,
       serial: 29,
       name: 'أنشطة',
       category: 'folder',
-      image: 'images/activities.png',
+      image: 'assets/images/activities.png',
       type: 'folder'),
 ];
 
@@ -225,63 +228,63 @@ List<Cell> people = [
       serial: 30,
       name: 'عائلة',
       category: 'people',
-      image: 'images/family.png',
+      image: 'assets/images/family.png',
       type: 'cell'),
   const Cell(
       id: 31,
       serial: 31,
       name: 'أم',
       category: 'people',
-      image: 'images/mom.png',
+      image: 'assets/images/mom.png',
       type: 'cell'),
   const Cell(
       id: 32,
       serial: 32,
       name: 'أب',
       category: 'people',
-      image: 'images/dad.png',
+      image: 'assets/images/dad.png',
       type: 'cell'),
   const Cell(
       id: 33,
       serial: 33,
       name: 'أخ',
       category: 'people',
-      image: 'images/brother-sister.png',
+      image: 'assets/images/brother-sister.png',
       type: 'cell'),
   const Cell(
       id: 34,
       serial: 34,
       name: 'أخت',
       category: 'people',
-      image: 'images/brother-sister.png',
+      image: 'assets/images/brother-sister.png',
       type: 'cell'),
   const Cell(
       id: 35,
       serial: 35,
       name: 'صديق',
       category: 'people',
-      image: 'images/friend.png',
+      image: 'assets/images/friend.png',
       type: 'cell'),
   const Cell(
       id: 36,
       serial: 36,
       name: 'معلم',
       category: 'people',
-      image: 'images/teacher.png',
+      image: 'assets/images/teacher.png',
       type: 'cell'),
   const Cell(
       id: 37,
       serial: 37,
       name: 'طبيب',
       category: 'people',
-      image: 'images/doctor.png',
+      image: 'assets/images/doctor.png',
       type: 'cell'),
   const Cell(
       id: 38,
       serial: 38,
       name: 'ممرض',
       category: 'people',
-      image: 'images/nurse.png',
+      image: 'assets/images/nurse.png',
       type: 'cell'),
 ];
 
@@ -290,7 +293,7 @@ Cell moreCell = const Cell(
     serial: 0,
     name: 'المزيد',
     category: 'more',
-    image: 'images/more.png',
+    image: 'assets/images/more.png',
     type: 'more');
 
 Map<String, List<Cell>> categories = {'people': people};
@@ -319,7 +322,7 @@ const kCellsBox = 'cells_box';
 
 const settingBox = 'settingBox';
 
-const aboutUsImage = 'images/resources/code_for_iraq.png';
+const aboutUsImage = 'assets/images/resources/code_for_iraq.png';
 
 const aboutUsTitle = 'Code For Iraq';
 
@@ -329,25 +332,34 @@ const aboutUsContent =
 const aboutAppContactTitle = 'برمجة وتصميم :';
 const aboutAppContactDetaile = 'مرتضى ناصر';
 const aboutAppContactEmail = 'mortadha114@gmail.com';
-const aboutAppImage = 'images/resources/aboutAppImage.png';
+const aboutAppImage = 'assets/images/resources/aboutAppImage.png';
 const aboutAppTitle = 'تطبيق مساعد النطق';
 const aboutAppContent =
     'هو تطبيق مجاني انساني ضمن مبادرة ( Code For Iraq ) لمساعدة الاشخاص اللذين يعانون من صعوبة النطق , التطبيق يعتمد على احدث الاليات المتبعة في هذا المجال فهو يعتمد على آلية (AAC) المتبعة في المعاهد العالمية المختصة بمعالجة من يعانون صعوبة النطق . ';
 
 List<OnBoardingModel> onBordingList = [
   OnBoardingModel(
-      image: 'images/onbording/onboarding1.png',
-      title: 'Tilte Number 1',
+      image: 'assets/images/onbording/onboarding1.png',
+      title: 'شارك افكارك',
       content:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'),
+          'شارك افكارك مع من تحب بسهولة باستخدام \n تطبيق مساعد النطق لن تجد صعوبة \n بعد الان في التعبير عن افكارك  '),
   OnBoardingModel(
-      image: 'images/onbording/onboarding2.png',
-      title: 'Tilte Number 2',
+      image: 'assets/images/onbording/onboarding2.png',
+      title: 'واصل التطور',
       content:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'),
+          'التطبيق يستخدم تقنية (ACC) وهي تقنية متطورة متبعة \n في تطوير مهارات التواصل مما سيساهم في تطوير \n المهارات العقلية وتقديم تجربة تواصل رائعة'),
   OnBoardingModel(
-      image: 'images/onbording/onboarding3.png',
-      title: 'Tilte Number 3',
+      image: 'assets/images/onbording/onboarding3.png',
+      title: 'حقق أحلامك',
       content:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,')
+          'مع استمرار نمو قابليات التواصل لديك ستتمكن من التعبير \n عن احلامك وستكون قادراً على تحقيقها بسهولة \n لنكمل الطريق معاً . ماذا تنتظر !!')
 ];
+
+List<Color> circleAvatarColors = [
+  const Color(0xfffb938f),
+  const Color(0xfff2cac8),
+  const Color(0xfffdbb75),
+   const Color(0xffd6d1f5),
+  const Color(0xff8dc6bf),
+];
+

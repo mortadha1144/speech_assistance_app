@@ -52,7 +52,7 @@ class DetailesScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   textDirection: TextDirection.rtl,
                   children: [
-                    Image.asset('images/resources/person.png'),
+                    Image.asset('assets/images/resources/person.png'),
                     Padding(
                       padding: const EdgeInsets.only(right: 6),
                       child: Column(

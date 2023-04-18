@@ -42,15 +42,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box(settingBox);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home:  const Directionality(
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Cairo'),
+      home: Directionality(
         textDirection: TextDirection.rtl,
-        child: OnBoarding(),
+        child: box.get('onboarding_showed', defaultValue: false)
+            ? const SpeechAssistanceLayout()
+            : const OnBoarding(),
       ),
     );
   }

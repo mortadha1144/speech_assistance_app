@@ -16,7 +16,7 @@ class DotsControllerOnBoarding extends StatelessWidget {
               onBordingList.length,
               (index) => AnimatedContainer(
                     margin: const EdgeInsets.symmetric(horizontal: 4),
-                    duration: const Duration(milliseconds: 900),
+                    duration: const Duration(milliseconds: 500),
                     width: provider.currentPage == index ? 13 : 10,
                     height: provider.currentPage == index ? 13 : 10,
                     decoration: BoxDecoration(

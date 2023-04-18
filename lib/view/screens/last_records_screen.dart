@@ -48,6 +48,7 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
                     shrinkWrap: true,
                     itemCount: value.cellRecordList.length,
                     itemBuilder: (context, index) => CellTile(
+                      index:index,
                       cellsRecord: value.cellRecordList[index],
                       onTap: () {
                         value.onTapCellTile(

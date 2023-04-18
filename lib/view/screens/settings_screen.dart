@@ -14,7 +14,7 @@ class SettingScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image.asset(
-            'images/resources/settings.png',
+            'assets/images/resources/settings.png',
             scale: 2,
           ),
           Padding(

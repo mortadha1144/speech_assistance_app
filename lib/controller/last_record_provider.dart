@@ -15,7 +15,6 @@ class LastRecordProvider with ChangeNotifier {
 //to git index when long press on tile
   int? _onLongPressIndexTile;
 
-  final FlutterTts _flutterTts = FlutterTts();
 
   bool _showOptions = false;
   bool get showOptions => _showOptions;

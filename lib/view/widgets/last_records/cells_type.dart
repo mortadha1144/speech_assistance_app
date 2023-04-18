@@ -11,27 +11,24 @@ class CellsType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> list = str.split(' ');
-    return SizedBox(
-      height: 70,
-      child: ListView.builder(
-        reverse: isReverse,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: list.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (BuildContext context, int index) => Column(
-          children: [
-            Expanded(
-              child: Image.asset(cells[cells
-                      .indexWhere((element) => element.name == list[index])]
-                  .image),
-            ),
-            Text(
-              list[index],
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-            ),
-          ],
-        ),
+    return ListView.builder(
+      reverse: isReverse,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: list.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, int index) => Column(
+        children: [
+          Expanded(
+            child: Image.asset(cells[
+                    cells.indexWhere((element) => element.name == list[index])]
+                .image),
+          ),
+          Text(
+            list[index],
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          ),
+        ],
       ),
     );
   }

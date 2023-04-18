@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/view/screens/layout.dart';
 
@@ -9,7 +10,8 @@ class OnBoardingProvider with ChangeNotifier {
   void goToNextPage(BuildContext context) {
     currentPage++;
     if (currentPage > onBordingList.length - 1) {
-      print('page 3');
+      Box box = Hive.box(settingBox);
+      box.put('onboarding_showed', true);
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -20,7 +22,6 @@ class OnBoardingProvider with ChangeNotifier {
     } else {
       pageController.animateToPage(currentPage,
           duration: const Duration(microseconds: 900), curve: Curves.easeInOut);
-      //notifyListeners();
     }
   }
 
@@ -28,7 +29,7 @@ class OnBoardingProvider with ChangeNotifier {
     currentPage = value;
     if (value == onBordingList.length - 1) {
       buttonTitle = 'إبدأ';
-    }else{
+    } else {
       buttonTitle = 'التالي';
     }
     notifyListeners();
