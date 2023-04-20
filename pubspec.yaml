@@ -50,6 +50,7 @@ dev_dependencies:
     sdk: flutter
   hive_generator: ^2.0.0
   build_runner: ^2.3.3
+  flutter_launcher_icons: "^0.13.1"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -60,7 +61,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/icons/launcher.png"
+  adaptive_icon_background: "assets/images/icons/launcher_background.png"
+  adaptive_icon_foreground: "assets/images/icons/launcher.png"
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is
@@ -73,6 +79,7 @@ flutter:
     - assets/images/
     - assets/images/onbording/
     - assets/images/resources/
+    - assets/images/icons/
   #  - aseets/images/onbording/
   #   - images/a_dot_ham.jpeg
 
@@ -92,9 +99,9 @@ flutter:
       fonts:
         - asset: assets/fonts/Cairo/Cairo-Regular.ttf
         - asset: assets/fonts/Cairo/Cairo-Bold.ttf
-          weight : 700
+          weight: 700
         - asset: assets/fonts/Cairo/Cairo-SemiBold.ttf
-          weight : 600
+          weight: 600
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

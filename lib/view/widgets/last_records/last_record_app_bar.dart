@@ -10,7 +10,8 @@ class LastRecordsAppBar extends StatelessWidget {
     required this.pinningCellsTile,
     required this.isSelectedTilePinned,
     required this.onPressDelete,
-    this.onSelected, required this.enableDeleteAll,
+    this.onSelectDeleteAll,
+    required this.enableDeleteAll,
   }) : super(key: key);
 
   final bool showOptions;
@@ -20,7 +21,7 @@ class LastRecordsAppBar extends StatelessWidget {
   final String selectedTilesCount;
   final int selectedTilesLength;
   final bool isSelectedTilePinned;
-  final void Function(dynamic)? onSelected;
+  final void Function(dynamic)? onSelectDeleteAll;
   final bool enableDeleteAll;
 
   @override
@@ -87,13 +88,13 @@ class LastRecordsAppBar extends StatelessWidget {
           : [
               PopupMenuButton(
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                   PopupMenuItem(
+                  PopupMenuItem(
                     enabled: enableDeleteAll,
                     value: 0,
-                    child: Text('حذف السجل'),
+                    child: const Text('حذف السجل'),
                   )
                 ],
-                onSelected: (value) {},
+                onSelected: onSelectDeleteAll,
               )
             ],
     );

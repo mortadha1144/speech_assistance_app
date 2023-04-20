@@ -40,6 +40,9 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
               value.onPressDelete(context);
             },
             enableDeleteAll: value.enableDeleteAll,
+            onSelectDeleteAll: (value2) {
+              value.deleteAll(value2, context);
+            },
           ),
           Expanded(
             child: value.isLoading
@@ -48,7 +51,7 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
                     shrinkWrap: true,
                     itemCount: value.cellRecordList.length,
                     itemBuilder: (context, index) => CellTile(
-                      index:index,
+                      index: index,
                       cellsRecord: value.cellRecordList[index],
                       onTap: () {
                         value.onTapCellTile(

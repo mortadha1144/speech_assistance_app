@@ -40,7 +40,8 @@ class CellTile extends StatelessWidget {
             selectedTileColor: const Color.fromARGB(255, 221, 221, 245),
             selectedColor: Colors.black,
             leading: CircleAvatar(
-              backgroundColor: selected ? Colors.blue : circleAvatarColors[index],
+              backgroundColor:
+                  selected ? Colors.blue : circleAvatarColors[index],
               child: selected
                   ? const Icon(
                       Icons.done,

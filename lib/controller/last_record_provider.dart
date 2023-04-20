@@ -172,8 +172,9 @@ class LastRecordProvider with ChangeNotifier {
       }
     });
   }
+  
 
-  deleteAll(int value, BuildContext context) async {
+  deleteAll(dynamic value, BuildContext context) async {
     if (value == 0) {
       await alertDialog(context).then((value) {
         if (value == 'OK') {
