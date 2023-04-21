@@ -105,6 +105,10 @@ class HomeProvider with ChangeNotifier {
       _displayedItemList =
           homeCells.sublist(startIndex, startIndex + _itemsPerScreen);
     }
+
+    if (_startIndex >= _itemsPerScreen) {
+      _enableBack = true;
+    }
     _startIndex += _itemsPerScreen;
     notifyListeners();
   }

@@ -13,8 +13,6 @@ import 'package:speech_assistance_app/models/onboarding_model.dart';
 //9:اكثر/اسود/اطار عادي
 //10:اشخاص/اصفر/اطار عادي
 
-
-
 List<Cell> cells = [
   const Cell(
       id: 1,
@@ -219,6 +217,34 @@ List<Cell> cells = [
       category: 'folder',
       image: 'assets/images/data/home/activities.png',
       type: 'folder'),
+  const Cell(
+      id: 29,
+      serial: 29,
+      name: 'هو',
+      category: 'pronoun',
+      image: 'assets/images/data/home/he.png',
+      type: 'cell'),
+  const Cell(
+      id: 29,
+      serial: 29,
+      name: 'هي',
+      category: 'pronoun',
+      image: 'assets/images/data/home/she.png',
+      type: 'cell'),
+  const Cell(
+      id: 29,
+      serial: 29,
+      name: 'هذا',
+      category: 'pronoun',
+      image: 'assets/images/data/home/this.png',
+      type: 'cell'),
+  const Cell(
+      id: 29,
+      serial: 29,
+      name: 'هم',
+      category: 'pronoun',
+      image: 'assets/images/data/home/they.png',
+      type: 'cell'),
 ];
 
 List<Cell> people = [
