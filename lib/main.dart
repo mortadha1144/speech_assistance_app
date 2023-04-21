@@ -47,11 +47,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Cairo'),
-      home: Directionality(
+      home: const Directionality(
         textDirection: TextDirection.rtl,
-        child: box.get('onboarding_showed', defaultValue: false)
-            ? const SpeechAssistanceLayout()
-            : const OnBoarding(),
+        // child: box.get('onboarding_showed', defaultValue: false)
+        //     ? const SpeechAssistanceLayout()
+        //     : const OnBoarding(),
+        child: OnBoarding(),
       ),
     );
   }

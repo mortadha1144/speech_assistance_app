@@ -5,7 +5,7 @@ import 'package:speech_assistance_app/view/screens/settings_screen.dart';
 import 'package:speech_assistance_app/view/screens/text_reader_screen.dart';
 
 class LayoutProvider with ChangeNotifier {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   int get currentIndex => _currentIndex;
 
    List<Widget> screens = [

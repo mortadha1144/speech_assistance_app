@@ -51,6 +51,7 @@ dev_dependencies:
   hive_generator: ^2.0.0
   build_runner: ^2.3.3
   flutter_launcher_icons: "^0.13.1"
+  flutter_native_splash: ^2.2.19
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -67,6 +68,10 @@ flutter_launcher_icons:
   image_path: "assets/images/icons/launcher.png"
   adaptive_icon_background: "assets/images/icons/launcher_background.png"
   adaptive_icon_foreground: "assets/images/icons/launcher.png"
+
+flutter_native_splash:
+  background_image: "assets/images/icons/launcher_background.png"
+  image: "assets/images/icons/splash.png"
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is
@@ -80,6 +85,8 @@ flutter:
     - assets/images/onbording/
     - assets/images/resources/
     - assets/images/icons/
+    - assets/images/data/home/
+    - assets/images/data/people/
   #  - aseets/images/onbording/
   #   - images/a_dot_ham.jpeg
 

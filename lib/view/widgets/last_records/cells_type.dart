@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speech_assistance_app/models/data/static.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 
 class CellsType extends StatelessWidget {

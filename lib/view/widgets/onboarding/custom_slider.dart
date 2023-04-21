@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/onboarding_provider.dart';
+import 'package:speech_assistance_app/models/data/static.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 
 class CustomSliderOnBoarding extends StatelessWidget {
@@ -35,12 +36,16 @@ class CustomSliderOnBoarding extends StatelessWidget {
               height: 30,
             ),
             Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               alignment: Alignment.center,
-              child: Text(
-                onBordingList[index].content,
-                textAlign: TextAlign.center,
-                style: const TextStyle(height: 2, fontSize: 16),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  onBordingList[index].content,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(height: 2, fontSize: 16),
+                ),
               ),
             ),
           ],

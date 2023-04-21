@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
+import 'package:speech_assistance_app/models/data/static.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/functions/functions.dart';
 import 'package:speech_assistance_app/view/widgets/home/normal_cell.dart';
