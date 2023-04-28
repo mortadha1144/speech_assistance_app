@@ -245,6 +245,27 @@ List<Cell> cells = [
       category: 'pronoun',
       image: 'assets/images/data/home/they.png',
       type: 'cell'),
+  const Cell(
+      id: 29,
+      serial: 29,
+      name: 'هنا',
+      category: 'verb',
+      image: 'assets/images/data/home/here.png',
+      type: 'cell'),
+  const Cell(
+      id: 29,
+      serial: 29,
+      name: 'خارج',
+      category: 'verb',
+      image: 'assets/images/data/home/out.png',
+      type: 'cell'),
+  const Cell(
+      id: 29,
+      serial: 29,
+      name: 'هناك',
+      category: 'verb',
+      image: 'assets/images/data/home/there.png',
+      type: 'cell'),
 ];
 
 List<Cell> people = [
