@@ -85,8 +85,28 @@ flutter:
     - assets/images/onbording/
     - assets/images/resources/
     - assets/images/icons/
-    - assets/images/data/home/
+    - assets/images/data/home/actions/
+    - assets/images/data/home/categories/
+    - assets/images/data/home/describe/
+    - assets/images/data/home/little_words/
+    - assets/images/data/home/numbers/
+    - assets/images/data/home/question/
+    - assets/images/data/home/where/
+    - assets/images/data/actions/
+    - assets/images/data/activities/
+    - assets/images/data/chat/
+    - assets/images/data/describe/
+    - assets/images/data/feelings/
+    - assets/images/data/food/
+    - assets/images/data/help/
+    - assets/images/data/little_words/
     - assets/images/data/people/
+    - assets/images/data/places/
+    - assets/images/data/questions/
+    - assets/images/data/things/
+    - assets/images/data/time/
+    - assets/images/data/where/
+    
   #  - aseets/images/onbording/
   #   - images/a_dot_ham.jpeg
 
