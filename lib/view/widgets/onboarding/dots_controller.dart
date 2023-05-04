@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/onboarding_provider.dart';
-import 'package:speech_assistance_app/models/data/static.dart';
-import 'package:speech_assistance_app/shared/components/constants.dart';
+import 'package:speech_assistance_app/data/static/static.dart';
 
 class DotsControllerOnBoarding extends StatelessWidget {
   const DotsControllerOnBoarding({super.key});

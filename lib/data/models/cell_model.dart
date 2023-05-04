@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-part 'cell_model.g.dart';
+part '../models/cell_model.g.dart';
 
 @HiveType(typeId: 0)
 class CellModel extends HiveObject {

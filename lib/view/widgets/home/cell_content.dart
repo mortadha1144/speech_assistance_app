@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
 
 class CellContent extends StatelessWidget {
   const CellContent({

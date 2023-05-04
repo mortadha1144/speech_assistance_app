@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:speech_assistance_app/models/cell_model.dart';
+import 'package:speech_assistance_app/data/models/cell_model.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/shared/functions/functions.dart';
 import 'package:speech_assistance_app/view/widgets/last_records/cells_type.dart';

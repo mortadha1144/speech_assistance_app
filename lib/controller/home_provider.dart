@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
-import 'package:speech_assistance_app/models/cell.dart';
-import 'package:speech_assistance_app/models/cell_model.dart';
-import 'package:speech_assistance_app/models/data/static.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
+import 'package:speech_assistance_app/data/models/cell_model.dart';
+import 'package:speech_assistance_app/data/static/static.dart';
 import 'package:speech_assistance_app/services/tts_sevice.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/view/widgets/home/pressed_cell.dart';
@@ -92,18 +92,21 @@ class HomeProvider with ChangeNotifier {
   int get startIndex => _startIndex;
 
   void fetchData() {
-    homeCells.addAll(cells);
+    if (!_isLoading) {
+       homeCells.addAll(cells);
     updateDisplayedItemList();
     _isLoading = true;
     notifyListeners();
+    }
+
   }
 
   void updateDisplayedItemList() {
-    if (startIndex + _itemsPerScreen >= homeCells.length) {
-      _displayedItemList = homeCells.sublist(startIndex);
+    if (_startIndex + _itemsPerScreen >= homeCells.length) {
+      _displayedItemList = homeCells.sublist(_startIndex);
     } else {
       _displayedItemList =
-          homeCells.sublist(startIndex, startIndex + _itemsPerScreen);
+          homeCells.sublist(_startIndex, _startIndex + _itemsPerScreen);
     }
 
     if (_startIndex >= _itemsPerScreen) {

@@ -1,5 +1,5 @@
-import 'package:speech_assistance_app/models/cell.dart';
-import 'package:speech_assistance_app/models/onboarding_model.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
+import 'package:speech_assistance_app/data/models/onboarding_model.dart';
 import 'package:speech_assistance_app/shared/components/image_asset.dart';
 
 //types
@@ -395,13 +395,13 @@ List<Cell> cells = [
       type: 'cell'),
   const Cell(
       id: 64,
-      name: '',
+      name: 'ال',
       category: 'little_words',
       image: '${ImageAsset.homeLittleWords}the.png',
       type: 'cell'),
   const Cell(
       id: 65,
-      name: '',
+      name: 'لكن',
       category: 'little_words',
       image: '${ImageAsset.homeLittleWords}but.png',
       type: 'cell'),
@@ -431,7 +431,7 @@ List<Cell> cells = [
       type: 'cell'),
   const Cell(
       id: 70,
-      name: '',
+      name: 'أو',
       category: 'little_words',
       image: '${ImageAsset.homeLittleWords}or.png',
       type: 'cell'),

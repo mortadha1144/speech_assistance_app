@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/layout_provider.dart';
 import 'package:speech_assistance_app/controller/onboarding_provider.dart';
 import 'package:speech_assistance_app/controller/text_to_speech_provider.dart';
+import 'package:speech_assistance_app/data/models/cell_model.dart';
 import 'package:speech_assistance_app/view/screens/layout.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
-import 'package:speech_assistance_app/models/cell_model.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/view/screens/onboarding_screen.dart';
 

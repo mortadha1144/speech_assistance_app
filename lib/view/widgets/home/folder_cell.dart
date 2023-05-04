@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
 import 'package:speech_assistance_app/view/widgets/home/cell_content.dart';
 import 'package:speech_assistance_app/view/widgets/home/folder_custom_boreder.dart';
 import 'package:speech_assistance_app/view/widgets/home/folder_custom_clip.dart';

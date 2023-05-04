@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:speech_assistance_app/models/data/static.dart';
+import 'package:speech_assistance_app/data/static/static.dart';
 
 class CellsType extends StatelessWidget {
   const CellsType({Key? key, required this.str, this.isReverse = true})

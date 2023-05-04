@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
-import 'package:speech_assistance_app/models/data/static.dart';
-import 'package:speech_assistance_app/shared/components/constants.dart';
+import 'package:speech_assistance_app/data/static/static.dart';
 import 'package:speech_assistance_app/shared/functions/functions.dart';
 import 'package:speech_assistance_app/view/widgets/home/normal_cell.dart';
 
@@ -12,7 +11,8 @@ class HomeGridView extends StatefulWidget {
   State<HomeGridView> createState() => _HomeGridViewState();
 }
 
-class _HomeGridViewState extends State<HomeGridView> {
+class _HomeGridViewState extends State<HomeGridView>
+     {
   @override
   void initState() {
     super.initState();
@@ -24,6 +24,7 @@ class _HomeGridViewState extends State<HomeGridView> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Consumer<HomeProvider>(
       builder: (context, provider, child) => Expanded(
         child: provider.isLoading

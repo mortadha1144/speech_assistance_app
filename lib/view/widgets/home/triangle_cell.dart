@@ -1,6 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
-import 'package:speech_assistance_app/models/cell.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
 import 'package:speech_assistance_app/shared/styles/colors.dart';
 import 'package:speech_assistance_app/view/widgets/home/cell_content.dart';
 import 'package:speech_assistance_app/view/widgets/home/triangle_clip.dart';

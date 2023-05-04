@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:speech_assistance_app/models/cell_model.dart';
+import 'package:speech_assistance_app/data/models/cell_model.dart';
 import 'package:speech_assistance_app/services/tts_sevice.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 
