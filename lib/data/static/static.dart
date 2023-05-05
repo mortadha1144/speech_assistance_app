@@ -138,55 +138,55 @@ List<Cell> cells = [
   const Cell(
       id: 21,
       name: 'أشخاص',
-      category: 'category',
+      category: 'people',
       image: '${ImageAsset.homeCategories}people.png',
       type: 'category'),
   const Cell(
       id: 22,
       name: 'أشياء',
-      category: 'category',
+      category: 'things',
       image: '${ImageAsset.homeCategories}things.png',
       type: 'category'),
   const Cell(
       id: 23,
       name: 'غذاء',
-      category: 'category',
+      category: 'food',
       image: '${ImageAsset.homeCategories}food.png',
       type: 'category'),
   const Cell(
       id: 24,
       name: 'أماكن',
-      category: 'category',
+      category: 'places',
       image: '${ImageAsset.homeCategories}places.png',
       type: 'category'),
   const Cell(
       id: 25,
       name: 'محادثة',
-      category: 'category',
+      category: 'chat',
       image: '${ImageAsset.homeCategories}chat.png',
       type: 'category'),
   const Cell(
       id: 26,
       name: 'أفعال',
-      category: 'category',
+      category: 'actions',
       image: '${ImageAsset.homeCategories}actions.png',
       type: 'category'),
   const Cell(
       id: 27,
       name: 'أسئلة',
-      category: 'category',
+      category: 'question',
       image: '${ImageAsset.homeCategories}questions.png',
       type: 'category'),
   const Cell(
       id: 28,
       name: 'مشاعر',
-      category: 'category',
+      category: 'feelings',
       image: '${ImageAsset.homeCategories}feelings.png',
       type: 'category'),
   const Cell(
       id: 29,
       name: 'أنشطة',
-      category: 'category',
+      category: 'activities',
       image: '${ImageAsset.homeCategories}activities.png',
       type: 'category'),
   const Cell(
@@ -342,25 +342,25 @@ List<Cell> cells = [
   const Cell(
       id: 55,
       name: 'كلمات',
-      category: 'category',
+      category: 'little_words',
       image: '${ImageAsset.homeCategories}little_words.png',
       type: 'category'),
   const Cell(
       id: 56,
       name: 'أوقات',
-      category: 'category',
+      category: 'time',
       image: '${ImageAsset.homeCategories}time.png',
       type: 'category'),
   const Cell(
       id: 57,
       name: 'مساعدة',
-      category: 'category',
+      category: 'help',
       image: '${ImageAsset.homeCategories}help.png',
       type: 'category'),
   const Cell(
       id: 58,
       name: 'صفات',
-      category: 'category',
+      category: 'describe',
       image: '${ImageAsset.homeCategories}describe.png',
       type: 'category'),
   const Cell(
@@ -498,7 +498,7 @@ List<Cell> cells = [
   const Cell(
       id: 81,
       name: 'أين',
-      category: 'category',
+      category: 'where',
       image: '${ImageAsset.homeCategories}where.png',
       type: 'category'),
 ];
@@ -880,79 +880,79 @@ List<Cell> feelings = [
       id: 140,
       name: 'غاضب',
       category: 'feelings',
-      image: '${ImageAsset.questions}angry.png',
+      image: '${ImageAsset.feelings}angry.png',
       type: 'cell'),
   const Cell(
       id: 141,
       name: 'متحمس',
       category: 'feelings',
-      image: '${ImageAsset.questions}excited.png',
+      image: '${ImageAsset.feelings}excited.png',
       type: 'cell'),
   const Cell(
       id: 142,
       name: 'محبط',
       category: 'feelings',
-      image: '${ImageAsset.questions}frustrated.png',
+      image: '${ImageAsset.feelings}frustrated.png',
       type: 'cell'),
   const Cell(
       id: 143,
       name: 'سعيد',
       category: 'feelings',
-      image: '${ImageAsset.questions}happy.png',
+      image: '${ImageAsset.feelings}happy.png',
       type: 'cell'),
   const Cell(
       id: 144,
       name: 'جائع',
       category: 'feelings',
-      image: '${ImageAsset.questions}hungry.png',
+      image: '${ImageAsset.feelings}hungry.png',
       type: 'cell'),
   const Cell(
       id: 145,
       name: 'مجروح',
       category: 'feelings',
-      image: '${ImageAsset.questions}hurt.png',
+      image: '${ImageAsset.feelings}hurt.png',
       type: 'cell'),
   const Cell(
       id: 146,
       name: 'حزين',
       category: 'feelings',
-      image: '${ImageAsset.questions}sad.png',
+      image: '${ImageAsset.feelings}sad.png',
       type: 'cell'),
   const Cell(
       id: 147,
       name: 'آمن',
       category: 'feelings',
-      image: '${ImageAsset.questions}safe.png',
+      image: '${ImageAsset.feelings}safe.png',
       type: 'cell'),
   const Cell(
       id: 146,
       name: 'خائف',
       category: 'feelings',
-      image: '${ImageAsset.questions}scared.png',
+      image: '${ImageAsset.feelings}scared.png',
       type: 'cell'),
   const Cell(
       id: 147,
       name: 'مريض',
       category: 'feelings',
-      image: '${ImageAsset.questions}sick.png',
+      image: '${ImageAsset.feelings}sick.png',
       type: 'cell'),
   const Cell(
       id: 148,
       name: 'سخيف',
       category: 'feelings',
-      image: '${ImageAsset.questions}silly.png',
+      image: '${ImageAsset.feelings}silly.png',
       type: 'cell'),
   const Cell(
       id: 149,
       name: 'متعب',
       category: 'feelings',
-      image: '${ImageAsset.questions}tired.png',
+      image: '${ImageAsset.feelings}tired.png',
       type: 'cell'),
   const Cell(
       id: 150,
       name: 'قلق',
       category: 'feelings',
-      image: '${ImageAsset.questions}worried.png',
+      image: '${ImageAsset.feelings}worried.png',
       type: 'cell'),
 ];
 
@@ -1150,7 +1150,7 @@ List<Cell> help = [
       id: 181,
       name: 'من فضلك كرر هذا',
       category: 'help',
-      image: '${ImageAsset.help}charge_my_iPad.png',
+      image: '${ImageAsset.help}please_repeat_that.png',
       type: 'cell'),
   const Cell(
       id: 182,
@@ -1445,7 +1445,22 @@ List<Cell> things = [
       type: 'cell'),
 ];
 
-Map<String, List<Cell>> categories = {'people': people};
+Map<String, List<Cell>> categories = {
+  'actions': actions,
+  'describe': describe,
+  'little_words': littleWords,
+  'people': people,
+  'food': food,
+  'places': places,
+  'chat': chat,
+  'question': question,
+  'feelings': feelings,
+  'activities': activities,
+  'time': time,
+  'help': help,
+  'where': where,
+  'things': things,
+};
 
 const Set<String> cellType = {'cell', 'category', 'more'};
 

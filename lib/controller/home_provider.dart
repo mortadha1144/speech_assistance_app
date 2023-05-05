@@ -78,6 +78,8 @@ class HomeProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  bool _isCategoryTapped = false;
+
   bool _enableBack = false;
   bool get enableBack => _enableBack;
 
@@ -93,12 +95,11 @@ class HomeProvider with ChangeNotifier {
 
   void fetchData() {
     if (!_isLoading) {
-       homeCells.addAll(cells);
-    updateDisplayedItemList();
-    _isLoading = true;
-    notifyListeners();
+      homeCells.addAll(cells);
+      updateDisplayedItemList();
+      _isLoading = true;
+      notifyListeners();
     }
-
   }
 
   void updateDisplayedItemList() {
@@ -119,14 +120,31 @@ class HomeProvider with ChangeNotifier {
   bool get showMoreCondition => startIndex < homeCells.length;
 
   void backToFirstDisplayedItemList() {
-    _startIndex = 0;
-    _enableBack = false;
-    _navBarTitle = 'الرئيسة';
-    homeCells
-      ..clear()
-      ..addAll(cells);
-    displayedItemList.clear();
-    updateDisplayedItemList();
+    //check if in first page
+    if (_startIndex == _itemsPerScreen) {
+      //check if category tapped
+      if (_isCategoryTapped) {
+        _startIndex = 0;
+        _enableBack = false;
+        _navBarTitle = 'الرئيسة';
+        _isCategoryTapped = false;
+        homeCells
+          ..clear()
+          ..addAll(cells);
+        displayedItemList.clear();
+        updateDisplayedItemList();
+      }
+    } else {
+      _startIndex -= _itemsPerScreen;
+      _displayedItemList =
+          homeCells.sublist(_startIndex - _itemsPerScreen, _startIndex);
+      if (_startIndex == _itemsPerScreen) {
+        if (!_isCategoryTapped) {
+          _enableBack = false;
+        }
+      }
+      notifyListeners();
+    }
   }
 
   onTapCategory(Cell cell) {
@@ -135,11 +153,12 @@ class HomeProvider with ChangeNotifier {
     if (categoryList?.isNotEmpty ?? false) {
       List<Cell> tempList = [];
       tempList.addAll(cells);
-      tempList.insertAll(29 - categoryList!.length, categoryList);
-      tempList.removeWhere((element) => element.type == 'folder');
+      tempList.insertAll(20, categoryList!);
+      tempList.removeWhere((element) => element.type == 'category');
       homeCells = tempList;
       _startIndex = 0;
       _enableBack = true;
+      _isCategoryTapped = true;
       _navBarTitle = cell.name;
       displayedItemList.clear();
       updateDisplayedItemList();

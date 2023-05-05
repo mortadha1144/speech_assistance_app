@@ -16,7 +16,7 @@ class ImageAsset {
   static const String food = '${data}food/';
   static const String help = '${data}help/';
   static const String littleWords = '${data}little_words/';
-  static const String people = '${data}little_words/';
+  static const String people = '${data}people/';
   static const String places = '${data}places/';
   static const String questions = '${data}questions/';
   static const String things = '${data}things/';
