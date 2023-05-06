@@ -171,7 +171,6 @@ class LastRecordProvider with ChangeNotifier {
       }
     });
   }
-  
 
   deleteAll(dynamic value, BuildContext context) async {
     if (value == 0) {

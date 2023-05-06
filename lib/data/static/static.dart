@@ -30,7 +30,7 @@ List<Cell> cells = [
   const Cell(
       id: 3,
       name: 'ماذا',
-      category: 'question_mark',
+      category: 'question',
       image: '${ImageAsset.homeQuestion}what.png',
       type: 'cell'),
   const Cell(

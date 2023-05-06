@@ -2,9 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-
- 
-
 enum DetailesScreenType { aboutUs, aboutApp }
 
 const kCellsBox = 'cells_box';
@@ -26,12 +23,12 @@ const aboutAppTitle = 'تطبيق مساعد النطق';
 const aboutAppContent =
     'هو تطبيق مجاني انساني ضمن مبادرة ( Code For Iraq ) لمساعدة الاشخاص اللذين يعانون من صعوبة النطق , التطبيق يعتمد على احدث الاليات المتبعة في هذا المجال فهو يعتمد على آلية (AAC) المتبعة في المعاهد العالمية المختصة بمعالجة من يعانون صعوبة النطق . ';
 
-
 List<Color> circleAvatarColors = [
   const Color(0xfffb938f),
   const Color(0xfff2cac8),
   const Color(0xfffdbb75),
-   const Color(0xffd6d1f5),
+  const Color(0xffd6d1f5),
   const Color(0xff8dc6bf),
 ];
+
 
