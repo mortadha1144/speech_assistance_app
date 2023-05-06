@@ -1,3 +1,4 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 
 class LastRecordsAppBar extends StatelessWidget {
@@ -66,7 +67,7 @@ class LastRecordsAppBar extends StatelessWidget {
                             onPressed: pinningCellsTile,
                             icon: isSelectedTilePinned
                                 ? const Icon(
-                                    Icons.undo,
+                                    CommunityMaterialIcons.pin_off,
                                   )
                                 : const Icon(
                                     Icons.push_pin,
