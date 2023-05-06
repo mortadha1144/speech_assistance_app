@@ -1488,7 +1488,7 @@ Cell moreCell = const Cell(
     id: 0,
     name: 'المزيد',
     category: 'more',
-    image: 'assets/images/data/home/more.png',
+    image: 'assets/images/resources/more.png',
     type: 'more');
 
 List<OnBoardingModel> onBordingList = [
@@ -1501,7 +1501,7 @@ List<OnBoardingModel> onBordingList = [
       image: 'assets/images/onbording/onboarding2.png',
       title: 'واصل التطور',
       content:
-          'التطبيق يستخدم تقنية (ACC) وهي تقنية متطورة متبعة \n في تطوير مهارات التواصل مما سيساهم في تطوير \n المهارات العقلية وتقديم تجربة تواصل رائعة'),
+          'التطبيق يستخدم تقنية (AAC) وهي تقنية متطورة متبعة \n في تطوير مهارات التواصل مما سيساهم في تطوير \n المهارات العقلية وتقديم تجربة تواصل رائعة'),
   OnBoardingModel(
       image: 'assets/images/onbording/onboarding3.png',
       title: 'حقق أحلامك',

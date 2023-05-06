@@ -36,18 +36,11 @@ class CellContent extends StatelessWidget {
         ),
         Expanded(
           flex: 18,
-          child: cell.type == 'more'
-              ? const FittedBox(
-                  child: Icon(
-                    Icons.arrow_forward_rounded,
-                    color: Colors.black,
-                  ),
-                )
-              : Image.asset(
-                  cell.image,
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                ),
+          child: Image.asset(
+            cell.image,
+            width: double.infinity,
+            fit: BoxFit.fill,
+          ),
         ),
       ],
     );

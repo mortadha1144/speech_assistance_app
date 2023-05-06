@@ -17,15 +17,6 @@ class NormalCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color borderColor = const Color(0xFF000000);
-    Color contentColor = Colors.white;
-    if (cell.category == 'word') {
-      borderColor = blueBorder;
-      contentColor = blueContent;
-    } else if (cell.category == 'preposition') {
-      borderColor = greenBorder;
-      contentColor = greenContent;
-    }
     return CupertinoButton(
       onPressed: onPressed,
       padding: const EdgeInsets.all(0),

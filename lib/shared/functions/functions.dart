@@ -5,7 +5,6 @@ import 'package:speech_assistance_app/data/models/cell.dart';
 import 'package:speech_assistance_app/shared/styles/colors.dart';
 import 'package:speech_assistance_app/view/widgets/home/folder_cell.dart';
 import 'package:speech_assistance_app/view/widgets/home/normal_cell.dart';
-import 'package:speech_assistance_app/view/widgets/home/triangle_cell.dart';
 
 class Functions {
   static String getCustomDates(DateTime date) {
@@ -46,25 +45,15 @@ class Functions {
 
   static StatelessWidget getCell({required Cell cell, Function()? onPressed}) {
     if (cell.type == 'cell') {
-      if (cell.category == 'pronoun' ||
-          cell.category == 'verb' ||
-          cell.category == 'adjective') {
-        return TriangleCell(
-          cell: cell,
-          onPressed: onPressed,
-        );
-      } else {
         return NormalCell(
           cell: cell,
           onPressed: onPressed,
         );
       }
-    } else {
       return FolderCell(
         cell: cell,
         onPressed: onPressed,
       );
-    }
   }
 
   static Map<String, Color> getCellColor(Cell cell) {
