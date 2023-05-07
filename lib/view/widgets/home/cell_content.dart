@@ -14,24 +14,17 @@ class CellContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
-          flex: cell.type == 'folder' ? 1 : 0,
-          child: const SizedBox(),
-        ),
-        Expanded(
-          flex: 6,
-          child: Center(
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Text(
-                cell.name,
-                style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.black,
-                    fontFamily: 'Cairo',
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
+        Padding(
+          padding: EdgeInsets.only(top: cell.type == 'category' ? 6 : 4),
+          child: Text(
+            cell.name,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+                fontSize: 12,
+                height: 1.1,
+                color: Colors.black,
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(

@@ -16,23 +16,26 @@ class PressedCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: Image.asset(imagePath),
+      child: Column(
+        children: [
+          Expanded(
+            child: Image.asset(imagePath),
+          ),
+          Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 12,
+              height: 1.2,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
-            Text(
-              text,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 4,
+          )
+        ],
       ),
     );
   }

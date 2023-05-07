@@ -80,14 +80,14 @@ class HomeProvider with ChangeNotifier {
 
   bool _isCategoryTapped = false;
 
-  bool _enableBack = false;
-  bool get enableBack => _enableBack;
+  bool get enableBack => _isCategoryTapped || _startIndex > _itemsPerScreen;
 
   List<Cell> _displayedItemList = [];
 
   List<Cell> get displayedItemList => _displayedItemList;
 
   int _startIndex = 0;
+  int _startIndexTemp = 0;
 
   static const int _itemsPerScreen = 29;
 
@@ -107,42 +107,29 @@ class HomeProvider with ChangeNotifier {
       _displayedItemList = homeCells.sublist(_startIndex);
     } else {
       _displayedItemList =
-          homeCells.sublist(_startIndex, _startIndex + _itemsPerScreen);
+          homeCells.sublist(_startIndex, startIndex + _itemsPerScreen);
     }
 
-    if (_startIndex >= _itemsPerScreen) {
-      _enableBack = true;
-    }
     _startIndex += _itemsPerScreen;
     notifyListeners();
   }
 
-  bool get showMoreCondition => startIndex < homeCells.length;
+  bool get showMoreCondition => _startIndex < homeCells.length;
 
   void backToFirstDisplayedItemList() {
-    //check if in first page
-    if (_startIndex == _itemsPerScreen) {
-      //check if category tapped
-      if (_isCategoryTapped) {
-        _startIndex = 0;
-        _enableBack = false;
-        _navBarTitle = 'الرئيسة';
-        _isCategoryTapped = false;
-        homeCells
-          ..clear()
-          ..addAll(cells);
-        displayedItemList.clear();
-        updateDisplayedItemList();
-      }
+    //if category tapped & first page
+    if (_isCategoryTapped && _startIndex == _itemsPerScreen) {
+      homeCells.clear();
+      homeCells.addAll(cells);
+      //to get last start index befor tap category
+      _startIndex = _startIndexTemp - _itemsPerScreen;
+      _navBarTitle = 'الرئيسة';
+      _isCategoryTapped = false;
+      updateDisplayedItemList();
     } else {
       _startIndex -= _itemsPerScreen;
       _displayedItemList =
           homeCells.sublist(_startIndex - _itemsPerScreen, _startIndex);
-      if (_startIndex == _itemsPerScreen) {
-        if (!_isCategoryTapped) {
-          _enableBack = false;
-        }
-      }
       notifyListeners();
     }
   }
@@ -151,16 +138,13 @@ class HomeProvider with ChangeNotifier {
     String category = cell.category;
     List<Cell>? categoryList = categories[category];
     if (categoryList?.isNotEmpty ?? false) {
-      List<Cell> tempList = [];
-      tempList.addAll(cells);
-      tempList.insertAll(20, categoryList!);
-      tempList.removeWhere((element) => element.type == 'category');
-      homeCells = tempList;
+      homeCells.clear();
+      homeCells.addAll(categoryList!);
+      //to save start index
+      _startIndexTemp = _startIndex;
       _startIndex = 0;
-      _enableBack = true;
-      _isCategoryTapped = true;
       _navBarTitle = cell.name;
-      displayedItemList.clear();
+      _isCategoryTapped = true;
       updateDisplayedItemList();
     }
   }
