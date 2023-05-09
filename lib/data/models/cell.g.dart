@@ -1,47 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'cell_model.dart';
+part of 'cell.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CellModelAdapter extends TypeAdapter<CellModel> {
+class CellAdapter extends TypeAdapter<Cell> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  CellModel read(BinaryReader reader) {
+  Cell read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return CellModel(
-      date: fields[0] as String,
-      text: fields[1] as String?,
-      isCell: fields[2] as bool,
-      isPinned: fields[3] as bool,
-      pinningSerial: fields[4] as int,
-      cells: (fields[5] as HiveList?)?.castHiveList(),
+    return Cell(
+      id: fields[0] as int,
+      name: fields[1] as String,
+      category: fields[2] as String,
+      image: fields[3] as String,
+      type: fields[4] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, CellModel obj) {
+  void write(BinaryWriter writer, Cell obj) {
     writer
-      ..writeByte(6)
-      ..writeByte(0)
-      ..write(obj.date)
-      ..writeByte(1)
-      ..write(obj.text)
-      ..writeByte(2)
-      ..write(obj.isCell)
-      ..writeByte(3)
-      ..write(obj.isPinned)
-      ..writeByte(4)
-      ..write(obj.pinningSerial)
       ..writeByte(5)
-      ..write(obj.cells);
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.category)
+      ..writeByte(3)
+      ..write(obj.image)
+      ..writeByte(4)
+      ..write(obj.type);
   }
 
   @override
@@ -50,7 +47,7 @@ class CellModelAdapter extends TypeAdapter<CellModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CellModelAdapter &&
+      other is CellAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

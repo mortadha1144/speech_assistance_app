@@ -76,7 +76,7 @@ class LastRecordProvider with ChangeNotifier {
         onPressCloseButton();
       }
     } else {
-      await TtsService.speakText(cellsRecord.text);
+      await TtsService.speakText(cellsRecord.text!);
     }
   }
 

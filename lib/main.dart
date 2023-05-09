@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/layout_provider.dart';
 import 'package:speech_assistance_app/controller/onboarding_provider.dart';
 import 'package:speech_assistance_app/controller/text_to_speech_provider.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
 import 'package:speech_assistance_app/data/models/cell_model.dart';
 import 'package:speech_assistance_app/view/screens/layout.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
@@ -14,7 +15,9 @@ import 'package:speech_assistance_app/view/screens/onboarding_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(CellModelAdapter());
+  Hive
+    ..registerAdapter(CellModelAdapter())
+    ..registerAdapter(CellAdapter());
   await Hive.openBox<CellModel>(kCellsBox);
   await Hive.openBox(settingBox);
   runApp(
