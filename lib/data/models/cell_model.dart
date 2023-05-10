@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
 part 'cell_model.g.dart';
 
 @HiveType(typeId: 0)
@@ -14,7 +15,7 @@ class CellModel extends HiveObject {
   @HiveField(4)
   int pinningSerial;
   @HiveField(5)
-  HiveList? cells;
+  List<Cell>? cells;
 
   CellModel({
     required this.date,
@@ -33,12 +34,13 @@ class CellModel extends HiveObject {
         isPinned: false,
         pinningSerial: 0);
   }
-  factory CellModel.fromHomeScreen(String text) {
+  factory CellModel.fromHomeScreen(List<Cell> cells) {
     return CellModel(
-        date: DateTime.now().toString(),
-        text: text.trim(),
-        isCell: true,
-        isPinned: false,
-        pinningSerial: 0);
+      date: DateTime.now().toString(),
+      isCell: true,
+      isPinned: false,
+      pinningSerial: 0,
+      cells: cells,
+    );
   }
 }

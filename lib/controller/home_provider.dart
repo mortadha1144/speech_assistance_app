@@ -193,6 +193,7 @@ class HomeProvider with ChangeNotifier {
 
   Future<void> addCell() async {
     var cellsBox = Hive.box<CellModel>(kCellsBox);
+
     String text = _tapedCells.map((e) => e.name).join(' ');
     var findCells =
         cellsBox.values.where((element) => element.text == text).toList();
@@ -203,7 +204,7 @@ class HomeProvider with ChangeNotifier {
         afterSaveOrAdd();
       });
     } else {
-      CellModel newCell = CellModel.fromHomeScreen(text);
+      CellModel newCell = CellModel.fromHomeScreen(_tapedCells);
       await cellsBox.add(newCell).then((_) {
         afterSaveOrAdd();
       });

@@ -22,7 +22,7 @@ class CellModelAdapter extends TypeAdapter<CellModel> {
       isCell: fields[2] as bool,
       isPinned: fields[3] as bool,
       pinningSerial: fields[4] as int,
-      cells: (fields[5] as HiveList?)?.castHiveList(),
+      cells: (fields[5] as List?)?.cast<Cell>(),
     );
   }
 
