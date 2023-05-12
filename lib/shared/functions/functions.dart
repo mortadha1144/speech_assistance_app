@@ -45,15 +45,15 @@ class Functions {
 
   static StatelessWidget getCell({required Cell cell, Function()? onPressed}) {
     if (cell.type == 'cell') {
-        return NormalCell(
-          cell: cell,
-          onPressed: onPressed,
-        );
-      }
-      return FolderCell(
+      return NormalCell(
         cell: cell,
         onPressed: onPressed,
       );
+    }
+    return FolderCell(
+      cell: cell,
+      onPressed: onPressed,
+    );
   }
 
   static Map<String, Color> getCellColor(Cell cell) {
@@ -75,5 +75,19 @@ class Functions {
       }
     }
     return {'cellBorder': blackBorder, 'cellContent': whiteContent};
+  }
+
+  static bool checkListsEquality(List<Cell> list1, List<Cell> list2) {
+    if (list1.length != list2.length) {
+      return false;
+    }
+
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i] != list2[i]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

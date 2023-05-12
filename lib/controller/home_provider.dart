@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:speech_assistance_app/controller/last_record_provider.dart';
@@ -192,23 +193,29 @@ class HomeProvider with ChangeNotifier {
   }
 
   Future<void> addCell() async {
-    var cellsBox = Hive.box<CellModel>(kCellsBox);
+    Box<CellModel> cellsBox = Hive.box<CellModel>(kCellsBox);
 
-    String text = _tapedCells.map((e) => e.name).join(' ');
-    var findCells =
-        cellsBox.values.where((element) => element.text == text).toList();
-    if (findCells.isNotEmpty) {
-      var oldCell = findCells.first;
-      oldCell.date = DateTime.now().toString();
-      await oldCell.save().then((_) {
-        afterSaveOrAdd();
-      });
+    CellModel? matchingCell = cellsBox.values.firstWhere(
+      (element) => listEquals(element.cells, _tapedCells),
+      orElse: () => CellModel(
+        date: '',
+        text: 'null',
+        isCell: false,
+        isPinned: false,
+        pinningSerial: 0,
+      ),
+    );
+
+    if (matchingCell.text != 'null') {
+      matchingCell.date = DateTime.now().toString();
+      await matchingCell.save();
     } else {
-      CellModel newCell = CellModel.fromHomeScreen(_tapedCells);
-      await cellsBox.add(newCell).then((_) {
-        afterSaveOrAdd();
-      });
+      //create new list to save it in cell model
+      List<Cell> currentTabbedCells = List<Cell>.from(_tapedCells);
+      CellModel newCell = CellModel.fromHomeScreen(currentTabbedCells);
+      await cellsBox.add(newCell);
     }
+    afterSaveOrAdd();
   }
 
   void afterSaveOrAdd() {

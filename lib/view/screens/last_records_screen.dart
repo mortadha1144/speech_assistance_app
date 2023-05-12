@@ -16,8 +16,8 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<LastRecordProvider>(context, listen: false);
-      if (!provider.isLoading) {
+      var provider = Provider.of<LastRecordProvider>(context, listen: false);
+      if (provider.isLoading) {
         provider.fetchAllCells();
       }
     });

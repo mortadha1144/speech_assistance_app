@@ -14,7 +14,6 @@ class LastRecordProvider with ChangeNotifier {
 //to git index when long press on tile
   int? _onLongPressIndexTile;
 
-
   bool _showOptions = false;
   bool get showOptions => _showOptions;
 
@@ -41,6 +40,13 @@ class LastRecordProvider with ChangeNotifier {
     _isLoading = true;
     _cellsRecordList = cellsBox.values.toList();
     _cellsRecordList.sort(sortCellsRecordList);
+    for (var element in _cellsRecordList) {
+      if (element.cells != null) {
+        for (var element2 in element.cells!) {
+          print(element2.image);
+        }
+      }
+    }
     notifyListeners();
   }
 
