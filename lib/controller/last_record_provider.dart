@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -40,24 +41,21 @@ class LastRecordProvider with ChangeNotifier {
     _isLoading = true;
     _cellsRecordList = cellsBox.values.toList();
     _cellsRecordList.sort(sortCellsRecordList);
-    for (var element in _cellsRecordList) {
-      if (element.cells != null) {
-        for (var element2 in element.cells!) {
-          print(element2.image);
-        }
-      }
-    }
     notifyListeners();
   }
 
   void onLongPressCellTile(
       {required CellModel cellsRecord, required int index}) {
-    _isSelectedCellTiles = List.filled(_cellsRecordList.length, false);
-    _isSelectedCellTiles![index] = true;
-    _selectedCellRecordTiles.add(cellsRecord);
-    _showOptions = !_showOptions;
-    _onLongPressIndexTile = index;
-    notifyListeners();
+    if (showOptions) {
+      onTapOrLongPressIfShowOptions(index, cellsRecord);
+    } else {
+      _isSelectedCellTiles = List.filled(_cellsRecordList.length, false);
+      _isSelectedCellTiles![index] = true;
+      _selectedCellRecordTiles.add(cellsRecord);
+      _showOptions = !_showOptions;
+      _onLongPressIndexTile = index;
+      notifyListeners();
+    }
   }
 
   void onPressCloseButton() {
@@ -73,16 +71,27 @@ class LastRecordProvider with ChangeNotifier {
     required int index,
   }) async {
     if (showOptions) {
-      _isSelectedCellTiles![index]
-          ? _selectedCellRecordTiles.remove(cellsRecord)
-          : _selectedCellRecordTiles.add(cellsRecord);
-      _isSelectedCellTiles![index] = !_isSelectedCellTiles![index];
-      notifyListeners();
-      if (treuSelectedCellTiles!.isEmpty) {
-        onPressCloseButton();
-      }
+      onTapOrLongPressIfShowOptions(index, cellsRecord);
     } else {
-      await TtsService.speakText(cellsRecord.text!);
+      String text;
+      if (cellsRecord.isCell) {
+        text = List.generate(cellsRecord.cells!.length,
+            (index) => cellsRecord.cells![index].name).join(' ');
+      } else {
+        text = cellsRecord.text!;
+      }
+      await TtsService.speakText(text);
+    }
+  }
+
+  void onTapOrLongPressIfShowOptions(int index, CellModel cellsRecord) {
+    _isSelectedCellTiles![index]
+        ? _selectedCellRecordTiles.remove(cellsRecord)
+        : _selectedCellRecordTiles.add(cellsRecord);
+    _isSelectedCellTiles![index] = !_isSelectedCellTiles![index];
+    notifyListeners();
+    if (treuSelectedCellTiles!.isEmpty) {
+      onPressCloseButton();
     }
   }
 
@@ -103,19 +112,34 @@ class LastRecordProvider with ChangeNotifier {
     selectedCell.isPinned = isPinned;
     selectedCell.pinningSerial = pinningSerial;
     _cellsRecordList.sort(sortCellsRecordList);
+
     await saveOndb(selectedCell, isPinned, pinningSerial);
   }
 
   Future<void> saveOndb(
       CellModel selectedCell, bool isPinned, int pinningSerial) async {
     var cellsBox = Hive.box<CellModel>(kCellsBox);
-    var findCells = cellsBox.values
-        .where((element) => element.text == selectedCell.text)
-        .toList();
-    if (findCells.isNotEmpty) {
-      findCells.first.isPinned = isPinned;
-      findCells.first.pinningSerial = pinningSerial;
-      await findCells.first.save().then((_) {
+
+    CellModel? matchingCell = cellsBox.values.firstWhere(
+      (element) {
+        if (element.isCell) {
+          return listEquals(element.cells, selectedCell.cells);
+        }
+        return element.text == selectedCell.text;
+      },
+      orElse: () => CellModel(
+        date: '',
+        text: 'null',
+        isCell: false,
+        isPinned: false,
+        pinningSerial: 0,
+      ),
+    );
+
+    if (matchingCell.text != 'null') {
+      matchingCell.isPinned = isPinned;
+      matchingCell.pinningSerial = pinningSerial;
+      await matchingCell.save().then((_) {
         Fluttertoast.showToast(
             msg: isPinned ? 'تم تثبيت العبارة' : 'تم الغاء تثبيت العبارة',
             toastLength: Toast.LENGTH_SHORT,
@@ -126,6 +150,24 @@ class LastRecordProvider with ChangeNotifier {
         onPressCloseButton();
       });
     }
+
+    // var findCells = cellsBox.values
+    //     .where((element) => element.text == selectedCell.text)
+    //     .toList();
+    // if (findCells.isNotEmpty) {
+    //   findCells.first.isPinned = isPinned;
+    //   findCells.first.pinningSerial = pinningSerial;
+    //   await findCells.first.save().then((_) {
+    //     Fluttertoast.showToast(
+    //         msg: isPinned ? 'تم تثبيت العبارة' : 'تم الغاء تثبيت العبارة',
+    //         toastLength: Toast.LENGTH_SHORT,
+    //         gravity: ToastGravity.CENTER,
+    //         backgroundColor: Colors.grey[300],
+    //         textColor: Colors.black,
+    //         fontSize: 16.0);
+    //     onPressCloseButton();
+    //   });
+    // }
   }
 
   int sortCellsRecordList(CellModel a, CellModel b) {

@@ -88,7 +88,7 @@ class HomeProvider with ChangeNotifier {
   List<Cell> get displayedItemList => _displayedItemList;
 
   int _startIndex = 0;
-  int _startIndexTemp = 0;
+  late int _startIndexTemp;
 
   static const int _itemsPerScreen = 29;
 

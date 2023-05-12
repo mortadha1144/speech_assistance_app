@@ -31,4 +31,4 @@ List<Color> circleAvatarColors = [
   const Color(0xff8dc6bf),
 ];
 
-
+const String noPhraces = 'لا توجد عبارات مستخدمة في الوقت الحالي';

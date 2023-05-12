@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:speech_assistance_app/data/models/cell.dart';
 import 'package:speech_assistance_app/shared/functions/functions.dart';
-import 'package:speech_assistance_app/shared/styles/colors.dart';
 import 'package:speech_assistance_app/view/widgets/home/cell_content.dart';
 
 class NormalCell extends StatelessWidget {

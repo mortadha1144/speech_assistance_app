@@ -18,9 +18,6 @@ class FolderCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color borderColor = const Color(0xFF000000);
-    if (cell.type == 8) {
-      borderColor = Colors.red;
-    }
     return CupertinoButton(
       onPressed: onPressed,
       padding: const EdgeInsets.all(0),

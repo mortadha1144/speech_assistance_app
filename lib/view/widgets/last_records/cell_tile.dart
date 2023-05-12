@@ -48,15 +48,19 @@ class CellTile extends StatelessWidget {
                       Icons.done,
                       color: Colors.white,
                     )
-                  : Text(cellsRecord.isCell
-                      ? cellsRecord.cells![0].name[0]
-                      : cellsRecord.text ?? ''[0]),
+                  : Text(
+                      cellsRecord.isCell
+                          ? cellsRecord.cells != null
+                              ? cellsRecord.cells![0].name[0]
+                              : ''
+                          : cellsRecord.text![0],
+                    ),
             ),
             onTap: onTap,
             onLongPress: onLongPress,
             title: cellsRecord.isCell
                 ? CellsType(
-                    cells: cellsRecord.cells!,
+                    cells: cellsRecord.cells,
                     isReverse: false,
                   )
                 : Container(

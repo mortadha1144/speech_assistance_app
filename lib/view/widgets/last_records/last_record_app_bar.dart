@@ -28,6 +28,7 @@ class LastRecordsAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       title: showOptions
           ? Row(
               children: [

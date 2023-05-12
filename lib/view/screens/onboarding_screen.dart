@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:speech_assistance_app/controller/last_record_provider.dart';
 import 'package:speech_assistance_app/controller/onboarding_provider.dart';
 import 'package:speech_assistance_app/view/widgets/onboarding/custom_button.dart';
 import 'package:speech_assistance_app/view/widgets/onboarding/custom_slider.dart';

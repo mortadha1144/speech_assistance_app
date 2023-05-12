@@ -15,6 +15,7 @@ class TtsService {
     bool isVoiceEnabled =
         Hive.box(settingBox).get('enable_voice', defaultValue: true);
     if (isVoiceEnabled) {
+     
       await flutterTts.setLanguage("ar");
       await flutterTts.setSpeechRate(0.4);
       await flutterTts.speak(text);
