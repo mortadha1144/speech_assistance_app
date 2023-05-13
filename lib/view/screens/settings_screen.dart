@@ -13,12 +13,22 @@ class SettingScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Image.asset(
-            'assets/images/resources/settings.png',
-            scale: 2,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.08,
           ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Image.asset(
+                'assets/images/resources/settings.png',
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          const Spacer(),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 36),
+            padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 36),
             child: Column(
               children: [
                 CustomListTile(
