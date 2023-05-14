@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
+import 'package:speech_assistance_app/view/widgets/home/custom_nav_bar_icon.dart';
 
 class CustomNavBar extends StatelessWidget {
   const CustomNavBar({super.key});
@@ -9,31 +11,17 @@ class CustomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
       builder: (context, provider, child) => Container(
-        height: MediaQuery.of(context).size.height / 24,
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        height: MediaQuery.of(context).size.height / 22,
+        width: double.infinity,
         color: Colors.black,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            provider.enableBack
-                ? Expanded(
-                    child: Row(
-                      children: [
-                        TextButton(
-                            onPressed: provider.backToFirstDisplayedItemList,
-                            style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: const Size(50, 30),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                alignment: Alignment.center),
-                            child: const Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.white,
-                              size: 18,
-                            )),
-                      ],
-                    ),
-                  )
-                : const Spacer(),
+            CustomNavBarIcon(
+                enable: provider.enableBack,
+                icon: Icons.arrow_back,
+                onPress: provider.backToFirstDisplayedItemList),
             Text(
               provider.navBarTitle,
               style: const TextStyle(
@@ -41,7 +29,7 @@ class CustomNavBar extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.w700),
             ),
-            const Spacer()
+            const CustomNavBarIcon(enable: true, icon: Icons.delete),
           ],
         ),
       ),
