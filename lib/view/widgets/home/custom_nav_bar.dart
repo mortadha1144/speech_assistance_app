@@ -12,7 +12,7 @@ class CustomNavBar extends StatelessWidget {
     return Consumer<HomeProvider>(
       builder: (context, provider, child) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 6),
-        height: MediaQuery.of(context).size.height / 22,
+        height: MediaQuery.of(context).size.height / 20,
         width: double.infinity,
         color: Colors.black,
         child: Row(
@@ -26,10 +26,12 @@ class CustomNavBar extends StatelessWidget {
               provider.navBarTitle,
               style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: 19,
                   fontWeight: FontWeight.w700),
             ),
-            const CustomNavBarIcon(enable: true, icon: Icons.delete),
+            const SizedBox(
+              width: 32,
+            )
           ],
         ),
       ),

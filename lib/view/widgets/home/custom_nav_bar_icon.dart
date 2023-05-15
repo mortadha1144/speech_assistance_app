@@ -12,8 +12,8 @@ class CustomNavBarIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return enable
         ? IconButton(
-            iconSize: 26,
-            constraints: const BoxConstraints(maxWidth: 26),
+            iconSize: 32,
+            constraints: const BoxConstraints(maxWidth: 32),
             padding: EdgeInsets.zero,
             icon: Icon(
               icon,
@@ -22,7 +22,7 @@ class CustomNavBarIcon extends StatelessWidget {
             onPressed: onPress,
           )
         : const SizedBox(
-            width: 26,
+            width: 32,
           );
   }
 }

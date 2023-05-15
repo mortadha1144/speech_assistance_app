@@ -87,12 +87,28 @@ class _CustomPlayBarState extends State<CustomPlayBar>
               ),
               Expanded(
                 child: Center(
-                  child: CupertinoButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
-                    onPressed: () => provider.onPressedBackspace(),
-                    child: const Icon(
+                  child: GestureDetector(
+                    onTapDown: provider.onBackSpaceTapDown,
+                    onTapUp: provider.onBackSpaceTapUpp,
+                    //onTapCancel: provider.onBackSpaceTapCancel,
+                    onTap: provider.onPressedBackspace,
+                    onLongPressStart: provider.onLongPressBackspaceStart,
+                    onLongPressEnd: provider.onLongPressBackspaceEnd,
+                    // child: CupertinoButton(
+
+                    //   padding: const EdgeInsets.symmetric(horizontal: 2),
+                    //   onPressed: provider.onPressedBackspace,
+                    //   child: const Icon(
+                    //     Icons.backspace_rounded,
+                    //     color: Colors.black,
+                    //     size: 40,
+                    //   ),
+                    // ),
+                    child: Icon(
                       Icons.backspace_rounded,
-                      color: Colors.black,
+                      color: provider.isBackSpaceTappedDown
+                          ? Colors.black.withOpacity(0.4)
+                          : Colors.black,
                       size: 40,
                     ),
                   ),

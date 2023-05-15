@@ -55,7 +55,6 @@ class HomeProvider with ChangeNotifier {
 
   void onPressedBackspace() {
     int index = _tapedCells.length - 1;
-
     if (_tapedCells.isNotEmpty) {
       Cell removedAt = _tapedCells.removeAt(index);
       _key.currentState!.removeItem(
@@ -74,6 +73,34 @@ class HomeProvider with ChangeNotifier {
       );
       notifyListeners();
     }
+  }
+
+  Timer? timer;
+  void onLongPressBackspaceStart(LongPressStartDetails details) {
+    if (_tapedCells.isNotEmpty) {
+      timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+        // Code to execute while button is pressed
+        onPressedBackspace();
+      });
+    }
+  }
+
+  void onLongPressBackspaceEnd(LongPressEndDetails details) {
+    timer?.cancel();
+    isBackSpaceTappedDown = false;
+    notifyListeners();
+  }
+
+  bool isBackSpaceTappedDown = false;
+
+  onBackSpaceTapDown(TapDownDetails details) {
+    isBackSpaceTappedDown = true;
+    notifyListeners();
+  }
+
+  onBackSpaceTapUpp(TapUpDetails details) {
+    isBackSpaceTappedDown = false;
+    notifyListeners();
   }
 
   bool _isLoading = false;
@@ -124,7 +151,7 @@ class HomeProvider with ChangeNotifier {
       homeCells.addAll(cells);
       //to get last start index befor tap category
       _startIndex = _startIndexTemp - _itemsPerScreen;
-      _navBarTitle = 'الرئيسة';
+      _navBarTitle = 'الرئيسية';
       _isCategoryTapped = false;
       updateDisplayedItemList();
     } else {
