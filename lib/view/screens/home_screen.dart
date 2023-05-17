@@ -9,9 +9,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return SafeArea(
+   return const SafeArea(
       child: Column(
-        children: const [
+        children: [
           CustomPlayBar(),
           CustomNavBar(),
           HomeGridView(),

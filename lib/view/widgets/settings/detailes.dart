@@ -58,12 +58,12 @@ class DetailesScreen extends StatelessWidget {
                       textDirection: TextDirection.rtl,
                       children: [
                         Image.asset('assets/images/resources/person.png'),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 6),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 6),
                           child: Column(
                             textDirection: TextDirection.rtl,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
                                 aboutAppContactTitle,
                                 textDirection: TextDirection.rtl,

@@ -191,6 +191,10 @@ class LastRecordProvider with ChangeNotifier {
               onPressed: () => Navigator.pop(context, 'OK'),
               child: const Text('متابعة'),
             ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'CANCEL'),
+              child: const Text('الغاء'),
+            ),
           ],
         ),
       ),

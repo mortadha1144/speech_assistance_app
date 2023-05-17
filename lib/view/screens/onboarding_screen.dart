@@ -29,18 +29,18 @@ class _OnBoardingState extends State<OnBoarding> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            const Expanded(
+            Expanded(
               flex: 4,
               child: CustomSliderOnBoarding(),
             ),
             Expanded(
                 flex: 1,
                 child: Column(
-                  children: const [
+                  children: [
                     SizedBox(
                       height: 15,
                     ),

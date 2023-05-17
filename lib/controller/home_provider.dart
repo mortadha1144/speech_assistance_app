@@ -29,7 +29,7 @@ class HomeProvider with ChangeNotifier {
 
   ScrollController get scrollController => _scrollController;
 
-  final GlobalKey<AnimatedListState> _key = GlobalKey();
+  final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>();
 
   GlobalKey<AnimatedListState> get key => _key;
 
@@ -75,18 +75,16 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  Timer? timer;
   void onLongPressBackspaceStart(LongPressStartDetails details) {
     if (_tapedCells.isNotEmpty) {
-      timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
-        // Code to execute while button is pressed
-        onPressedBackspace();
-      });
+      _key.currentState!
+          .removeAllItems((context, animation) => const SizedBox());
+      _tapedCells.clear();
+      notifyListeners();
     }
   }
 
   void onLongPressBackspaceEnd(LongPressEndDetails details) {
-    timer?.cancel();
     isBackSpaceTappedDown = false;
     notifyListeners();
   }
