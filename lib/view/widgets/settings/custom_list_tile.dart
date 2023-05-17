@@ -30,7 +30,7 @@ class CustomListTile extends StatelessWidget {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         trailing: trailing,
-        tileColor: Colors.blueGrey,
+        tileColor: Colors.teal,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
     );

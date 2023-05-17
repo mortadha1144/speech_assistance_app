@@ -16,7 +16,7 @@ class TextReader extends StatelessWidget {
           'قارئ النصوص',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.teal,
         centerTitle: true,
       ),
       body: Consumer<TextToSpeechProvider>(

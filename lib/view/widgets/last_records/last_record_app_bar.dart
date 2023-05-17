@@ -54,7 +54,7 @@ class LastRecordsAppBar extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.teal,
       actions: showOptions
           ? [
               Padding(

@@ -188,12 +188,14 @@ class LastRecordProvider with ChangeNotifier {
               'سيؤدي مسح العبارات الى حذفها نهائياً من سجل العبارات المستخدمة'),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('متابعة'),
+              onPressed: () => Navigator.pop(context, 'CANCEL'),
+              child: const Text('إلغاء'),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(context, 'CANCEL'),
-              child: const Text('الغاء'),
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text(
+                'حذف',
+              ),
             ),
           ],
         ),
