@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
+import 'package:speech_assistance_app/view/screens/about_us_screen.dart';
 import 'package:speech_assistance_app/view/widgets/settings/custom_list_tile.dart';
 import 'package:speech_assistance_app/view/widgets/settings/detailes.dart';
 
@@ -52,10 +53,7 @@ class SettingScreen extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right_outlined),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const DetailesScreen(
-                          image: aboutUsImage,
-                          title: aboutUsTitle,
-                          content: aboutUsContent),
+                      builder: (context) => const AboutUsScreen(),
                     ));
                   },
                 ),
