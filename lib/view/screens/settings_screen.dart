@@ -53,7 +53,12 @@ class SettingScreen extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right_outlined),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const AboutUsScreen(),
+                      builder: (context) => const AboutScreen(
+                        image: aboutUsImage,
+                        title: aboutUsTitle,
+                        content: aboutUsContent,
+                        isAboutUs: true,
+                      ),
                     ));
                   },
                 ),
@@ -63,11 +68,12 @@ class SettingScreen extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right_outlined),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const DetailesScreen(
-                          image: aboutAppImage,
-                          title: aboutAppTitle,
-                          content: aboutAppContent,
-                          type: DetailesScreenType.aboutApp),
+                      builder: (context) => const AboutScreen(
+                        image: aboutAppImage,
+                        title: aboutAppTitle,
+                        content: aboutAppContent,
+                        isAboutUs: false,
+                      ),
                     ));
                   },
                 ),
