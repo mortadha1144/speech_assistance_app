@@ -3,7 +3,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
 import 'package:speech_assistance_app/view/screens/about_us_screen.dart';
 import 'package:speech_assistance_app/view/widgets/settings/custom_list_tile.dart';
-import 'package:speech_assistance_app/view/widgets/settings/detailes.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);

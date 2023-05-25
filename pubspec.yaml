@@ -30,6 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   antdesign_icons: ^0.0.3
+  auto_size_text: ^3.0.0
   community_material_icon: ^5.9.55
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5

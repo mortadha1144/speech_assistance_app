@@ -1106,7 +1106,7 @@ List<Cell> help = [
       type: 'cell'),
   const Cell(
       id: 174,
-      name: 'هذا ليس ما قلت',
+      name: 'هذا ليس\nما قلت',
       category: 'help',
       image: '${ImageAsset.help}thats_not_what_i_said.png',
       type: 'cell'),
@@ -1130,7 +1130,7 @@ List<Cell> help = [
       type: 'cell'),
   const Cell(
       id: 178,
-      name: 'اسأل سؤال بنعم / لا',
+      name: 'اسأل سؤال\nبنعم / لا',
       category: 'help',
       image: '${ImageAsset.help}ask_a_yesno_question.png',
       type: 'cell'),
