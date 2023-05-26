@@ -1028,7 +1028,7 @@ List<Cell> littleWords = [
       type: 'cell'),
   const Cell(
       id: 162,
-      name: 'أياً كان',
+      name: 'أيا كان',
       category: 'little_words',
       image: '${ImageAsset.littleWords}whatever.png',
       type: 'cell'),
@@ -1079,7 +1079,7 @@ List<Cell> time = [
       type: 'cell'),
   const Cell(
       id: 170,
-      name: 'غداً',
+      name: 'غدا',
       category: 'time',
       image: '${ImageAsset.time}tomorrow.png',
       type: 'cell'),
@@ -1169,7 +1169,7 @@ List<Cell> help = [
 List<Cell> describe = [
   const Cell(
       id: 184,
-      name: 'أيضاً',
+      name: 'أيضا',
       category: 'describe',
       image: '${ImageAsset.describe}too.png',
       type: 'cell'),
@@ -1319,19 +1319,19 @@ List<Cell> describe = [
       type: 'cell'),
   const Cell(
       id: 209,
-      name: 'لاحقاً',
+      name: 'لاحقا',
       category: 'describe',
       image: '${ImageAsset.describe}later.png',
       type: 'cell'),
   const Cell(
       id: 210,
-      name: 'دائماً',
+      name: 'دائما',
       category: 'describe',
       image: '${ImageAsset.describe}always.png',
       type: 'cell'),
   const Cell(
       id: 211,
-      name: 'أبداً',
+      name: 'أبدا',
       category: 'describe',
       image: '${ImageAsset.describe}never.png',
       type: 'cell'),

@@ -22,7 +22,6 @@ class CellTile extends StatelessWidget {
   final bool showOptions;
   final bool selected;
   final void Function(bool?)? checkBoxOnChanged;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -61,8 +60,7 @@ class CellTile extends StatelessWidget {
             title: cellsRecord.isCell
                 ? CellsType(
                     cells: cellsRecord.cells,
-                    isReverse: false,
-                  )
+                    isReverse: false,)
                 : Container(
                     alignment: Alignment.centerRight,
                     height: double.infinity,

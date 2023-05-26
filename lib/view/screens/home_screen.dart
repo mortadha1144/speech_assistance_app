@@ -4,17 +4,39 @@ import 'package:speech_assistance_app/view/widgets/home/custom_nav_bar.dart';
 import 'package:speech_assistance_app/view/widgets/home/custom_play_bar.dart';
 import 'package:speech_assistance_app/view/widgets/home/home_grid_view.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    print('home screen disposed');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-   return const SafeArea(
+    return SafeArea(
       child: Column(
         children: [
-          CustomPlayBar(),
-          CustomNavBar(),
-          HomeGridView(),
+          CustomPlayBar(
+            scrollController: _scrollController,
+          ),
+          const CustomNavBar(),
+          const HomeGridView(),
         ],
       ),
     );

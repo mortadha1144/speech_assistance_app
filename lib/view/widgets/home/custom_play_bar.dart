@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
 import 'package:speech_assistance_app/view/widgets/home/pressed_cell.dart';
 
 class CustomPlayBar extends StatefulWidget {
-  const CustomPlayBar({super.key});
-
+  const CustomPlayBar({super.key, required this.scrollController});
+  final ScrollController scrollController;
   @override
   State<CustomPlayBar> createState() => _CustomPlayBarState();
 }
@@ -51,16 +52,18 @@ class _CustomPlayBarState extends State<CustomPlayBar>
               Expanded(
                 flex: 5,
                 child: InkWell(
-                  onTap: () {
-                    _controller
+                  onTap: () async {
+                    await _controller
                         .forward()
-                        .then((value) => _controller.reverse());
-                    provider.onTapPlayBar(text: provider.strOfNames);
+                        .then((_) => _controller.reverse());
+                    await _scrollToTop(provider.tapedCells);
+                    await provider.onTapPlayBar(text: provider.strOfNames);
+                    await _scrollToBottom(provider.tapedCells);
                   },
                   child: FadeTransition(
                     opacity: _fadeAnimation,
                     child: AnimatedList(
-                      controller: provider.scrollController,
+                      controller: widget.scrollController,
                       key: provider.key,
                       padding: EdgeInsets.zero,
                       scrollDirection: Axis.horizontal,
@@ -118,5 +121,33 @@ class _CustomPlayBarState extends State<CustomPlayBar>
         ),
       ),
     );
+  }
+
+  Future<void> _scrollToTop(List<Cell> tapedCells) async {
+    if (tapedCells.length > 5) {
+      await widget.scrollController.animateTo(
+        widget.scrollController.position.minScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 100),
+      );
+    }
+  }
+
+  Future<void> _scrollToBottom(
+    List<Cell> tapedCells,
+  ) async {
+    if (tapedCells.length > 5) {
+      await Future.delayed(
+        const Duration(seconds: 2),
+        () async {
+          int duration = (tapedCells.length * 0.3).round();
+          await widget.scrollController.animateTo(
+            widget.scrollController.position.maxScrollExtent,
+            curve: Curves.easeOut,
+            duration: Duration(seconds: duration),
+          );
+        },
+      );
+    }
   }
 }

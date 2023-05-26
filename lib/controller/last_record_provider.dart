@@ -66,6 +66,8 @@ class LastRecordProvider with ChangeNotifier {
     notifyListeners();
   }
 
+
+
   Future<void> onTapCellTile({
     required CellModel cellsRecord,
     required int index,
@@ -75,6 +77,8 @@ class LastRecordProvider with ChangeNotifier {
     } else {
       String text;
       if (cellsRecord.isCell) {
+       
+
         text = List.generate(cellsRecord.cells!.length,
             (index) => cellsRecord.cells![index].name).join(' ');
       } else {

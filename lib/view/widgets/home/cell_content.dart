@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_assistance_app/data/models/cell.dart';
 
@@ -21,7 +20,6 @@ class CellContent extends StatelessWidget {
             cell.name,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
-            //minFontSize: 8,
             maxLines: 2,
             style: TextStyle(
                 fontSize: MediaQuery.of(context).size.height * .018,

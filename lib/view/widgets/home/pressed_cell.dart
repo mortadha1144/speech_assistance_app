@@ -25,9 +25,10 @@ class PressedCell extends StatelessWidget {
             text,
             maxLines: 2,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 12,
-              height: 1.2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height * .016,
+              height: 1.1,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),

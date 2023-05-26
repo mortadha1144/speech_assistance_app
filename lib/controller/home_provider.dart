@@ -25,9 +25,9 @@ class HomeProvider with ChangeNotifier {
       List.generate(lengthOfCellsList, (index) => _tapedCells[index].name)
           .join(' ');
 
-  final ScrollController _scrollController = ScrollController();
+  // final ScrollController _scrollController = ScrollController();
 
-  ScrollController get scrollController => _scrollController;
+  // ScrollController get scrollController => _scrollController;
 
   final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>();
 
@@ -50,7 +50,7 @@ class HomeProvider with ChangeNotifier {
     _key.currentState!
         .insertItem(index, duration: const Duration(milliseconds: 200));
     notifyListeners();
-    _scrollToBottom();
+    //_scrollToBottom();
   }
 
   void onPressedBackspace() {
@@ -175,44 +175,42 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  void _scrollToBottom({String from = 'insert'}) {
-    if (_tapedCells.length > 5) {
-      Future.delayed(
-        from == 'insert'
-            ? const Duration(milliseconds: 50)
-            : const Duration(seconds: 2),
-        () {
-          int duration = (lengthOfCellsList * 0.3).round();
-          scrollController.animateTo(
-            _scrollController.position.maxScrollExtent,
-            curve: Curves.easeOut,
-            duration: from == 'insert'
-                ? const Duration(milliseconds: 50)
-                : Duration(seconds: duration),
-          );
-        },
-      );
-      notifyListeners();
-    }
-  }
+  // void _scrollToBottom({String from = 'insert'}) {
+  //   if (_tapedCells.length > 5) {
+  //     Future.delayed(
+  //       from == 'insert'
+  //           ? const Duration(milliseconds: 50)
+  //           : const Duration(seconds: 2),
+  //       () {
+  //         int duration = (lengthOfCellsList * 0.3).round();
+  //         _scrollController.animateTo(
+  //           _scrollController.position.maxScrollExtent,
+  //           curve: Curves.easeOut,
+  //           duration: from == 'insert'
+  //               ? const Duration(milliseconds: 50)
+  //               : Duration(seconds: duration),
+  //         );
+  //       },
+  //     );
+  //     notifyListeners();
+  //   }
+  // }
 
-  void _scrollToTop() {
-    if (_tapedCells.length > 5) {
-      scrollController.animateTo(
-        _scrollController.position.minScrollExtent,
-        curve: Curves.easeOut,
-        duration: const Duration(milliseconds: 300),
-      );
-    }
-  }
+  // Future<void> _scrollToTop() async {
+  //   if (_tapedCells.length > 5) {
+  //     await _scrollController.animateTo(
+  //       _scrollController.position.minScrollExtent,
+  //       curve: Curves.easeOut,
+  //       duration: const Duration(milliseconds: 100),
+  //     );
+  //   }
+  // }
 
   Future<void> onTapPlayBar({required String text}) async {
     if (_tapedCells.isNotEmpty) {
-      _scrollToTop();
-
+      //await _scrollToTop();
       await TtsService.speakText(text);
-
-      _scrollToBottom(from: 'speak');
+      //_scrollToBottom(from: 'speak');
       await addCell();
     }
   }
