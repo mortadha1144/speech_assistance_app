@@ -64,20 +64,20 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
                         itemBuilder: (context, index) => CellTile(
                           index: index,
                           cellsRecord: value.cellRecordList[index],
-                          onTap: () {
-                            value.onTapCellTile(
-                              cellsRecord: value.cellRecordList[index],
-                              index: index,
-                              scrollController: _scrollController,
-                            );
-                          },
+                          // onTap: () {
+                          //   value.onTapCellTile(
+                          //     cellsRecord: value.cellRecordList[index],
+                          //     index: index,
+                          //     scrollController: _scrollController,
+                          //   );
+                          // },
                           onLongPress: () {
                             value.onLongPressCellTile(
                                 cellsRecord: value.cellRecordList[index],
                                 index: index);
                           },
                           selected: value.selectedCellTiles?[index] ?? false,
-                          scrollController: _scrollController,
+                         
                         ),
                       )
                     : const Center(

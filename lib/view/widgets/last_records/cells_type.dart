@@ -6,13 +6,10 @@ class CellsType extends StatelessWidget {
     Key? key,
     required this.cells,
     this.isReverse = true,
-    required this.scrollController,
   }) : super(key: key);
 
   final List<Cell>? cells;
   final bool isReverse;
-
-  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +17,6 @@ class CellsType extends StatelessWidget {
       padding: EdgeInsets.zero,
       reverse: isReverse,
       shrinkWrap: true,
-      controller: scrollController,
       //physics: const NeverScrollableScrollPhysics(),
       itemCount: cells?.length,
       scrollDirection: Axis.horizontal,

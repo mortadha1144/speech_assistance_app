@@ -14,7 +14,6 @@ class CellTile extends StatelessWidget {
     this.showOptions = false,
     this.selected = false,
     this.checkBoxOnChanged,
-    required this.scrollController,
   }) : super(key: key);
   final int index;
   final CellModel cellsRecord;
@@ -23,7 +22,7 @@ class CellTile extends StatelessWidget {
   final bool showOptions;
   final bool selected;
   final void Function(bool?)? checkBoxOnChanged;
-  final ScrollController scrollController;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,7 +42,8 @@ class CellTile extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: selected
                   ? Colors.blue
-                  : circleAvatarColors[index % circleAvatarColors.length],
+                  : circleAvatarColors[
+                      index % circleAvatarColors.length],
               child: selected
                   ? const Icon(
                       Icons.done,
@@ -63,7 +63,6 @@ class CellTile extends StatelessWidget {
                 ? CellsType(
                     cells: cellsRecord.cells,
                     isReverse: false,
-                    scrollController: scrollController,
                   )
                 : Container(
                     alignment: Alignment.centerRight,
@@ -81,7 +80,8 @@ class CellTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  Functions.getCustomDates(DateTime.parse(cellsRecord.date)),
+                  Functions.getCustomDates(
+                      DateTime.parse(cellsRecord.date)),
                   style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       color: Colors.grey,
