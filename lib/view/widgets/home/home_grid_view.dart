@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
+import 'package:speech_assistance_app/data/models/cell.dart';
 import 'package:speech_assistance_app/data/static/static.dart';
 import 'package:speech_assistance_app/shared/functions/functions.dart';
 import 'package:speech_assistance_app/view/widgets/home/normal_cell.dart';
 
 class HomeGridView extends StatefulWidget {
-  const HomeGridView({super.key});
+  const HomeGridView({super.key, required this.scrollController});
+  final ScrollController scrollController;
   @override
   State<HomeGridView> createState() => _HomeGridViewState();
 }
 
-class _HomeGridViewState extends State<HomeGridView>
-     {
+class _HomeGridViewState extends State<HomeGridView> {
   @override
   void initState() {
     super.initState();
@@ -24,7 +25,6 @@ class _HomeGridViewState extends State<HomeGridView>
 
   @override
   Widget build(BuildContext context) {
-    
     return Consumer<HomeProvider>(
       builder: (context, provider, child) => Expanded(
         child: provider.isLoading
@@ -45,8 +45,12 @@ class _HomeGridViewState extends State<HomeGridView>
                       itemCount: provider.displayedItemList.length,
                       itemBuilder: (context, itemIndex) => Functions.getCell(
                           cell: provider.displayedItemList[itemIndex],
-                          onPressed: () =>
-                              provider.onPressedGridView(itemIndex)),
+                          onPressed: () async {
+                            provider.onPressedGridView(
+                                itemIndex, widget.scrollController);
+
+                            // _scrollToBottom(provider.tapedCells);
+                          }),
                     ),
                   ),
                   if (provider.showMoreCondition)
@@ -69,5 +73,22 @@ class _HomeGridViewState extends State<HomeGridView>
             : const Center(child: CircularProgressIndicator()),
       ),
     );
+  }
+
+  Future<void> _scrollToBottom(
+    List<Cell> tapedCells,
+  ) async {
+    if (tapedCells.length > 5) {
+      await Future.delayed(
+        const Duration(milliseconds: 50),
+        () async {
+          await widget.scrollController.animateTo(
+            widget.scrollController.position.maxScrollExtent,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 50),
+          );
+        },
+      );
+    }
   }
 }

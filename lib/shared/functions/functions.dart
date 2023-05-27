@@ -43,7 +43,7 @@ class Functions {
     }
   }
 
-  static StatelessWidget getCell({required Cell cell, Function()? onPressed}) {
+  static StatelessWidget getCell({required Cell cell,void Function()? onPressed}) {
     if (cell.type == 'cell') {
       return NormalCell(
         cell: cell,

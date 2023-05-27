@@ -23,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
-    print('home screen disposed');
     super.dispose();
   }
 
@@ -36,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollController: _scrollController,
           ),
           const CustomNavBar(),
-          const HomeGridView(),
+           HomeGridView(scrollController: _scrollController,),
         ],
       ),
     );
