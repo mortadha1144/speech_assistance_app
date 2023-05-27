@@ -13,9 +13,11 @@ class LastRecordScreen extends StatefulWidget {
 }
 
 class _LastRecordScreenState extends State<LastRecordScreen> {
+  late ScrollController _scrollController;
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var provider = Provider.of<LastRecordProvider>(context, listen: false);
       provider.fetchAllCells();
@@ -23,6 +25,12 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
       //   provider.fetchAllCells();
       // }
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,8 +66,10 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
                           cellsRecord: value.cellRecordList[index],
                           onTap: () {
                             value.onTapCellTile(
-                                cellsRecord: value.cellRecordList[index],
-                                index: index);
+                              cellsRecord: value.cellRecordList[index],
+                              index: index,
+                              scrollController: _scrollController,
+                            );
                           },
                           onLongPress: () {
                             value.onLongPressCellTile(
@@ -67,10 +77,15 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
                                 index: index);
                           },
                           selected: value.selectedCellTiles?[index] ?? false,
+                          scrollController: _scrollController,
                         ),
                       )
                     : const Center(
-                        child: Text(noPhraces,textAlign: TextAlign.center,style: TextStyle(),),
+                        child: Text(
+                          noPhraces,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(),
+                        ),
                       )
                 : const Center(child: CircularProgressIndicator()),
           )

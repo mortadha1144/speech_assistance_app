@@ -14,6 +14,7 @@ class CellTile extends StatelessWidget {
     this.showOptions = false,
     this.selected = false,
     this.checkBoxOnChanged,
+    required this.scrollController,
   }) : super(key: key);
   final int index;
   final CellModel cellsRecord;
@@ -22,6 +23,7 @@ class CellTile extends StatelessWidget {
   final bool showOptions;
   final bool selected;
   final void Function(bool?)? checkBoxOnChanged;
+  final ScrollController scrollController;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -60,7 +62,9 @@ class CellTile extends StatelessWidget {
             title: cellsRecord.isCell
                 ? CellsType(
                     cells: cellsRecord.cells,
-                    isReverse: false,)
+                    isReverse: false,
+                    scrollController: scrollController,
+                  )
                 : Container(
                     alignment: Alignment.centerRight,
                     height: double.infinity,

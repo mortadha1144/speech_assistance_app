@@ -66,18 +66,30 @@ class LastRecordProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
-
   Future<void> onTapCellTile({
     required CellModel cellsRecord,
     required int index,
+    required ScrollController scrollController,
   }) async {
     if (showOptions) {
       onTapOrLongPressIfShowOptions(index, cellsRecord);
     } else {
       String text;
       if (cellsRecord.isCell) {
-       
+        if (cellsRecord.cells!.length > 4) {
+          Future.delayed(
+            const Duration(seconds: 1),
+            () {
+              
+              int duration = (cellsRecord.cells!.length * 0.2).round();
+              scrollController.position.animateTo(
+                scrollController.position.maxScrollExtent,
+                curve: Curves.easeOut,
+                duration: Duration(seconds: duration),
+              );
+            },
+          );
+        }
 
         text = List.generate(cellsRecord.cells!.length,
             (index) => cellsRecord.cells![index].name).join(' ');
