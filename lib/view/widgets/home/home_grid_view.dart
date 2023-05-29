@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_assistance_app/controller/home_provider.dart';
-import 'package:speech_assistance_app/data/models/cell.dart';
 import 'package:speech_assistance_app/data/static/static.dart';
 import 'package:speech_assistance_app/shared/functions/functions.dart';
 import 'package:speech_assistance_app/view/widgets/home/normal_cell.dart';
@@ -73,22 +72,5 @@ class _HomeGridViewState extends State<HomeGridView> {
             : const Center(child: CircularProgressIndicator()),
       ),
     );
-  }
-
-  Future<void> _scrollToBottom(
-    List<Cell> tapedCells,
-  ) async {
-    if (tapedCells.length > 5) {
-      await Future.delayed(
-        const Duration(milliseconds: 50),
-        () async {
-          await widget.scrollController.animateTo(
-            widget.scrollController.position.maxScrollExtent,
-            curve: Curves.easeOut,
-            duration: const Duration(milliseconds: 50),
-          );
-        },
-      );
-    }
   }
 }

@@ -6,13 +6,19 @@ class AboutScreen extends StatelessWidget {
       {super.key,
       required this.image,
       required this.title,
-      required this.content, required this.isAboutUs});
+      required this.content,
+      required this.isAboutUs,
+      required this.facebookUrl,
+      this.instaUrl,
+      this.teleUrl});
 
   final String image;
   final String title;
   final String content;
   final bool isAboutUs;
-
+  final String facebookUrl;
+  final String? instaUrl;
+  final String? teleUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +31,9 @@ class AboutScreen extends StatelessWidget {
         title: title,
         content: content,
         isAboutUs: isAboutUs,
+        facebookUrl: facebookUrl,
+        instaUrl: instaUrl,
+        teleUrl: teleUrl,
       ),
     );
   }

@@ -5,7 +5,14 @@ import 'package:url_launcher/url_launcher.dart';
 class SocialMediaLinks extends StatelessWidget {
   const SocialMediaLinks({
     super.key,
+    required this.facebookUrl,
+    this.instaUrl,
+    this.teleUrl,
   });
+
+  final String facebookUrl;
+  final String? instaUrl;
+  final String? teleUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +21,7 @@ class SocialMediaLinks extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          onPressed: () async {
-            final Uri url =
-                Uri.parse('https://www.facebook.com/Code4Iraq');
-            if (!await launchUrl(url)) {
-              throw Exception('Could not launch $url');
-            }
-          },
+          onPressed: () => openUrlLink(facebookUrl),
           icon: const Icon(
             AntIcons.facebookOutlined,
             color: Colors.teal,
@@ -31,7 +32,7 @@ class SocialMediaLinks extends StatelessWidget {
           width: 8,
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: instaUrl == null ? () {} : () => openUrlLink(instaUrl!),
           icon: const Icon(
             AntIcons.instagramOutlined,
             color: Colors.teal,
@@ -42,7 +43,7 @@ class SocialMediaLinks extends StatelessWidget {
           width: 8,
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: teleUrl == null ? () {} : () => openUrlLink(teleUrl!),
           icon: const Icon(
             Icons.telegram,
             color: Colors.teal,
@@ -51,5 +52,12 @@ class SocialMediaLinks extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void openUrlLink(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $uri');
+    }
   }
 }

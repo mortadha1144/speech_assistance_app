@@ -10,13 +10,16 @@ class AboutBody extends StatelessWidget {
     required this.image,
     required this.title,
     required this.content,
-    required this.isAboutUs,
+    required this.isAboutUs, required this.facebookUrl, this.instaUrl, this.teleUrl,
   });
 
   final String image;
   final String title;
   final String content;
   final bool isAboutUs;
+  final String facebookUrl;
+  final String? instaUrl;
+  final String? teleUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +85,11 @@ class AboutBody extends StatelessWidget {
                 const SizedBox(
                   height: 12,
                 ),
-                const SocialMediaLinks(),
+                 SocialMediaLinks(
+                  facebookUrl: facebookUrl,
+                  instaUrl: instaUrl,
+                  teleUrl: teleUrl,
+                ),
               ],
             ),
           )

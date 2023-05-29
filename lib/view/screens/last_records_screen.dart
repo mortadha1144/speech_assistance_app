@@ -77,7 +77,6 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
                                 index: index);
                           },
                           selected: value.selectedCellTiles?[index] ?? false,
-                         
                         ),
                       )
                     : const Center(

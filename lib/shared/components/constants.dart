@@ -12,6 +12,8 @@ const aboutUsImage = 'assets/images/resources/code_for_iraq.png';
 
 const aboutUsTitle = 'Code For Iraq';
 
+const aboutUsfacebookUrl = 'https://www.facebook.com/Code4Iraq';
+
 const aboutUsContent =
     'هي مبادرة إنسانية غير ربحية تهدف إلى خدمة المجتمع باستخدام التكنولوجيا , تعتبر ( Code For Iraq ) مبادرة تعليمية حقيقية ترعى المهتمين بتعلم تصميم و برمجة تطبيقات الهاتف الجوال و مواقع الأنترنت و برامج الحاسوب و الشبكات و الاتصالات و نظم تشغيل الحاسوب باستخدام التقنيات المفتوحة المصدر  ( Open Source ) , كما توفر لهم جميع الدروس التعليمية اللازمة و بشكل مجاني .';
 
@@ -22,6 +24,11 @@ const aboutAppImage = 'assets/images/resources/aboutAppImage2.png';
 const aboutAppTitle = 'تطبيق مساعد النطق';
 const aboutAppContent =
     'هو تطبيق مجاني انساني ضمن مبادرة ( Code For Iraq ) لمساعدة الاشخاص اللذين يعانون من صعوبة النطق , التطبيق يعتمد على احدث الاليات المتبعة في هذا المجال فهو يعتمد على آلية (AAC) المتبعة في المعاهد العالمية المختصة بمعالجة من يعانون صعوبة النطق . ';
+
+const aboutAppfacebookUrl =
+    'https://www.facebook.com/profile.php?id=100009635653046&mibextid=ZbWKwL';
+const aboutAppInstaUrl = 'https://www.instagram.com/mortadhanaser';
+const aboutAppTeleUrl = 'https://t.me/mortadha114';
 
 List<Color> circleAvatarColors = [
   const Color(0xfffb938f),
