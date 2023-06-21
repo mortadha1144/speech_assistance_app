@@ -12,12 +12,13 @@ class CustomDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: 340,
           child: Card(
+            margin: EdgeInsets.zero,
             elevation: 4,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0, left: 20, right: 20),
@@ -27,7 +28,8 @@ class CustomDetailsCard extends StatelessWidget {
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 28, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     content,

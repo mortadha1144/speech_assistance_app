@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:speech_assistance_app/shared/components/constants.dart';
-import 'package:speech_assistance_app/view/widgets/about_us/custom_backgroung_image.dart';
+import 'package:speech_assistance_app/view/widgets/about_us/custom_backgroung.dart';
 import 'package:speech_assistance_app/view/widgets/about_us/custom_details_card.dart';
 import 'package:speech_assistance_app/view/widgets/about_us/social_media_links.dart';
+
+import 'custom_image.dart';
 
 class AboutBody extends StatelessWidget {
   const AboutBody({
@@ -10,7 +12,10 @@ class AboutBody extends StatelessWidget {
     required this.image,
     required this.title,
     required this.content,
-    required this.isAboutUs, required this.facebookUrl, this.instaUrl, this.teleUrl,
+    required this.isAboutUs,
+    required this.facebookUrl,
+    this.instaUrl,
+    this.teleUrl,
   });
 
   final String image;
@@ -29,69 +34,74 @@ class AboutBody extends StatelessWidget {
       height: size.height,
       child: Stack(
         children: [
-          CustomBackgroundImage(
-            image: image,
-            isAboutUs: isAboutUs,
-          ),
-          Padding(
-            padding:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height * .31),
-            child: Column(
-              children: [
-                CustomDetailsCard(
-                  title: title,
-                  content: content,
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    isAboutUs
-                        ? const Text(
-                            'تابعنا على :',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+          const CustomBackground(),
+          Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              CustomImage(
+                image: image,
+                isAboutUs: isAboutUs,
+              ),
+              SizedBox(
+                height:
+                    isAboutUs ? MediaQuery.of(context).size.height * 0.015 : 0,
+              ),
+              CustomDetailsCard(
+                title: title,
+                content: content,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  isAboutUs
+                      ? const Text(
+                          'تابعنا على :',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textDirection: TextDirection.rtl,
+                        )
+                      : const Column(
+                          children: [
+                            Text(
+                              aboutAppContactTitle,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.teal,
+                              ),
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.center,
                             ),
-                            textDirection: TextDirection.rtl,
-                          )
-                        : const Column(
-                            children: [
-                              Text(
-                                aboutAppContactTitle,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.teal,
-                                ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.center,
+                            Text(
+                              aboutAppContactDetaile,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
                               ),
-                              Text(
-                                aboutAppContactDetaile,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          )
-                  ],
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                 SocialMediaLinks(
-                  facebookUrl: facebookUrl,
-                  instaUrl: instaUrl,
-                  teleUrl: teleUrl,
-                ),
-              ],
-            ),
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        )
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              SocialMediaLinks(
+                facebookUrl: facebookUrl,
+                instaUrl: instaUrl,
+                teleUrl: teleUrl,
+              ),
+              const Spacer()
+            ],
           )
         ],
       ),
