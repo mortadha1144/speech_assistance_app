@@ -20,7 +20,7 @@ const aboutUsContent =
 const aboutAppContactTitle = 'تصميم وبرمجة :';
 const aboutAppContactDetaile = 'مرتضى ناصر';
 const aboutAppContactEmail = 'mortadha114@gmail.com';
-const aboutAppImage = 'assets/images/resources/aboutAppImage2.png';
+const aboutAppImage = 'assets/images/resources/aboutAppImage22.png';
 const aboutAppTitle = 'تطبيق مساعد النطق';
 const aboutAppContent =
     'هو تطبيق مجاني انساني ضمن مبادرة ( Code For Iraq ) لمساعدة الاشخاص اللذين يعانون من صعوبة النطق , التطبيق يعتمد على احدث الاليات المتبعة في هذا المجال فهو يعتمد على آلية (AAC) المتبعة في المعاهد العالمية المختصة بمعالجة من يعانون صعوبة النطق . ';
