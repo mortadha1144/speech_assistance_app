@@ -13,25 +13,18 @@ class LastRecordScreen extends StatefulWidget {
 }
 
 class _LastRecordScreenState extends State<LastRecordScreen> {
-  late ScrollController _scrollController;
+  
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var provider = Provider.of<LastRecordProvider>(context, listen: false);
-      provider.fetchAllCells();
-      // if (!provider.isLoading) {
-      //   provider.fetchAllCells();
-      // }
+      if (!provider.isLoading) {
+        provider.fetchAllCells();
+      }
     });
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +57,13 @@ class _LastRecordScreenState extends State<LastRecordScreen> {
                         itemBuilder: (context, index) => CellTile(
                           index: index,
                           cellsRecord: value.cellRecordList[index],
-                          // onTap: () {
-                          //   value.onTapCellTile(
-                          //     cellsRecord: value.cellRecordList[index],
-                          //     index: index,
-                          //     scrollController: _scrollController,
-                          //   );
-                          // },
+                          onTap: () {
+                            value.onTapCellTile(
+                              cellsRecord: value.cellRecordList[index],
+                              index: index,
+                             
+                            );
+                          },
                           onLongPress: () {
                             value.onLongPressCellTile(
                                 cellsRecord: value.cellRecordList[index],
