@@ -12,41 +12,43 @@ class CustomDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 340,
-          child: Card(
-            margin: EdgeInsets.zero,
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, left: 20, right: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    content,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      //height: 1.8,
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0, left: 8, right: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+              child: Scrollbar(
+                scrollbarOrientation: ScrollbarOrientation.left,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: SingleChildScrollView(
+                    child: Text(
+                      content,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        //height: 1.8,
+                      ),
+                      textAlign: TextAlign.justify,
+                      textDirection: TextDirection.rtl,
                     ),
-                    textAlign: TextAlign.justify,
-                    textDirection: TextDirection.rtl,
                   ),
-                ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

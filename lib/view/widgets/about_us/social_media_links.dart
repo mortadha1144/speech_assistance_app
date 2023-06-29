@@ -31,25 +31,31 @@ class SocialMediaLinks extends StatelessWidget {
         const SizedBox(
           width: 8,
         ),
-        IconButton(
-          onPressed: instaUrl == null ? () {} : () => openUrlLink(instaUrl!),
-          icon: const Icon(
-            AntIcons.instagramOutlined,
-            color: Colors.teal,
-            size: 36,
-          ),
-        ),
+        instaUrl == null
+            ? const SizedBox.shrink()
+            : IconButton(
+                onPressed:
+                    instaUrl == null ? () {} : () => openUrlLink(instaUrl!),
+                icon: const Icon(
+                  AntIcons.instagramOutlined,
+                  color: Colors.teal,
+                  size: 36,
+                ),
+              ),
         const SizedBox(
           width: 8,
         ),
-        IconButton(
-          onPressed: teleUrl == null ? () {} : () => openUrlLink(teleUrl!),
-          icon: const Icon(
-            Icons.telegram,
-            color: Colors.teal,
-            size: 36,
-          ),
-        ),
+        teleUrl == null
+            ? const SizedBox.shrink()
+            : IconButton(
+                onPressed:
+                    teleUrl == null ? () {} : () => openUrlLink(teleUrl!),
+                icon: const Icon(
+                  Icons.telegram,
+                  color: Colors.teal,
+                  size: 36,
+                ),
+              ),
       ],
     );
   }
@@ -57,7 +63,6 @@ class SocialMediaLinks extends StatelessWidget {
   void openUrlLink(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $uri');
     }
   }
 }

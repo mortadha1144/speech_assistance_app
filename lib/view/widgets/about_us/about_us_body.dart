@@ -31,77 +31,82 @@ class AboutBody extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return SizedBox(
       width: double.infinity,
-      height: size.height,
       child: Stack(
         children: [
           const CustomBackground(),
-          Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
-              CustomImage(
-                image: image,
-                isAboutUs: isAboutUs,
-              ),
-              SizedBox(
-                height:
-                    isAboutUs ? MediaQuery.of(context).size.height * 0.015 : 0,
-              ),
-              CustomDetailsCard(
-                title: title,
-                content: content,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  isAboutUs
-                      ? const Text(
-                          'تابعنا على :',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textDirection: TextDirection.rtl,
-                        )
-                      : const Column(
-                          children: [
-                            Text(
-                              aboutAppContactTitle,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.teal,
-                              ),
-                              textDirection: TextDirection.rtl,
-                              textAlign: TextAlign.center,
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                CustomImage(
+                  image: image,
+                  isAboutUs: isAboutUs,
+                ),
+                SizedBox(
+                  height: isAboutUs
+                      ? MediaQuery.of(context).size.height * 0.015
+                      : 0,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height *
+                      (isAboutUs ? .35 : .3),
+                  child: CustomDetailsCard(
+                    title: title,
+                    content: content,
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    isAboutUs
+                        ? const Text(
+                            'تابعنا على :',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Text(
-                              aboutAppContactDetaile,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
+                            textDirection: TextDirection.rtl,
+                          )
+                        : const Column(
+                            children: [
+                              Text(
+                                aboutAppContactTitle,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.teal,
+                                ),
+                                textDirection: TextDirection.rtl,
+                                textAlign: TextAlign.center,
                               ),
-                              textDirection: TextDirection.rtl,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        )
-                ],
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              SocialMediaLinks(
-                facebookUrl: facebookUrl,
-                instaUrl: instaUrl,
-                teleUrl: teleUrl,
-              ),
-              const Spacer()
-            ],
+                              Text(
+                                aboutAppContactDetaile,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                                textDirection: TextDirection.rtl,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          )
+                  ],
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                SocialMediaLinks(
+                  facebookUrl: facebookUrl,
+                  instaUrl: instaUrl,
+                  teleUrl: teleUrl,
+                ),
+              ],
+            ),
           )
         ],
       ),
