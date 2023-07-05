@@ -5,14 +5,14 @@ import 'package:url_launcher/url_launcher.dart';
 class SocialMediaLinks extends StatelessWidget {
   const SocialMediaLinks({
     super.key,
-    required this.facebookUrl,
-    this.instaUrl,
-    this.teleUrl,
+    this.facebookUrl,
+    this.website,
+    this.email,
   });
 
-  final String facebookUrl;
-  final String? instaUrl;
-  final String? teleUrl;
+  final String? facebookUrl;
+  final String? website;
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +20,14 @@ class SocialMediaLinks extends StatelessWidget {
       textDirection: TextDirection.ltr,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
-          onPressed: () => openUrlLink(facebookUrl),
-          icon: const Icon(
-            AntIcons.facebookOutlined,
-            color: Colors.teal,
-            size: 36,
-          ),
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        instaUrl == null
+        facebookUrl == null
             ? const SizedBox.shrink()
             : IconButton(
-                onPressed:
-                    instaUrl == null ? () {} : () => openUrlLink(instaUrl!),
+                onPressed: facebookUrl == null
+                    ? () {}
+                    : () => openUrlLink(facebookUrl!),
                 icon: const Icon(
-                  AntIcons.instagramOutlined,
+                  AntIcons.facebookOutlined,
                   color: Colors.teal,
                   size: 36,
                 ),
@@ -45,13 +35,26 @@ class SocialMediaLinks extends StatelessWidget {
         const SizedBox(
           width: 8,
         ),
-        teleUrl == null
+        website == null
             ? const SizedBox.shrink()
             : IconButton(
                 onPressed:
-                    teleUrl == null ? () {} : () => openUrlLink(teleUrl!),
+                    website == null ? () {} : () => openUrlLink(website!),
                 icon: const Icon(
-                  Icons.telegram,
+                  Icons.language,
+                  color: Colors.teal,
+                  size: 36,
+                ),
+              ),
+        const SizedBox(
+          width: 8,
+        ),
+        email == null
+            ? const SizedBox.shrink()
+            : IconButton(
+                onPressed: email == null ? () {} : () => openEmailLink(email!),
+                icon: const Icon(
+                  Icons.email,
                   color: Colors.teal,
                   size: 36,
                 ),
@@ -60,9 +63,17 @@ class SocialMediaLinks extends StatelessWidget {
     );
   }
 
-  void openUrlLink(String url) async {
+  Future<void> openUrlLink(String url) async {
     final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-    }
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {}
+  }
+
+  Future<void> openEmailLink(String email) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+
+    if (!await launchUrl(emailLaunchUri)) {}
   }
 }

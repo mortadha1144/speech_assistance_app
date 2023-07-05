@@ -13,22 +13,21 @@ class AboutBody extends StatelessWidget {
     required this.title,
     required this.content,
     required this.isAboutUs,
-    required this.facebookUrl,
-    this.instaUrl,
-    this.teleUrl,
+     this.facebookUrl,
+    this.website,
+    this.email,
   });
 
   final String image;
   final String title;
   final String content;
   final bool isAboutUs;
-  final String facebookUrl;
-  final String? instaUrl;
-  final String? teleUrl;
+  final String? facebookUrl;
+  final String? website;
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SizedBox(
       width: double.infinity,
       child: Stack(
@@ -102,8 +101,8 @@ class AboutBody extends StatelessWidget {
                 ),
                 SocialMediaLinks(
                   facebookUrl: facebookUrl,
-                  instaUrl: instaUrl,
-                  teleUrl: teleUrl,
+                  website: website,
+                  email: email,
                 ),
               ],
             ),

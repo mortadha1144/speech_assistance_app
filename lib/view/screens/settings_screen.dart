@@ -58,6 +58,8 @@ class SettingScreen extends StatelessWidget {
                         content: aboutUsContent,
                         isAboutUs: true,
                         facebookUrl: aboutUsfacebookUrl,
+                        website: aboutUsWebUrl,
+                        email: aboutUsEmailUrl,
                       ),
                     ));
                   },
@@ -73,9 +75,6 @@ class SettingScreen extends StatelessWidget {
                         title: aboutAppTitle,
                         content: aboutAppContent,
                         isAboutUs: false,
-                        facebookUrl: aboutAppfacebookUrl,
-                        instaUrl: aboutAppInstaUrl,
-                        teleUrl: aboutAppTeleUrl,
                       ),
                     ));
                   },
