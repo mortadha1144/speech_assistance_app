@@ -64,7 +64,7 @@ class AboutBody extends StatelessWidget {
                   children: [
                     isAboutUs
                         ? const Text(
-                            'تابعنا على :',
+                            'للتواصل معنا :',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
