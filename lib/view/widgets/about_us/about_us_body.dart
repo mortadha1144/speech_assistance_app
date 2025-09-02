@@ -71,8 +71,8 @@ class AboutBody extends StatelessWidget {
                             ),
                             textDirection: TextDirection.rtl,
                           )
-                        : const Column(
-                            children: [
+                        :  Column(
+                            children: const [
                               Text(
                                 aboutAppContactTitle,
                                 style: TextStyle(

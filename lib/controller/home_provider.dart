@@ -92,7 +92,7 @@ class HomeProvider with ChangeNotifier {
   void onLongPressBackspaceStart(LongPressStartDetails details) {
     if (_tapedCells.isNotEmpty) {
       _key.currentState!
-          .removeAllItems((context, animation) => const SizedBox());
+          .removeItem(0, (context, animation) => const SizedBox());
       _tapedCells.clear();
       notifyListeners();
     }
